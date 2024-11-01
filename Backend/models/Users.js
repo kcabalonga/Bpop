@@ -1,35 +1,85 @@
-//This file contains code that will be used by server to handle requests to access infomration in the user files folder
+// users.js
 
-//required modules that are being imported to make functions easier
-const fs = require('fs');
-const path = require('path');
+// Import Mongoose
+const mongoose = require('mongoose');
 
-//this line creates the variable dataDir which will stores a filepath to the folder where we are storing all our profiles. __dirname grabs path to where the file in which __dirname was called, ../ is saying to leave this location (which will be the model folder) and Profiles is saying to then enter the Profiles folder
-const dataDir = path.join(__dirname, '../Profiles');
+// Connect to MongoDB
+mongoose.connect('mongodb://localhost:27017/user_profiles', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 
-//Helper function that uses dataDir above to then make the full file path leading to a particular user profile, requiring userid to locate. Files will be named like "user1" and "user2", etc., with the number after user being the userId.
-const getUserFilePath = (userId) => path.join(dataDir, `user${userId}.json`);
+const db = mongoose.connection;
 
-//function that gets user details when passed a userID
+db.on('error', console.error.bind(console, '❌ Connection error:'));
+db.once('open', () => {
+  console.log('✅ Connected to MongoDB');
+});
+
+// Define User Schema
+const userSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  age: Number,
+  email: { type: String, required: true, unique: true }
+});
+
+// Create User Model
+const User = mongoose.model('User', userSchema);
+
+// Function to get user details by user ID
 const getUser = (userId) => {
-    return new Promise((resolve, reject) => {
-	const filePath = getUserFilePath(userId);
-
-	//this uses fs module to try and read in info (
-	fs.readFile(filePath, 'utf8', (err, data) => {
-	    if (err)
-	    {
-		return reject('User not found');
-	    }
-	    try
-	    {
-		resolve(JSON.parse(data));
-	    }
-	    catch (error)
-	    {
-		reject('Error parsing user data');
-	    }
+  return new Promise((resolve, reject) => {
+    User.findById(userId, (err, user) => {
+      if (err || !user) {
+        return reject('User not found');
+      }
+      resolve(user);
     });
   });
 };
 
+// Function to create a new user
+// models/Users.js
+
+const createUser = async (userData) => {
+	const user = new User(userData);
+	try {
+	  const savedUser = await user.save();
+	  return savedUser;
+	} catch (err) {
+	  throw err;
+	}
+  };
+  
+
+// Function to update an existing user
+const updateUser = (userId, userData) => {
+  return new Promise((resolve, reject) => {
+    User.findByIdAndUpdate(userId, userData, { new: true }, (err, updatedUser) => {
+      if (err || !updatedUser) {
+        return reject('User not found or update failed');
+      }
+      resolve(updatedUser);
+    });
+  });
+};
+
+// Function to delete a user
+const deleteUser = (userId) => {
+  return new Promise((resolve, reject) => {
+    User.findByIdAndDelete(userId, (err) => {
+      if (err) {
+        return reject('User not found or deletion failed');
+      }
+      resolve('User deleted successfully');
+    });
+  });
+};
+
+// Export the functions
+module.exports = {
+  getUser,
+  createUser,
+  updateUser,
+  deleteUser
+};

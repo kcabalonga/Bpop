@@ -3,15 +3,15 @@
 // Import required modules
 const express = require('express');
 const mongoose = require('mongoose');
-const { createUser } = require('./users'); // Import the createUser function from users.js
-const cors = require('cors'); // Optional: If you have a frontend making requests
+const { createUser } = require('./models/Users'); // Import the createUser function from users.js
+//const cors = require('cors'); // Optional: If you have a frontend making requests
 
 // Initialize Express app
 const app = express();
 
 // Middleware
 app.use(express.json()); // For parsing application/json
-app.use(cors()); // Optional: Enable CORS if accessing from frontend
+//app.use(cors()); // Optional: Enable CORS if accessing from frontend
 
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/user_profiles', {
