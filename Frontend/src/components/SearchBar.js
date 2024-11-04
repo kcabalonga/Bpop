@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const Search = styled.div`
     border-radius: 50px;
-    background: #E1E9F5;
+    background: #E1E9F7;
 `
 
 const SearchBar = () => {
