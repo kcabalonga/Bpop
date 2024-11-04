@@ -27,27 +27,6 @@ db.once('open', () => {
   console.log('✅ Connected to MongoDB');
 });
 
-// Add the hardcoded user "Austin" when the server starts
-(async () => {
-  try {
-    const newUser = {
-      name: 'Austin',
-      age: 28,
-      email: 'austin@example.com',
-    };
-
-    // Check if the user already exists to prevent duplicates
-    const existingUser = await mongoose.model('User').findOne({ email: newUser.email });
-    if (!existingUser) {
-      const createdUser = await createUser(newUser);
-      console.log('User created successfully:', createdUser);
-    } else {
-      console.log('User with this email already exists:', existingUser);
-    }
-  } catch (error) {
-    console.error('Error creating user:', error);
-  }
-})();
 
 // Define routes (if any)
 // Example: Simple route to test the server
