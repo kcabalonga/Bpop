@@ -20,15 +20,33 @@ const BpopHeader = styled.div`
     text-align: center;
     font-size: 2em;
     line-height: normal;
+    display: flex;
+`;
+const IconContainer = styled.div`
+  position: absolute;
+  right: .75em;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: .75em;
 `;
 
 const Cart = styled.div`
   background-image: url(${CartIcon});
-
+  z-index: 2;
+  width: 1em;
+  height: 1em;
+  background-repeat: no-repeat;
+  background-size: contain;
 `;
 
 const Account = styled.div`
   background-image: url(${AccountIcon});
+  z-index: 2;
+  width: 1em;
+  height: 1em;
+  background-repeat: no-repeat;
+  background-size: contain;
 `;
 
 
@@ -37,8 +55,10 @@ const Header = () => {
     return (
       <BpopHeader>
         BPOP
-        <Cart/>
-        <Account/>
+        <IconContainer>
+          <Cart />
+          <Account />
+        </IconContainer>
       </BpopHeader>
     )
   }
