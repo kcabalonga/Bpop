@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import CartIcon from '../images/Cart.svg';
+import AccountIcon from '../images/Account.svg';
 
 const BpopHeader = styled.div`
     z-index: 2001;
@@ -18,13 +20,45 @@ const BpopHeader = styled.div`
     text-align: center;
     font-size: 2em;
     line-height: normal;
-    /* border-bottom: 2px solid black; */
+    display: flex;
+`;
+const IconContainer = styled.div`
+  position: absolute;
+  right: .75em;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: .75em;
 `;
 
+const Cart = styled.div`
+  background-image: url(${CartIcon});
+  z-index: 2;
+  width: 1em;
+  height: 1em;
+  background-repeat: no-repeat;
+  background-size: contain;
+`;
+
+const Account = styled.div`
+  background-image: url(${AccountIcon});
+  z-index: 2;
+  width: 1em;
+  height: 1em;
+  background-repeat: no-repeat;
+  background-size: contain;
+`;
+
+
+
 const Header = () => {
-    return (
+  return (
       <BpopHeader>
         BPOP
+        <IconContainer>
+          <Cart />
+          <Account />
+        </IconContainer>
       </BpopHeader>
     )
   }
