@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import CartIcon from '../images/Cart.svg';
+import AccountIcon from '../images/Account.svg';
 
 const BpopHeader = styled.div`
     z-index: 2001;
@@ -18,13 +20,25 @@ const BpopHeader = styled.div`
     text-align: center;
     font-size: 2em;
     line-height: normal;
-    /* border-bottom: 2px solid black; */
 `;
+
+const Cart = styled.div`
+  background-image: url(${CartIcon});
+
+`;
+
+const Account = styled.div`
+  background-image: url(${AccountIcon});
+`;
+
+
 
 const Header = () => {
     return (
       <BpopHeader>
         BPOP
+        <Cart/>
+        <Account/>
       </BpopHeader>
     )
   }
