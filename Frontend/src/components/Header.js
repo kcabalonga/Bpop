@@ -52,7 +52,7 @@ const Account = styled.div`
 
 
 const Header = () => {
-    return (
+  return (
       <BpopHeader>
         BPOP
         <IconContainer>
