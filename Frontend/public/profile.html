@@ -4,10 +4,79 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Add User</title>
+  <title>Personal Profile Page</title>
 </head>
 <body>
-  <p> Personal Profile Page! </p>
+  <h1>Personal Profile Page!</h1>
+  <p id="name"></p>
+  <div id = "uploadpho">
+  <form id="uploadForm" action="/upload-photo" method="post" enctype="multipart/form-data" onsubmit = "checkProfilePic()">
+    <label for="photo">Upload Profile Picture:</label>
+    <input type="file" name="photo" accept="image/*" required>
+    <button type="submit">Upload</button>
+  </form>
+</div>
+<div id="profilepicphoto">
+
+</div>
+ <!--    <img id="photo" alt="Profile Picture" style="max-width: 200px; max-height: 200px;">    -->
+
+
+  <script>
+
+    async function checkProfilePic() {
+      const response = await fetch('/check-photo');
+      if (response.ok) {
+        const data = await response.json();
+
+    document.getElementById('profilepicphoto').innerHTML = `
+    <img src="${data.photo}" alt="Profile Picture" style="max-width: 200px; max-height: 200px;">
+    <button type="submit" onclick = "updatePicture() ">Change Profile Picture</button>
+        `;
+        document.getElementById('uploadpho').innerHTML = " "
+
+      } else {
+        console.log("No profile photo found or user not logged in");
+      }
+    }
+
+
+    async function updatePicture() {
+
+      const response = await fetch('/check-photo');
+        const data = await response.json();
+
+      document.getElementById('profilepicphoto').innerHTML = `
+    <img src="${data.photo}" alt="Profile Picture" style="max-width: 200px; max-height: 200px;">
+          <form id="uploadForm" action="/upload-photo" method="post" enctype="multipart/form-data" onsubmit = "updatePic()">
+          <label for="photo">Upload Profile Picture:</label>
+          <input type="file" name="photo" accept="image/*" required>
+          <button type="submit">Change Profile Picture</button>
+          </form>
+        `;
+    }
+
+
+
+    async function loadName() {
+      const response = await fetch('/api/username');
+      if (response.ok) {
+        const data = await response.json();
+        document.getElementById('name').textContent = data.name;
+      } else {
+        alert("User not logged in");
+        window.location.href = "/Login.html";
+      }
+    }
+
+    // Load the username and profile photo on page load
+    loadName();
+    checkProfilePic();
+    
+  </script>
+
+
+
+
 </body>
 </html>
-

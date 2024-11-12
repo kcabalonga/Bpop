@@ -4,10 +4,18 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const { User, createUser } = require('./models/Users'); // Import the createUser function from users.js
-//const cors = require('cors'); // Optional: If you have a frontend making requests
+//change done here
+const multer = require('multer');
 const path = require('path');
-// Initialize Express app
 const app = express();
+const session = require('express-session');
+app.use(session({
+    secret: 'your_secret_key',      // A secret key used to sign the session ID cookie
+    resave: false,                  // Prevents resaving session data if nothing changed
+    saveUninitialized: true,        // Forces uninitialized sessions to be saved
+    cookie: { secure: false }       // Set to true in production if using HTTPS
+}));
+
 
 // Middleware
 
@@ -15,6 +23,14 @@ app.use(express.static(path.join(__dirname, '../Frontend/public')));
 app.use(express.json()); // For parsing application/json
 app.use(express.urlencoded({ extended: true })); // Enables parsing of URL-encoded form data
 //app.use(cors()); // Optional: Enable CORS if accessing from frontend
+
+//changes done here
+// Multer setup for file uploads
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+
+
 
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/user_profiles', {
@@ -62,6 +78,8 @@ app.post('/add-user', async (req, res) => {
     const newUser = new User({ name, username, email, password });
     await newUser.save();
     // res.send('User added successfully!');
+    req.session.username = username;
+    req.session.name = name; 
     res.redirect('/profile.html');
     }
 
@@ -88,6 +106,9 @@ app.get('/check-user', async (req, res) => {
 
     if (user) {
       if(userfind){
+    
+        req.session.username = username;
+        req.session.name = user.name; 
         res.redirect('/profile.html');
       }
         else {
@@ -168,6 +189,68 @@ app.post('/reset-password', async (req, res) => {
   }
 });
 
+
+// Create a route to get the username from the session
+app.get('/api/username', (req, res) => {
+  if (req.session.name) {
+      res.json({ name: req.session.name });
+  } else {
+      res.status(401).json({ error: 'User not logged in' });
+  }
+});
+
+
+
+
+// Route to handle photo upload
+app.post('/upload-photo', upload.single('photo'), async (req, res) => {
+  try {
+    const username = req.session.username; // Assume the user is logged in and has a username
+    if (!username) return res.status(401).send('User not logged in');
+
+    const photoBuffer = req.file.buffer; // Get the photo buffer from multer
+    const photoContentType = req.file.mimetype; // Get the MIME type (e.g., image/jpeg)
+
+    // Find the user and update with the photo
+    await User.updateOne({ username }, {
+      $set: { photo: { data: photoBuffer, contentType: photoContentType } }
+    });
+
+    res.send(`
+      <script>
+      //changes done here
+        alert("Photo uploaded successfully!");
+
+        window.location.href = "/profile.html";
+      </script>
+    `);
+  } catch (error) {
+    console.error('Error uploading photo:', error);
+    res.status(500).send('Error uploading photo');
+  }
+});
+
+// Route to handle photo upload
+app.get('/check-photo', async (req, res) => {
+  try {
+    const username = req.session.username; // Assume the user is logged in and has a username
+    if (!username) return res.status(401).send('User not logged in');
+
+    const user = await User.findOne({ username });
+    if (!user || !user.photo || !user.photo.data) {
+      return res.status(404).send('No profile photo found');
+    }
+
+    // Convert the photo data to a base64 string
+    const base64Image = user.photo.data.toString('base64');
+    const photoData = `data:${user.photo.contentType};base64,${base64Image}`;
+
+    res.json({ photo: photoData });
+  } catch (error) {
+    console.error('Error retrieving photo:', error);
+    res.status(500).send('Error retrieving photo');
+  }
+});
 
 
 
