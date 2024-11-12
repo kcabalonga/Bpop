@@ -24,7 +24,7 @@ app.use(express.json()); // For parsing application/json
 app.use(express.urlencoded({ extended: true })); // Enables parsing of URL-encoded form data
 //app.use(cors()); // Optional: Enable CORS if accessing from frontend
 
-//changes done here
+
 // Multer setup for file uploads
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -112,8 +112,6 @@ app.get('/check-user', async (req, res) => {
         res.redirect('/profile.html');
       }
         else {
-          
-
           res.send(`
             <script>
               alert("Password Invalid");
@@ -249,6 +247,44 @@ app.get('/check-photo', async (req, res) => {
   } catch (error) {
     console.error('Error retrieving photo:', error);
     res.status(500).send('Error retrieving photo');
+  }
+});
+
+//Edits the Bio 
+app.post('/editBio', async (req, res) => {
+  try {
+
+    const {bio} = req.body; // Extract user input from the form
+    const username = req.session.username;
+    req.session.bio = bio;
+    await User.updateOne({ username }, { $set: { bio } });
+    // Redirect to profile page after successful password reset
+    return res.redirect('/profile.html');
+
+  } catch (error) {
+    console.error('Error updating Bio:', error);
+    res.status(500).send('Error updating Bio');
+  }
+
+});
+
+//Returns the Bio that is in the user's document
+app.get('/returnBio', async (req, res) => {
+
+  try {
+    const username = req.session.username;
+    if (!username) {
+      return res.status(403).json({ error: 'Unauthorized: Please log in to view bio.' });
+    }
+    const user = await User.findOne({ username });
+    if (user && user.bio) {
+      res.json({ bio: user.bio });
+    } else {
+      res.status(404).json({ error: 'No bio found for this user' });
+    }
+  } catch (error) {
+    console.error('Error getting bio:', error);
+    res.status(500).send('Error getting bio');
   }
 });
 

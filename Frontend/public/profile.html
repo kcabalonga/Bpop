@@ -19,10 +19,18 @@
 <div id="profilepicphoto">
 
 </div>
- <!--    <img id="photo" alt="Profile Picture" style="max-width: 200px; max-height: 200px;">    -->
+
+<div id ="bioDiv">
+<h3 id = "BioHeader"></h3>
+<p id = "BioPara"></p>
+<button onclick="editBio()"> Edit Bio</button>
+</div>
+
 
 
   <script>
+// start of script 
+
 
     async function checkProfilePic() {
       const response = await fetch('/check-photo');
@@ -56,20 +64,52 @@
         `;
     }
 
+    //Edits Bio
+    async function editBio() {
+        document.getElementById('bioDiv').innerHTML = 
+        `
+          <h3 id="BioHeader">Edit Your Bio</h3>
+          <form action="http://localhost:3000/editBio" method="post" onsubmit="loadBio()>
+            <label for="bio">New Bio</label>
+            <input type="text" id="bio" name="bio" required><br><br>
+            <button type="submit" ">Edit Bio</button>
+          </form>
+      `;
+    }
 
 
+//Reloads the Bio onto screen when edited or when the page is first opened
+    async function loadBio() {
+      const response = await fetch('/returnBio');
+      const response2 = await fetch('/api/username');
+      if (response.ok ) {
+        const data = await response.json();
+        document.getElementById('BioPara').textContent = data.bio;
+        // document.getElementById('BioHeader').textContent = data.name + "'s Bio";
+      } 
+      else {
+        document.getElementById('BioPara').textContent = "no bio yet";
+      } 
+
+
+
+    }
+
+// Loads the name of the user to output on screen
     async function loadName() {
       const response = await fetch('/api/username');
       if (response.ok) {
         const data = await response.json();
         document.getElementById('name').textContent = data.name;
+        document.getElementById('BioHeader').textContent = data.name + "'s Bio";
       } else {
         alert("User not logged in");
         window.location.href = "/Login.html";
       }
     }
 
-    // Load the username and profile photo on page load
+    // Load the username, profile photo, and Bio on page load
+    loadBio();
     loadName();
     checkProfilePic();
     

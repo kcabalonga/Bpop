@@ -26,6 +26,7 @@ const userSchema = new mongoose.Schema({
     data: Buffer,
     contentType: String,
   },
+  bio:{ type: String },
 });
 
 // Create User Model
