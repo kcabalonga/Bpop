@@ -32,61 +32,7 @@ const userSchema = new mongoose.Schema({
 // Create User Model
 const User = mongoose.model('User', userSchema);
 
-// Function to get user details by user ID
-const getUser = (userId) => {
-  return new Promise((resolve, reject) => {
-    User.findById(userId, (err, user) => {
-      if (err || !user) {
-        return reject('User not found');
-      }
-      resolve(user);
-    });
-  });
-};
-
-// Function to create a new user
-// models/Users.js
-
-const createUser = async (userData) => {
-	const user = new User(userData);
-	try {
-	  const savedUser = await user.save();
-	  return savedUser;
-	} catch (err) {
-	  throw err;
-	}
-  };
-  
-
-// Function to update an existing user
-const updateUser = (userId, userData) => {
-  return new Promise((resolve, reject) => {
-    User.findByIdAndUpdate(userId, userData, { new: true }, (err, updatedUser) => {
-      if (err || !updatedUser) {
-        return reject('User not found or update failed');
-      }
-      resolve(updatedUser);
-    });
-  });
-};
-
-// Function to delete a user
-const deleteUser = (userId) => {
-  return new Promise((resolve, reject) => {
-    User.findByIdAndDelete(userId, (err) => {
-      if (err) {
-        return reject('User not found or deletion failed');
-      }
-      resolve('User deleted successfully');
-    });
-  });
-};
-
 // Export the functions
 module.exports = {
-  getUser,
-  createUser,
-  updateUser,
-  deleteUser,
   User
 };
