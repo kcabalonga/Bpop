@@ -19,8 +19,14 @@ db.once('open', () => {
 // Define User Schema
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  age: Number,
-  email: { type: String, required: true, unique: true }
+  username: { type: String, required: true, unique: true },
+  password: { type: String, required: true, unique: true },
+  email: { type: String, required: true, unique: true },
+  photo: {
+    data: Buffer,
+    contentType: String,
+  },
+  bio:{ type: String },
 });
 
 // Create User Model
@@ -81,5 +87,6 @@ module.exports = {
   getUser,
   createUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  User
 };

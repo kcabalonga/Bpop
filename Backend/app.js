@@ -3,15 +3,34 @@
 // Import required modules
 const express = require('express');
 const mongoose = require('mongoose');
-const { createUser } = require('./models/Users'); // Import the createUser function from users.js
-//const cors = require('cors'); // Optional: If you have a frontend making requests
-
-// Initialize Express app
+const { User, createUser } = require('./models/Users'); // Import the createUser function from users.js
+//change done here
+const multer = require('multer');
+const path = require('path');
 const app = express();
+const session = require('express-session');
+app.use(session({
+    secret: 'your_secret_key',      // A secret key used to sign the session ID cookie
+    resave: false,                  // Prevents resaving session data if nothing changed
+    saveUninitialized: true,        // Forces uninitialized sessions to be saved
+    cookie: { secure: false }       // Set to true in production if using HTTPS
+}));
+
 
 // Middleware
+
+app.use(express.static(path.join(__dirname, '../Frontend/public')));
 app.use(express.json()); // For parsing application/json
+app.use(express.urlencoded({ extended: true })); // Enables parsing of URL-encoded form data
 //app.use(cors()); // Optional: Enable CORS if accessing from frontend
+
+
+// Multer setup for file uploads
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+
+
 
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/user_profiles', {
@@ -19,7 +38,9 @@ mongoose.connect('mongodb://localhost:27017/user_profiles', {
   useUnifiedTopology: true,
 });
 
+
 const db = mongoose.connection;
+
 
 // MongoDB connection error handling
 db.on('error', console.error.bind(console, '❌ Connection error:'));
@@ -31,8 +52,244 @@ db.once('open', () => {
 // Define routes (if any)
 // Example: Simple route to test the server
 app.get('/', (req, res) => {
-  res.send('Hello, the server is running!');
+   res.send('Hello, the server is running!');
 });
+
+
+
+// Route to handle form submissions
+app.post('/add-user', async (req, res) => {
+
+  try {
+    const { name, username, email, password } = req.body; // Extract user input from the form
+    const user = await User.findOne({username});
+
+    if (user) {
+      res.send(`
+        <script>
+          alert("User already exist.");
+          window.location.href = "/index.html";
+        </script>
+      `);
+
+    } 
+    
+    else {
+    const newUser = new User({ name, username, email, password });
+    await newUser.save();
+    // res.send('User added successfully!');
+    req.session.username = username;
+    req.session.name = name; 
+    res.redirect('/profile.html');
+    }
+
+  } 
+  
+    catch (error) {
+    console.error('Error adding user:', error);
+    res.status(500).send('Error adding user');
+  }
+
+});
+
+
+
+
+// Route to check if username and password are correct
+app.get('/check-user', async (req, res) => {
+  try {
+    const { username, password } = req.query; // Extract username and password from query parameters
+
+    // Find user with matching username and password
+    const user = await User.findOne({ username});
+    const userfind = await User.findOne({ username, password});
+
+    if (user) {
+      if(userfind){
+    
+        req.session.username = username;
+        req.session.name = user.name; 
+        res.redirect('/profile.html');
+      }
+        else {
+          res.send(`
+            <script>
+              alert("Password Invalid");
+              window.location.href = "/Login.html";
+            </script>
+          `);
+        }
+    } 
+
+    else {
+
+      res.send(`
+        <script>
+          alert("Invalid Username");
+          window.location.href = "/Login.html";
+        </script>
+      `);
+
+      
+    }
+  } catch (error) {
+    console.error('Error checking user:', error);
+    res.status(500).send('Error checking user');
+  }
+});
+
+
+app.post('/reset-password', async (req, res) => {
+  try {
+    const { username, password, password2 } = req.body; // Extract user input from the form
+
+    // Check if the user exists
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.send(`
+        <script>
+          alert("User does not exist.");
+          window.location.href = "/index.html";
+        </script>
+      `);
+    } 
+
+    // Check if the new passwords match
+    if (password !== password2) {
+      return res.send(`
+        <script>
+          alert("Passwords do not match.");
+          window.location.href = "/RestartPassword.html";
+        </script>
+      `);
+    }
+
+    // Check if the new password is the same as the current password
+    const userWithSamePassword = await User.findOne({ username, password });
+    if (userWithSamePassword) {
+      return res.send(`
+        <script>
+          alert("Cannot use the same password. Please login.");
+          window.location.href = "/index.html";
+        </script>
+      `);
+    }
+
+    // Update the password in the database
+    await User.updateOne({ username }, { $set: { password } });
+
+    // Redirect to profile page after successful password reset
+    return res.redirect('/profile.html');
+
+  } catch (error) {
+    console.error('Error resetting password:', error);
+    res.status(500).send('Error resetting password');
+  }
+});
+
+
+// Create a route to get the username from the session
+app.get('/api/username', (req, res) => {
+  if (req.session.name) {
+      res.json({ name: req.session.name });
+  } else {
+      res.status(401).json({ error: 'User not logged in' });
+  }
+});
+
+
+
+
+// Route to handle photo upload
+app.post('/upload-photo', upload.single('photo'), async (req, res) => {
+  try {
+    const username = req.session.username; // Assume the user is logged in and has a username
+    if (!username) return res.status(401).send('User not logged in');
+
+    const photoBuffer = req.file.buffer; // Get the photo buffer from multer
+    const photoContentType = req.file.mimetype; // Get the MIME type (e.g., image/jpeg)
+
+    // Find the user and update with the photo
+    await User.updateOne({ username }, {
+      $set: { photo: { data: photoBuffer, contentType: photoContentType } }
+    });
+
+    res.send(`
+      <script>
+      //changes done here
+        alert("Photo uploaded successfully!");
+
+        window.location.href = "/profile.html";
+      </script>
+    `);
+  } catch (error) {
+    console.error('Error uploading photo:', error);
+    res.status(500).send('Error uploading photo');
+  }
+});
+
+// Route to handle photo upload
+app.get('/check-photo', async (req, res) => {
+  try {
+    const username = req.session.username; // Assume the user is logged in and has a username
+    if (!username) return res.status(401).send('User not logged in');
+
+    const user = await User.findOne({ username });
+    if (!user || !user.photo || !user.photo.data) {
+      return res.status(404).send('No profile photo found');
+    }
+
+    // Convert the photo data to a base64 string
+    const base64Image = user.photo.data.toString('base64');
+    const photoData = `data:${user.photo.contentType};base64,${base64Image}`;
+
+    res.json({ photo: photoData });
+  } catch (error) {
+    console.error('Error retrieving photo:', error);
+    res.status(500).send('Error retrieving photo');
+  }
+});
+
+//Edits the Bio 
+app.post('/editBio', async (req, res) => {
+  try {
+
+    const {bio} = req.body; // Extract user input from the form
+    const username = req.session.username;
+    req.session.bio = bio;
+    await User.updateOne({ username }, { $set: { bio } });
+    // Redirect to profile page after successful password reset
+    return res.redirect('/profile.html');
+
+  } catch (error) {
+    console.error('Error updating Bio:', error);
+    res.status(500).send('Error updating Bio');
+  }
+
+});
+
+//Returns the Bio that is in the user's document
+app.get('/returnBio', async (req, res) => {
+
+  try {
+    const username = req.session.username;
+    if (!username) {
+      return res.status(403).json({ error: 'Unauthorized: Please log in to view bio.' });
+    }
+    const user = await User.findOne({ username });
+    if (user && user.bio) {
+      res.json({ bio: user.bio });
+    } else {
+      res.status(404).json({ error: 'No bio found for this user' });
+    }
+  } catch (error) {
+    console.error('Error getting bio:', error);
+    res.status(500).send('Error getting bio');
+  }
+});
+
+
+
 
 // Start the server
 const PORT = process.env.PORT || 3000; // Use environment variable or default to 3000

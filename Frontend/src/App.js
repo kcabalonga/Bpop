@@ -1,15 +1,13 @@
 import './App.css';
 import Header from './components/Header';
-import Footer from './components/Footer';
-import SearchBar from './components/SearchBar';
+import Landing from './components/Landing';
 
 function App() {
 
   return (
     <div className="App" style={{background: '#94ccee',  zIndex: -1}}>
-      <Header/>
-
-      <Footer/>
+      <Header />
+      <Landing />
     </div>
   );
 }
