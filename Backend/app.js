@@ -290,11 +290,23 @@ app.get('/returnBio', async (req, res) => {
 
 app.post('/add-listing', upload.single('photo'), async (req, res) => {
   try {
-    const { title, description, price, user } = req.body; // Listing information
+    const { title, description, price } = req.body; // Listing information
     const photoData = req.file;  // This will contain the uploaded image file
     
     if (!photoData) {
       return res.status(400).send('No photo uploaded');
+    }
+
+    //using current logged in username from session to link user
+    const username = req.session.username;
+    if (!username) {
+      return res.status(401).send('User not logged in');
+    }
+
+    //verify user exists in database
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(404).send('User not found');
     }
 
     const newListing = new Listing({
@@ -305,7 +317,7 @@ app.post('/add-listing', upload.single('photo'), async (req, res) => {
         data: photoData.buffer,  // Store binary data in the database
         contentType: photoData.mimetype,  // Store MIME type
       },
-      user,
+      user: username,
     });
 
     await newListing.save();
@@ -336,11 +348,6 @@ app.get('/random-listings', async (req, res) => {
     res.status(500).send('Error fetching random listings');
   }
 });
-
-
-
-
-
 
 
 
