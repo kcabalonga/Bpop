@@ -3,8 +3,6 @@
 // Import required modules
 const express = require('express');
 const mongoose = require('mongoose');
-const { User, createUser } = require('./models/Users'); // Import the createUser function from users.js
-//change done here
 const multer = require('multer');
 const path = require('path');
 const app = express();
@@ -253,7 +251,6 @@ app.get('/check-photo', async (req, res) => {
 //Edits the Bio 
 app.post('/editBio', async (req, res) => {
   try {
-
     const {bio} = req.body; // Extract user input from the form
     const username = req.session.username;
     req.session.bio = bio;
@@ -287,6 +284,62 @@ app.get('/returnBio', async (req, res) => {
     res.status(500).send('Error getting bio');
   }
 });
+
+// LISTING FUNCTIONS //
+
+
+app.post('/add-listing', upload.single('photo'), async (req, res) => {
+  try {
+    const { title, description, price, user } = req.body; // Listing information
+    const photoData = req.file;  // This will contain the uploaded image file
+    
+    if (!photoData) {
+      return res.status(400).send('No photo uploaded');
+    }
+
+    const newListing = new Listing({
+      title,
+      description,
+      price,
+      photo: {
+        data: photoData.buffer,  // Store binary data in the database
+        contentType: photoData.mimetype,  // Store MIME type
+      },
+      user,
+    });
+
+    await newListing.save();
+    res.status(201).send('Listing created successfully');
+  } catch (error) {
+    console.error('Error creating listing:', error);
+    res.status(500).send('Error creating listing');
+  }
+});
+
+//for frontend to get random listings to show on the frontend
+app.get('/random-listings', async (req, res) => {
+  try {
+    const size = parseInt(req.query.size) || 5;  // Default to 5 if no size is provided
+    
+    // Validate that the size is a positive integer
+    if (isNaN(size) || size <= 0) {
+      return res.status(400).send('Invalid size parameter');
+    }
+
+    const randomListings = await Listing.aggregate([
+      { $sample: { size: size } }  
+    ]);
+
+    res.json(randomListings);  // Return the listings as JSON
+  } catch (error) {
+    console.error('Error fetching random listings:', error);
+    res.status(500).send('Error fetching random listings');
+  }
+});
+
+
+
+
 
 
 
