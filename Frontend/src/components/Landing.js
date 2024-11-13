@@ -13,6 +13,7 @@ const Landing = styled.div`
     padding: 0;
     margin: 0;
     overflow: hidden;
+    flex-direction: column;
 `;
 
 const Container = styled.div`
@@ -59,6 +60,31 @@ const Cloud2 = styled.div`
     margin: 0;
 `;
 
+const SearchContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem; /* Adjust spacing between text and search bar */
+    width: 100%;
+`;
+
+const Search = styled.input`
+    border-radius: 50px;
+    background: #E1E9F5;
+    padding: 15px 25px;
+    width: 386px;
+    height: 75px;
+    color: #A8AAAD;
+    font-size: 25px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    border: none;
+`;
+
 const LandingPage = () => {
     return (
         <Landing>
@@ -66,6 +92,9 @@ const LandingPage = () => {
         <Container>
             UCLA's own buy and sell platform
         </Container>
+        <SearchContainer>
+            <Search placeholder="What are you looking for?" />
+        </SearchContainer>
         <Cloud2 />
         </Landing>
     )

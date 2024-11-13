@@ -1,13 +1,11 @@
 import './App.css';
-import Header from './components/Header';
-import Landing from './components/Landing';
+import LandingPage from './pages/LandingPage';
 
 function App() {
 
   return (
     <div className="App" style={{background: '#94ccee',  zIndex: -1}}>
-      <Header />
-      <Landing />
+      <LandingPage />
     </div>
   );
 }
