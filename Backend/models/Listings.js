@@ -24,16 +24,12 @@ const listingsSchema = new mongoose.Schema({
   photo: {
     data: { type: Buffer, required: true },          // Ensuring the photo data is required
     contentType: { type: String, required: true },    // Ensuring the content type (MIME type) is required
-
   },
-  user: {type: Mongoose.Schema.Types.ObjectId, 
-    ref: 'User', 
-    required: true 
-  }    
+  user: { type: String, required: true }  //this will be filled in upon creation of listings by session username
 });
 
 // Create User Model
-const Listings = mongoose.model('Listings', postSchema);
+const Listings = mongoose.model('Listings', listingsSchema);
 
 module.exports = {
   Listings
