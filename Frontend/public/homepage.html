@@ -1,0 +1,160 @@
+<!-- ../Frontend/public/homepage.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Homepage - BPOP App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f0f2f5;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .nav-buttons {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .nav-buttons a button {
+      margin: 0 10px;
+      padding: 10px 20px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .nav-buttons a button:hover {
+      background-color: #0056b3;
+    }
+    .listing-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 30px;
+    }
+    .listing {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      width: 300px;
+      padding: 16px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+    .listing:hover {
+      transform: scale(1.02);
+    }
+    .listing img {
+      width: 100%;
+      height: auto;
+      border-radius: 4px;
+    }
+    .listing-title {
+      font-size: 1.5em;
+      margin: 10px 0;
+      color: #333;
+    }
+    .listing-price {
+      color: #28a745;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .listing-description {
+      color: #555;
+    }
+    /* Responsive Design */
+    @media (max-width: 600px) {
+      .listing {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Available Listings</h1>
+
+  <div class="nav-buttons">
+    <a href="index.html"><button>Home</button></a>
+    <a href="Login.html"><button>Login</button></a>
+    <a href="CreateUser.html"><button>Sign Up</button></a>
+  </div>
+
+  <div class="listing-container" id="listing-container">
+    <!-- Listings will be dynamically inserted here -->
+  </div>
+
+  <script>
+    // Function to fetch listings from the backend
+    async function fetchListings() {
+      try {
+        const response = await fetch('/get-listings');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const listings = await response.json();
+        displayListings(listings);
+      } catch (error) {
+        console.error('Error fetching listings:', error);
+        const container = document.getElementById('listing-container');
+        container.innerHTML = '<p>Failed to load listings. Please try again later.</p>';
+      }
+    }
+
+    // Function to display listings on the page
+    function displayListings(listings) {
+      const container = document.getElementById('listing-container');
+      container.innerHTML = ''; // Clear any existing content
+
+      if (listings.length === 0) {
+        container.innerHTML = '<p>No listings available.</p>';
+        return;
+      }
+
+      listings.forEach((listing) => {
+        const listingDiv = document.createElement('div');
+        listingDiv.className = 'listing';
+
+        // Listing Image
+        if (listing.photo) {
+          const img = document.createElement('img');
+          img.src = listing.photo; // Assuming photo is a data URL
+          img.alt = listing.title;
+          listingDiv.appendChild(img);
+        }
+
+        // Listing Title
+        const title = document.createElement('h2');
+        title.className = 'listing-title';
+        title.textContent = listing.title;
+        listingDiv.appendChild(title);
+
+        // Listing Price
+        const price = document.createElement('p');
+        price.className = 'listing-price';
+        price.textContent = `$${listing.price}`;
+        listingDiv.appendChild(price);
+
+        // Listing Description
+        const description = document.createElement('p');
+        description.className = 'listing-description';
+        description.textContent = listing.description;
+        listingDiv.appendChild(description);
+
+        container.appendChild(listingDiv);
+      });
+    }
+
+    // Fetch listings when the page loads
+    window.onload = fetchListings;
+  </script>
+
+</body>
+</html>

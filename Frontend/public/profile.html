@@ -26,6 +26,24 @@
 <button onclick="editBio()"> Edit Bio</button>
 </div>
 
+<div id="addListingDiv">
+  <h3>Add a New Listing</h3>
+  <form id="addListingForm" action="/add-listing" method="post" enctype="multipart/form-data">
+    <label for="title">Title:</label><br>
+    <input type="text" id="title" name="title" required><br><br>
+
+    <label for="description">Description:</label><br>
+    <textarea id="description" name="description" rows="4" cols="50" required></textarea><br><br>
+
+    <label for="price">Price:</label><br>
+    <input type="text" id="price" name="price" required><br><br>
+
+    <label for="photo">Upload Listing Photo:</label><br>
+    <input type="file" name="photo" accept="image/*" required><br><br>
+
+    <button type="submit">Add Listing</button>
+  </form>
+</div>
 
 
   <script>

@@ -1,36 +1,25 @@
-// Listings.js
+// backend/models/Listings.js
 
 // Import Mongoose
 const mongoose = require('mongoose');
 
-// Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/user_profiles', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
-
-const db = mongoose.connection;
-
-db.on('error', console.error.bind(console, '❌ Connection error:'));
-db.once('open', () => {
-  console.log('✅ Connected to MongoDB');
-});
-
 // Define Listings Schema
-const listingsSchema = new mongoose.Schema({
+const listingSchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
   price: { type: String, required: true },
   photo: {
     data: { type: Buffer, required: true },          // Ensuring the photo data is required
-    contentType: { type: String, required: true },    // Ensuring the content type (MIME type) is required
+    contentType: { type: String, required: true },   // Ensuring the content type (MIME type) is required
   },
-  user: { type: String, required: true }  //this will be filled in upon creation of listings by session username
+  user: { type: String, required: true }  // This will be filled in upon creation of listings by session username
 });
 
-// Create User Model
-const Listings = mongoose.model('Listings', listingsSchema);
+// Create Listing Model
+const Listing = mongoose.model('Listing', listingSchema);
 
-module.exports = {
-  Listings
-};
+// Log the Listing model to verify it's defined
+console.log('Listing Model inside Listings.js:', Listing);
+
+// Export the Listing model
+module.exports = { Listing };
