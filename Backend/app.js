@@ -3,10 +3,15 @@
 // Import required modules
 const express = require('express');
 const mongoose = require('mongoose');
+const { User, createUser } = require('./models/Users'); // Import the createUser function from users.js
+const { Listing, createListing } = require('./models/Listings');
+console.log('Listing Model:', Listing); // This should log the Listing model object
+
 const multer = require('multer');
 const path = require('path');
 const app = express();
 const session = require('express-session');
+//const { Listings } = require('./models/Listings');
 app.use(session({
     secret: 'your_secret_key',      // A secret key used to sign the session ID cookie
     resave: false,                  // Prevents resaving session data if nothing changed
@@ -349,7 +354,32 @@ app.get('/random-listings', async (req, res) => {
   }
 });
 
+// Route to fetch all listings
+app.get('/get-listings', async (req, res) => {
+  try {
+    const listings = await Listing.find();
 
+    // Transform the listings to include base64-encoded images
+    const transformedListings = listings.map((listing) => {
+      let photoData = '';
+      if (listing.photo && listing.photo.data) {
+        const base64Image = listing.photo.data.toString('base64');
+        photoData = `data:${listing.photo.contentType};base64,${base64Image}`;
+      }
+      return {
+        title: listing.title,
+        description: listing.description,
+        price: listing.price,
+        photo: photoData,
+      };
+    });
+
+    res.json(transformedListings);
+  } catch (error) {
+    console.error('Error fetching listings:', error);
+    res.status(500).send('Error fetching listings');
+  }
+});
 
 // Start the server
 const PORT = process.env.PORT || 3000; // Use environment variable or default to 3000
