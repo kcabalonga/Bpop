@@ -1,6 +1,6 @@
 // Import required modules
 const mongoose = require('mongoose'); // Import mongoose to interact with MongoDB
-const { createUser } = require('../models/Users'); // Import your createUser function from the Users model
+const { User } = require('../models/Users'); // Import your createUser function from the Users model
 
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/user_profiles', {
@@ -13,28 +13,33 @@ mongoose.connect('mongodb://localhost:27017/user_profiles', {
 const users = [
   {
     name: 'Austin',
-    age: 28,
+    username: 'austinsaccount',
     email: 'austin@example.com',
+    password: 'Austin123',
   },
   {
     name: 'Brio',
-    age: 39,
+    username: 'briosaccount',
     email: 'Brio@example.com',
+    password: 'Brio123',
   },
   {
     name: 'Kaylee',
-    age: 16,
+    username: 'kayleesacocunt',
     email: 'Kaylee@example.com',
+    password: 'Kaylee123'
   },
   {
     name: 'Kirsten',
-    age: 55,
+    username: 'kirstensaccount',
     email: 'Kirsten@example.com',
+    password: 'Kirsten123'
   },
   {
     name: 'Celine',
-    age: 34,
+    username: 'celinesaccount',
     email: 'Celine@example.com',
+    password: 'Celine123'
   },
 ];
 
@@ -44,14 +49,15 @@ const seedDatabase = async () => {
     // Loop through each user in the users array
     for (const userData of users) {
       // Check if the user already exists to prevent duplicates
-      const existingUser = await mongoose.model('User').findOne({ email: userData.email });
+      const existingUser = await User.findOne({ username: userData.username });
       if (!existingUser) {
         // Create a new user if it does not exist
-        const createdUser = await createUser(userData);
+        const createdUser = new User(userData);
+        await createdUser.save();
         console.log('User created successfully:', createdUser);
       } else {
         // Log a message if the user already exists
-        console.log('User with this email already exists:', existingUser);
+        console.log('User with this username already exists:', existingUser);
       }
     }
   } catch (error) {
