@@ -34,11 +34,11 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 
 NOTE: npm test info may be wrong, copy pasted it from the front end readme 
 
-## `npm run seedUser`
+## `npm run seedUsers`
 
 Will fill your local mongoDB database users collection with profiles specified in the userSeed.js file. Checks to see if specified user already exists in the database before adding them to prevent duplicate users from being added. NOTE that you must write 'npm run seed' because seed is not special like start, test, stop is etc.
 
-## `npm run seedUser`
+## `npm run seedListings`
 
 Will fill your local mongoDB database listings collection with profiles specified in the userSeed.js file. Pictures for seeding must be stored in the Seeds folder. NOTE that you must write 'npm run seed' because seed is not special like start, test, stop is etc.
 
