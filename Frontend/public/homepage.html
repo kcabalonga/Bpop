@@ -95,7 +95,7 @@
     // Function to fetch listings from the backend
     async function fetchListings() {
       try {
-        const response = await fetch('/get-listings');
+        const response = await fetch('http://localhost:8001/get-listings');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
