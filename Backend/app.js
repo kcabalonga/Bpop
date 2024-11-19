@@ -382,7 +382,7 @@ app.get('/get-listings', async (req, res) => {
 });
 
 // Start the server
-const PORT = process.env.PORT || 3000; // Use environment variable or default to 3000
+const PORT = process.env.PORT || 8001; // Use environment variable or default to 8001
 app.listen(PORT, () => {
   console.log(`🚀 Backend server is running on http://localhost:${PORT}`);
 });

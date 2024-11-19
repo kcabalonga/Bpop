@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Listing = require('../models/Listings'); // Adjust the path if necessary
+const { Listing } = require('../models/Listings'); // Adjust the path if necessary
 const fs = require('fs');
 const path = require('path');
 
@@ -19,15 +19,15 @@ const listings = [
     title: 'Vintage Camera',
     description: 'A classic vintage camera in excellent condition.',
     price: '150',
-    photoPath: 'Banana-Single.jpg', // Path to the image file
-    user: 'austin', // Replace with an existing username from your Users collection
+    photoPath: './images/Banana-Single.jpg', // Path to the image file
+    user: 'Austin', // Replace with an existing username from your Users collection
   },
   {
     title: 'Mountain Bike',
     description: 'A sturdy mountain bike suitable for all terrains.',
     price: '300',
-    photoPath: 'Banana-Single.jpg',
-    user: 'alex',
+    photoPath: './images/Banana-Single.jpg',
+    user: 'Kaylee',
   },
 ];
 
