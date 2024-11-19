@@ -2,6 +2,7 @@
 
 // Import required modules
 const express = require('express');
+const cors = require('cors');
 const mongoose = require('mongoose');
 const { User, createUser } = require('./models/Users'); // Import the createUser function from users.js
 const { Listing, createListing } = require('./models/Listings');
@@ -25,7 +26,9 @@ app.use(session({
 app.use(express.static(path.join(__dirname, '../Frontend/public')));
 app.use(express.json()); // For parsing application/json
 app.use(express.urlencoded({ extended: true })); // Enables parsing of URL-encoded form data
-//app.use(cors()); // Optional: Enable CORS if accessing from frontend
+app.use(cors({
+  origin: 'http://localhost:3000', // Frontend URL
+}));
 
 
 // Multer setup for file uploads
