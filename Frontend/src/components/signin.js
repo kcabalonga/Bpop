@@ -65,18 +65,6 @@ const SignInButton = styled.button`
     margin-top: 20px;
 `;
 
-// const SignIn = () => {
-//     return (
-//         <SignInContainer>
-//             <Logo />
-//             <Title>Sign in</Title>
-//             <InputField type="email" placeholder="Email address" />
-//             <InputField type="password" placeholder="Password" />
-//             <SignInButton>Sign in</SignInButton>
-//         </SignInContainer>
-//     );
-// };
-
 const ResetLink = styled.a`
   margin-top: 20px;
   color: #007BFF;
