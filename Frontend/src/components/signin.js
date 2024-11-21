@@ -11,6 +11,16 @@ const PageContainer = styled.div`
   background-color: #f4f4f4;
 `;
 
+const PageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #f4f4f4;
+`;
+
+
 // Main container with blue background
 const SignInContainer = styled.div`
     width: 467px;
@@ -65,6 +75,7 @@ const SignInButton = styled.button`
     margin-top: 20px;
 `;
 
+<<<<<<< HEAD
 // const SignIn = () => {
 //     return (
 //         <SignInContainer>
@@ -77,6 +88,8 @@ const SignInButton = styled.button`
 //     );
 // };
 
+=======
+>>>>>>> a014582 (updated signin component)
 const ResetLink = styled.a`
   margin-top: 20px;
   color: #007BFF;
