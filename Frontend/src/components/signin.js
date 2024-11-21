@@ -1,28 +1,15 @@
-// import styled from "styled-components";
-
-// const signincontainer = styled.div`
-//     width: 467px;
-//     height: 663px;
-//     flex-shrink: 0;
-//     border-radius: 32px;
-//     background: #D7E9F7;
-//     padding: 50px;
-//     display: flex;
-//     flex-direction: column;
-//     align-items: center;
-// `
-
-// const SignIn = () => {
-//     return (
-//         <signincontainer>
-//         </signincontainer>
-//     );
-// };
-
-// export default SignIn;
-
 import React from 'react';
 import styled from 'styled-components';
+import Star4 from '../images/Star4.svg';
+
+const PageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #f4f4f4;
+`;
 
 // Main container with blue background
 const SignInContainer = styled.div`
@@ -38,13 +25,16 @@ const SignInContainer = styled.div`
 
 // Logo (stars) at the top
 const Logo = styled.div`
-    width: 100px; /* Adjust as needed */
-    height: 100px; /* Adjust as needed */
-    margin-bottom: 30px;
-    /* Add background image or SVG here for the stars */
+    width: 209.742px;
+    height: 208.962px;
+    flex-shrink: 0;
+    fill: #FFF;
+    stroke-width: 1px;
+    stroke: #000;
+    background-image: url(${Star4});
 `;
 
-// Title (e.g., "Sign in")
+// Title
 const Title = styled.h2`
     font-size: 24px;
     font-weight: bold;
@@ -75,16 +65,43 @@ const SignInButton = styled.button`
     margin-top: 20px;
 `;
 
+// const SignIn = () => {
+//     return (
+//         <SignInContainer>
+//             <Logo />
+//             <Title>Sign in</Title>
+//             <InputField type="email" placeholder="Email address" />
+//             <InputField type="password" placeholder="Password" />
+//             <SignInButton>Sign in</SignInButton>
+//         </SignInContainer>
+//     );
+// };
+
+const ResetLink = styled.a`
+  margin-top: 20px;
+  color: #007BFF;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
 const SignIn = () => {
     return (
+      <PageContainer>
         <SignInContainer>
-            <Logo />
-            <Title>Sign in</Title>
-            <InputField type="email" placeholder="Email address" />
-            <InputField type="password" placeholder="Password" />
-            <SignInButton>Sign in</SignInButton>
+          <Logo />
+          <Title>Sign in</Title>
+          <form action="http://localhost:8001/check-user" method="get">
+            <InputField type="text" id="username" name="username" placeholder="Username" required />
+            <InputField type="password" id="password" name="password" placeholder="Password" required />
+            <SignInButton type="submit">Sign in</SignInButton>
+          </form>
+          <ResetLink href="RestartPassword.html">Reset Password</ResetLink>
         </SignInContainer>
+      </PageContainer>
     );
-};
+  };
 
 export default SignIn;
