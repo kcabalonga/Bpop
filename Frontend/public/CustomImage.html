@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Custom Image</title>
+</head>
+<body>
+  <h1>Custom Image</h1>
+  <div id="user-container"></div>
+  <div id="image-container"></div>
+
+  <script>
+    // Function to extract query parameters
+    function getQueryParam(param) {
+      const params = new URLSearchParams(window.location.search);
+      return params.get(param);
+    }
+
+    // Function to fetch image attributes by title
+    async function fetchImageAttributes() {
+      const title = getQueryParam('title'); // Extract the 'title' query parameter
+      if (!title) {
+        console.error('No title provided');
+        document.getElementById('image-container').textContent = 'Error: No title provided';
+        return;
+      }
+
+      try {
+        const response = await fetch(`http://localhost:8001/fetch-image-attributes?title=${encodeURIComponent(title)}`);
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch image attributes');
+        }
+        const data = await response.json();
+
+        // Display image and attributes
+        const container = document.getElementById('image-container');
+        const img = document.createElement('img');
+        img.src = data.photo.data; // Assuming the API returns a base64 image
+        img.alt = data.title;
+        container.appendChild(img);
+
+        const details = document.createElement('div');
+      
+        details.innerHTML = `
+          <h2>${data.title}</h2>
+          <p>Description: ${data.description}</p>
+          <p>Price: $${data.price}</p>
+          <p>User: ${data.user}</p>
+        `;
+        container.appendChild(details);
+        fetchUsernameAttributes(data.user, data.date);
+
+  
+      } catch (error) {
+        console.error('Error fetching image attributes:', error);
+        document.getElementById('image-container').textContent = 'Error loading image attributes';
+      }
+    }
+
+
+    async function fetchUsernameAttributes(username, date){
+
+      if (!username) {
+        console.error('No User provided');
+        document.getElementById('user-container').textContent = 'Error: Not Logged in';
+        return;
+      }
+ 
+      try {
+        
+        const container = document.getElementById('user-container');
+        const response = await fetch(`http://localhost:8001/fetch-user-attributes?title=${encodeURIComponent(username)}`);
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch User attributes');
+
+        }
+        
+   
+        newdate = editDate(date);
+      
+        const userdata = await response.json();
+
+        // Display User attributes
+
+              const Userdetails = document.createElement('div');
+              Userdetails.innerHTML = `
+              
+                <a href= "userprofile.html"> ${userdata.username} </a>
+                
+                <p> Posted on: ${newdate}</p>
+              `;
+              
+              container.appendChild(Userdetails);
+
+      } catch (error) {
+        console.error('Error fetching User attributes:', error);
+        document.getElementById('user-container').textContent = 'Error loading User attributes';
+      }
+
+    }
+
+
+    function editDate(date){
+
+        newdate= date.slice(0,10)
+        return newdate;
+     
+    }
+
+
+
+    // Fetch image attributes on page load
+    window.onload = fetchImageAttributes();
+
+  </script>
+</body>
+</html>
