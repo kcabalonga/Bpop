@@ -453,8 +453,16 @@ app.get('/fetch-user-attributes', async (req, res) => {
       username: userInfo.username,
       password: userInfo.password,
       email: userInfo.email,
+      bio: userInfo.bio,
+      photo: userInfo.photo
+        ? {
+            data: `data:${userInfo.photo.contentType};base64,${userInfo.photo.data.toString('base64')}`,
+            contentType: userInfo.photo.contentType,
+          }
+        : null, // Handle missing photo gracefully
     };
-
+    
+    
     res.json(transformedListing);
   } catch (error) {
     console.error('Error fetching user attributes:', error);

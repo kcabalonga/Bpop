@@ -7,6 +7,90 @@
   <title>Personal Profile Page</title>
 </head>
 <body>
-<h1>User Personal Profile</h1>
+<div id="user-container"></div>
+
+<script>
+    function getQueryParam(param) {
+      const params = new URLSearchParams(window.location.search);
+      return params.get(param);
+    }
+
+async function fetchUsernameAttributes( ){
+const username = getQueryParam('title'); 
+if (!username) {
+  console.error('No User provided');
+  document.getElementById('user-container').textContent = 'Error: Not Logged in';
+  return;
+}
+
+try {
+
+  const container = document.getElementById('user-container');
+  const response = await fetch(`http://localhost:8001/fetch-user-attributes?title=${encodeURIComponent(username)}`);
+  
+  if (!response.ok) {
+    throw new Error('Failed to fetch User attributes');
+  }
+  const userdata = await response.json();
+  // Display User attributes
+
+
+        //   // Display image and attributes
+        // const container2 = document.getElementById('image-container');
+        // const img = document.createElement('img');
+        // img.src = data.photo.data; // Assuming the API returns a base64 image
+        // img.alt = data.title;
+        // container.appendChild(img);
+
+        const Userdetails = document.createElement('div');
+        Userdetails.innerHTML = `
+          <h1> ${userdata.name}'s Personal Page</h1>
+          <h3>${userdata.username} </h3>
+           
+        `;
+        
+        container.appendChild(Userdetails);
+
+        const biodetail = document.createElement('div');
+
+        if (!userdata.bio) {
+            biodetail.innerHTML = `
+                <h5>Bio:</h5> 
+                <p>No bio available</p>
+            `;
+            } else {
+            biodetail.innerHTML = `
+                <h5>Bio:</h5> 
+                <p>${userdata.bio}</p>
+            `;
+            }
+
+        container.appendChild(biodetail);
+
+
+    if (!userdata.photo || !userdata.photo.data) {
+      const placeholder = document.createElement('p');
+      placeholder.textContent = 'No profile picture available';
+      container.appendChild(placeholder);
+    } else {
+      const img = document.createElement('img');
+      //img.src = `data:${userdata.photo.contentType};base64,${userdata.photo.data}`;
+      img.src= userdata.photo.data;
+      container.appendChild(img);
+    }
+
+
+
+
+
+} catch (error) {
+  console.error('Error fetching User attributes:', error);
+  document.getElementById('user-container').textContent = 'Error loading User attributes';
+}
+
+}
+
+window.onload = fetchUsernameAttributes();
+</script>
 </body>
 </html>

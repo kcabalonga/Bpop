@@ -87,8 +87,8 @@
               const Userdetails = document.createElement('div');
               Userdetails.innerHTML = `
               
-                <a href= "userprofile.html"> ${userdata.username} </a>
-                
+                <a href= "userprofile.html?title=${encodeURIComponent(username)}"> ${userdata.username} </a>
+
                 <p> Posted on: ${newdate}</p>
               `;
               
