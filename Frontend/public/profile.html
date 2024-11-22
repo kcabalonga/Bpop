@@ -28,7 +28,7 @@
 
 <div id="addListingDiv">
   <h3>Add a New Listing</h3>
-  <form id="addListingForm" action="/add-listing" method="post" enctype="multipart/form-data">
+  <form id="addListingForm" action="/add-listing" method="post" enctype="multipart/form-data" >
     <label for="title">Title:</label><br>
     <input type="text" id="title" name="title" required><br><br>
 
@@ -48,6 +48,21 @@
 
   <script>
 // start of script 
+async function checkProfilePic() {
+      const response = await fetch('/check-photo');
+      if (response.ok) {
+        const data = await response.json();
+
+    document.getElementById('profilepicphoto').innerHTML = `
+    <img src="${data.photo}" alt="Profile Picture" style="max-width: 200px; max-height: 200px;">
+    <button type="submit" onclick = "updatePicture() ">Change Profile Picture</button>
+        `;
+        document.getElementById('uploadpho').innerHTML = " "
+
+      } else {
+        console.log("No profile photo found or user not logged in");
+      }
+    }
 
 
     async function checkProfilePic() {
