@@ -69,6 +69,8 @@ import { Link } from 'react-router-dom';
 import CartIcon from '../images/Cart.svg';
 import AccountIcon from '../images/Account.svg';
 
+
+
 const BpopHeader = styled.div`
     z-index: 2001;
     position: sticky;

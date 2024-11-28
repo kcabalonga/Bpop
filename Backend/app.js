@@ -29,6 +29,12 @@ app.use(express.urlencoded({ extended: true })); // Enables parsing of URL-encod
 app.use(cors({
   origin: 'http://localhost:3000', // Frontend URL
 }));
+app.use(express.static(path.join(__dirname, '../Frontend/build')));
+//added
+app.get('/LandingPage', (req, res) => {
+  res.sendFile(path.join(__dirname, '../Frontend/src/pages', 'LangingPage.js'));
+});
+
 
 
 // Multer setup for file uploads
@@ -87,6 +93,7 @@ app.post('/add-user', async (req, res) => {
     req.session.username = username;
     req.session.name = name; 
     res.redirect('/profile.html');
+ 
     }
 
   } 
