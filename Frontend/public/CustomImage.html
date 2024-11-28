@@ -9,7 +9,28 @@
   <div id="user-container"></div>
   <div id="image-container"></div>
 
+  
+
+<!-- Added Here -->
+
+<form id="paypal-form" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" target="_top">
+  <input type="hidden" name="cmd" value="_xclick">
+  <input type="hidden" name="business" value="sb-2x1wq34432659@business.example.com">
+  <input type="hidden" name="item_name" value="Custom Image">
+  <input type="hidden" id="paypal-amount" name="amount" value="">
+  <input type="hidden" name="currency_code" value="USD">
+  <button type="submit">Buy Now</button>
+</form>
+
+
+
+
   <script>
+// function setPrice(){
+//   const price = 20.00; // Dynamically fetched price
+//   document.getElementById('paypal-amount').value = price;
+// }
+
     // Function to extract query parameters
     function getQueryParam(param) {
       const params = new URLSearchParams(window.location.search);
@@ -49,6 +70,7 @@
           <p>User: ${data.user}</p>
         `;
         container.appendChild(details);
+        document.getElementById('paypal-amount').value = data.price;
         fetchUsernameAttributes(data.user, data.date);
 
   
@@ -102,6 +124,8 @@
     }
 
 
+
+
     function editDate(date){
 
         newdate= date.slice(0,10)
@@ -112,6 +136,7 @@
 
 
     // Fetch image attributes on page load
+   // setPrice();
     window.onload = fetchImageAttributes();
 
   </script>
