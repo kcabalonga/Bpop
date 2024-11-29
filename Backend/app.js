@@ -415,6 +415,46 @@ app.get('/get-listings', async (req, res) => {
 });
 
 
+// Route to fetch listings for a specific user
+app.get('/getUser-listings', async (req, res) => {
+  try {
+    // Extract user and tags from query parameters
+    const { user, tags } = req.query;
+
+    // Build the filter object
+    const filter = {};
+    if (user) filter.user = user; // Filter by user
+    if (tags) filter.tags = { $in: tags.split(',') }; // Filter by tags (optional)
+
+    // Fetch listings matching the filter
+    const listings = await Listing.find(filter);
+
+    // Transform the listings to include base64-encoded images
+    const transformedListings = listings.map((listing) => {
+      let photoData = '';
+      if (listing.photo && listing.photo.data) {
+        const base64Image = listing.photo.data.toString('base64');
+        photoData = `data:${listing.photo.contentType};base64,${base64Image}`;
+      }
+      return {
+        title: listing.title,
+        description: listing.description,
+        price: listing.price,
+        photo: photoData,
+        tags: listing.tags,
+        user: listing.user, // Include the user field in the response
+      };
+    });
+
+    res.json(transformedListings);
+  } catch (error) {
+    console.error('Error fetching listings:', error);
+    res.status(500).send('Error fetching listings');
+  }
+});
+
+
+
 // Fetch attricutes from Image schema
 app.get('/fetch-image-attributes', async (req, res) => {
   try {
