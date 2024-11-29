@@ -14,6 +14,7 @@ const listingSchema = new mongoose.Schema({
   },
   user: { type: String, required: true },  // This will be filled in upon creation of listings by session username
   date: { type: Date, default: Date.now },
+  tags: { type: [String], default: [] }, // Array of tags, default to empty array
 });
 
 function addDate(){

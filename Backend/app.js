@@ -305,7 +305,7 @@ app.get('/returnBio', async (req, res) => {
 
 app.post('/add-listing', upload.single('photo'), async (req, res) => {
   try {
-    const { title, description, price } = req.body; // Listing information
+    const { title, description, price, tags } = req.body; // Listing information
     const photoData = req.file;  // This will contain the uploaded image file
     //change
 
@@ -325,6 +325,8 @@ app.post('/add-listing', upload.single('photo'), async (req, res) => {
       return res.status(404).send('User not found');
     }
     
+    const tagArray = tags ? tags.split(',').map(tag => tag.trim()).filter(tag => tag !== '') : [];
+
     const newListing = new Listing({
       title,
       description,
@@ -335,6 +337,7 @@ app.post('/add-listing', upload.single('photo'), async (req, res) => {
       },
       user: username,
       date: addDate(),
+      tags: tagArray,                 
     });
 
     await newListing.save();
@@ -380,7 +383,13 @@ app.get('/random-listings', async (req, res) => {
 // Route to fetch all listings
 app.get('/get-listings', async (req, res) => {
   try {
-    const listings = await Listing.find();
+
+    const { tags } = req.query;
+
+    const filter = tags ? { tags: { $in: tags.split(',') } } : {};
+
+
+    const listings = await Listing.find(filter);
 
     // Transform the listings to include base64-encoded images
     const transformedListings = listings.map((listing) => {
@@ -394,6 +403,7 @@ app.get('/get-listings', async (req, res) => {
         description: listing.description,
         price: listing.price,
         photo: photoData,
+        tags: listing.tags, 
       };
     });
 
@@ -475,9 +485,6 @@ app.get('/fetch-user-attributes', async (req, res) => {
     console.error('Error fetching user attributes:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
-
-
-
 });
 
 
