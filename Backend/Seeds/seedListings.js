@@ -21,6 +21,7 @@ const listings = [
     price: '150',
     photoPath: './images/Banana-Single.jpg', // Path to the image file
     user: 'austinsaccount', // Replace with an existing username from your Users collection
+    tags: ['vintage', 'object']
   },
   {
     title: 'Mountain Bike',
@@ -28,6 +29,7 @@ const listings = [
     price: '300',
     photoPath: './images/Banana-Single.jpg',
     user: 'kayleesaccount',
+    tags: ['modern', 'object']
   },
   {
     title: 'Cool Shirt',
@@ -35,6 +37,7 @@ const listings = [
     price: '27',
     photoPath: './images/shirt1.jpg',
     user: 'briosaccount',
+    tags: ['short-sleeve', 'shirt', 'graphic']
   },
   {
     title: 'Magician hat',
@@ -42,6 +45,7 @@ const listings = [
     price: '15',
     photoPath: './images/mhat.jpg',
     user: 'janesaccount',
+    tags: ['hat']
   },
   {
     title: 'Pringle Socks',
@@ -49,6 +53,7 @@ const listings = [
     price: '19',
     photoPath: './images/pringlesock.jpg',
     user: 'janesaccount',
+    tags: ['graphic', 'socks']
   },
   {
     title: 'fancy sunglasses',
@@ -56,6 +61,7 @@ const listings = [
     price: '40',
     photoPath: './images/sunglasses.jpg',
     user: 'davesaccount',
+    tags: ['vintage', 'accessory']
   },
   {
     title: 'Maroon Beanie',
@@ -63,6 +69,7 @@ const listings = [
     price: '53',
     photoPath: './images/Beanie.jpg',
     user: 'samsaccount',
+    tags: ['hat']
   },
   {
     title: 'Black Athletic Shorts',
@@ -70,6 +77,7 @@ const listings = [
     price: '36',
     photoPath: './images/AthleticShorts.jpg',
     user: 'samsaccount',
+    tags: ['shorts', 'athletic']
   },
   {
     title: 'Puffy Jacket',
@@ -77,6 +85,7 @@ const listings = [
     price: '70',
     photoPath: './images/PuffyJacket.jpg',
     user: 'johnsaccount',
+    tags: ['jacket', 'long-sleeve']
   },
   {
     title: 'Yellow Long Sleeve Shirt',
@@ -84,6 +93,7 @@ const listings = [
     price: '39',
     photoPath: './images/YellowShirt.jpg',
     user: 'celinesaccount',
+    tags: ['shirt', 'long-sleeve']
   },
   {
     title: 'Black Hoodie',
@@ -91,13 +101,15 @@ const listings = [
     price: '39',
     photoPath: './images/BlackHoodie.jpg',
     user: 'hanksaccount',
+    tags: ['jacket']
   },
   {
-    title: 'Rainbow Hoodie Set',
+    title: 'Rainbow Towel Set',
     description: 'Five towel set, each a different color of the rainbow.',
     price: '20',
     photoPath: './images/Towels.jpg',
     user: 'hanksaccount',
+    tags: ['object', 'modern']
   },
   {
     title: 'Plush Blanket',
@@ -105,6 +117,7 @@ const listings = [
     price: '30',
     photoPath: './images/Blanket.jpg',
     user: 'hanksaccount',
+    tags: ['object', 'modern']
   },
   {
     title: 'Fancy Pens',
@@ -112,6 +125,7 @@ const listings = [
     price: '50',
     photoPath: './images/Pens.jpg',
     user: 'kirstensaccount',
+    tags: ['modern', 'object']
   },
   {
     title: 'Radio',
@@ -119,6 +133,7 @@ const listings = [
     price: '10',
     photoPath: './images/Radio.jpg',
     user: 'davesaccount',
+    tags: ['vintage', 'object']
   },
   {
     title: 'Bike Helmet',
@@ -126,6 +141,7 @@ const listings = [
     price: '17',
     photoPath: './images/Helmet.jpg',
     user: 'davesaccount',
+    tags: ['modern', 'object']
   },
 ];
 
@@ -164,6 +180,7 @@ const seedListings = async () => {
           contentType,
         },
         user: listing.user,
+        tags: listing.tags
       };
     });
 
