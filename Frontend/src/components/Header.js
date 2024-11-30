@@ -89,6 +89,12 @@ const BpopHeader = styled.div`
     font-size: 2em;
     line-height: normal;
 `;
+
+const TitleLink = styled(Link)`
+  color: white;
+  text-decoration: none;
+`;
+
 const IconContainer = styled.div`
   position: absolute;
   right: 0.75em;
@@ -120,7 +126,7 @@ const Account = styled(Link)`
 const Header = () => {
   return (
     <BpopHeader>
-      BPOP
+      <TitleLink to="/">BPOP</TitleLink>
       <IconContainer>
         <Cart />
         <Account to="/SigninPage" />
