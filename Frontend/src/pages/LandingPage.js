@@ -1,5 +1,6 @@
 import Header from '../components/Header';
 import Landing from '../components/Landing';
+import SignUp from '../components/signup';
 
 // export default function LandingPage() {
 //     return (
@@ -16,6 +17,7 @@ export default function LandingPage() {
         <div>
       <Header />
       <Landing />
+      <SignUp />
         </div>
     );
     }
