@@ -11,6 +11,16 @@ const PageContainer = styled.div`
   background-color: #f4f4f4;
 `;
 
+const PageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #f4f4f4;
+`;
+
+
 // Main container with blue background
 const SignInContainer = styled.div`
     width: 467px;
