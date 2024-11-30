@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personal Profile Page</title>
+</head>
+<body>
+<div id="user-container"></div>
+
+<div id="UserListingHeader"><div>
+
+<div class="listing-container" id="listing-container">
+  <!-- Listings will be dynamically inserted here -->
+</div>
+
+
+<script>
+    function getQueryParam(param) {
+      const params = new URLSearchParams(window.location.search);
+      return params.get(param);
+    }
+
+async function fetchUsernameAttributes( ){
+const username = getQueryParam('title'); 
+if (!username) {
+  console.error('No User provided');
+  document.getElementById('user-container').textContent = 'Error: Not Logged in';
+  return;
+}
+
+try {
+
+  const container = document.getElementById('user-container');
+  const response = await fetch(`http://localhost:8001/fetch-user-attributes?title=${encodeURIComponent(username)}`);
+  
+  if (!response.ok) {
+    throw new Error('Failed to fetch User attributes');
+  }
+  const userdata = await response.json();
+  // Display User attributes
+
+
+        //   // Display image and attributes
+        // const container2 = document.getElementById('image-container');
+        // const img = document.createElement('img');
+        // img.src = data.photo.data; // Assuming the API returns a base64 image
+        // img.alt = data.title;
+        // container.appendChild(img);
+
+        const Userdetails = document.createElement('div');
+        Userdetails.innerHTML = `
+          <h1> ${userdata.name}'s Personal Page</h1>
+          <h3>${userdata.username} </h3>
+           
+        `;
+        
+        container.appendChild(Userdetails);
+
+        const biodetail = document.createElement('div');
+
+        if (!userdata.bio) {
+            biodetail.innerHTML = `
+                <h5>Bio:</h5> 
+                <p>No bio available</p>
+            `;
+            } else {
+            biodetail.innerHTML = `
+                <h5>Bio:</h5> 
+                <p>${userdata.bio}</p>
+            `;
+            }
+
+        container.appendChild(biodetail);
+
+
+    
+       
+    if (!userdata.photo || !userdata.photo.data) {
+      const placeholder = document.createElement('p');
+      placeholder.textContent = 'No profile picture available';
+      container.appendChild(placeholder);
+    } else {
+      const img = document.createElement('img');
+      //img.src = `data:${userdata.photo.contentType};base64,${userdata.photo.data}`;
+      img.src= userdata.photo.data;
+      container.appendChild(img);
+    }
+
+    const listinghead = document.createElement('div');
+    listinghead.innerHTML = `
+        <h3>${userdata.name}'s Listings</h3> 
+    `;
+
+container.appendChild(listinghead);
+
+
+
+
+} catch (error) {
+  console.error('Error fetching User attributes:', error);
+  document.getElementById('user-container').textContent = 'Error loading User attributes';
+}
+
+}
+
+
+
+  // Fetch Listings for a Specific User
+  async function fetchListings() {
+    const username = getQueryParam('title');
+    if (!username) {
+      console.error('No User provided');
+      document.getElementById('listing-container').textContent = 'Error: Not Logged in';
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:8001/getUser-listings?user=${encodeURIComponent(username)}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch listings');
+      }
+      const listings = await response.json();
+      displayListings(listings);
+    } catch (error) {
+      console.error('Error fetching listings:', error);
+      const container = document.getElementById('listing-container');
+      container.innerHTML = '<p>Failed to load listings. Please try again later.</p>';
+    }
+  }
+
+
+
+
+
+
+
+    // Function to display listings on the page
+    function displayListings(listings) {
+
+
+      const container = document.getElementById('listing-container');
+      container.innerHTML = ''; // Clear any existing content
+
+      if (listings.length === 0) {
+        container.innerHTML = '<p>No listings available.</p>';
+        return;
+      }
+
+      listings.forEach((listing) => {
+        const listingDiv = document.createElement('div');
+        listingDiv.className = 'listing';
+
+        // Listing Image
+        if (listing.photo) {
+          const anchor = document.createElement('a'); // Create an anchor element
+          //anchor.href = 'CustomImage.html?title=listing.title'; 
+          anchor.href = `CustomImage.html?title=${encodeURIComponent(listing.title)}`;
+
+          const img = document.createElement('img'); // Create an image element
+          img.src = listing.photo; // Assuming photo is a data URL
+          img.alt = listing.title;
+
+          anchor.appendChild(img); // Nest the image inside the anchor
+          listingDiv.appendChild(anchor); // Add the anchor (with image) to the listingDiv
+            }
+
+        // Listing Title
+        const title = document.createElement('h2');
+        title.className = 'listing-title';
+        title.textContent = listing.title;
+        listingDiv.appendChild(title);
+
+        // Listing Price
+        const price = document.createElement('p');
+        price.className = 'listing-price';
+        price.textContent = `$${listing.price}`;
+        listingDiv.appendChild(price);
+
+        // Listing Description
+        const description = document.createElement('p');
+        description.className = 'listing-description';
+        description.textContent = listing.description;
+        listingDiv.appendChild(description);
+
+        container.appendChild(listingDiv);
+      });
+    }
+    
+    window.onload = () => {
+    fetchListings();
+    fetchUsernameAttributes();
+  };
+
+  
+</script>
+
+
+
+
+
+
+</body>
+</html>

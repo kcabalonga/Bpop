@@ -75,7 +75,6 @@ const SignInButton = styled.button`
     margin-top: 20px;
 `;
 
-<<<<<<< HEAD
 // const SignIn = () => {
 //     return (
 //         <SignInContainer>
@@ -88,8 +87,7 @@ const SignInButton = styled.button`
 //     );
 // };
 
-=======
->>>>>>> a014582 (updated signin component)
+
 const ResetLink = styled.a`
   margin-top: 20px;
   color: #007BFF;
