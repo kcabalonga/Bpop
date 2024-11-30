@@ -25,7 +25,7 @@ const users = [
   },
   {
     name: 'Kaylee',
-    username: 'kayleesacocunt',
+    username: 'kayleesaccount',
     email: 'Kaylee@example.com',
     password: 'Kaylee123'
   },
@@ -40,6 +40,36 @@ const users = [
     username: 'celinesaccount',
     email: 'Celine@example.com',
     password: 'Celine123'
+  },
+  {
+    name: 'Hank',
+    username: 'hanksaccount',
+    email: 'Hank@example.com',
+    password: 'Hank123'
+  },
+  {
+    name: 'John',
+    username: 'johnsaccount',
+    email: 'John@example.com',
+    password: 'John123'
+  },
+  {
+    name: 'Jane',
+    username: 'janesaccount',
+    email: 'Jane@example.com',
+    password: 'Jane123'
+  },
+  {
+    name: 'Dave',
+    username: 'davesaccount',
+    email: 'Dave@example.com',
+    password: 'Dave123'
+  },
+  {
+    name: 'Sam',
+    username: 'samsaccount',
+    email: 'Sam@example.com',
+    password: 'Sam123'
   },
 ];
 
