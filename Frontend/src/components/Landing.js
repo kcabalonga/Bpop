@@ -237,7 +237,7 @@ const LandingPage = () => {
                         </Tag>
                     ))}
                 </TagsContainer>
-                <SearchButton href={`homepage.html?tags=${tags.join(",")}`}>Search</SearchButton>
+                <SearchButton href={`homepage.html?tags=${tags.join(',')}`}>Search</SearchButton>
             </SearchContainer>
             <Cloud2 />
             {/* <Container_Subtitle>

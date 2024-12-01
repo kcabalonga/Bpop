@@ -8,7 +8,7 @@ import AccountIcon from '../images/Account.svg';
 
 const BpopHeader = styled.div`
     z-index: 2001;
-    position: sticky;
+    position: fixed;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -50,8 +50,7 @@ const Account = styled(Link)`
   background-repeat: no-repeat;
   background-size: contain;
   display: block; /* Ensure it's clickable */
-`;
-
+`
 const Header = () => {
   return (
     <BpopHeader>
