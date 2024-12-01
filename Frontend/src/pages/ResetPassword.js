@@ -17,25 +17,32 @@ function ResetPassword() {
     setFormData({ ...formData, [name]: value });
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent default form submission
+  
+    // Check if passwords match
     if (formData.password !== formData.password2) {
       alert('Passwords do not match.');
       return;
     }
+  
     try {
       const response = await fetch('http://localhost:8001/reset-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username: formData.username, password: formData.password }),
+        body: JSON.stringify({
+          username: formData.username,
+          password: formData.password,
+          password2: formData.password2, // Include password2 in the request body
+        }),
       });
-
+  
       if (response.ok) {
         const data = await response.json();
-        alert(`Password reset successful: ${data.message}`);
+        alert('Password reset successful! Redirecting to sign-in page.');
+        window.location.href = "/signin";
       } else {
         const errorData = await response.json();
         alert(`Error resetting password: ${errorData.message}`);
@@ -45,7 +52,7 @@ function ResetPassword() {
       alert('An error occurred. Please try again.');
     }
   };
-
+  
   return (
     <div>
     <Header />
@@ -87,3 +94,7 @@ function ResetPassword() {
 }
 
 export default ResetPassword;
+
+
+
+
