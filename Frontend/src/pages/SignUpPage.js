@@ -32,7 +32,9 @@ function SignUp() {
 
       if (response.ok) {
         const data = await response.json();
-        alert(`User added successfully: ${JSON.stringify(data)}`);
+        window.location.href = "/profile";
+       // alert(`User added successfully: ${JSON.stringify(data)}`);
+
       } else {
         alert("Failed to add user. Please try again.");
       }
