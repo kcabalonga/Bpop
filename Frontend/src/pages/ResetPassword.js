@@ -2,8 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Header from '../components/Header';
 import { Cloud1, Cloud2 } from '../components/clouds';
-import SignIn from '../components/signin';
-import SignUp from '../components/signup';
+import Reset from '../components/reset';
 
 const PageContainer = styled.div`
   display: flex;
@@ -38,14 +37,13 @@ const FormContainer = styled.div`
 //   z-index: -1;
 // `;
 
-export default function SigninPage() {
+export default function ResetPassword() {
     return (
       <PageContainer>
         <Header />
         {/* <Cloud1 /> */}
             <FormContainer>
-                <SignUp />
-                <SignIn />
+                <Reset />
             </FormContainer>
         {/* <Cloud2 /> */}
       </PageContainer>

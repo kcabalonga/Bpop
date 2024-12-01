@@ -5,7 +5,6 @@ export default function LandingPage() {
     return (
         <div>
       <Header />
-      <Landing />
         </div>
     );
   }

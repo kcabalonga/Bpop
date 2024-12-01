@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Star4 from '../images/Star4.svg';
 
@@ -8,7 +9,7 @@ const PageContainer = styled.div`
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-color: #f4f4f4;
+  background-color: #F5FAFF;
 `;
 
 // Main container with blue background
@@ -65,19 +66,7 @@ const SignInButton = styled.button`
     margin-top: 20px;
 `;
 
-// const SignIn = () => {
-//     return (
-//         <SignInContainer>
-//             <Logo />
-//             <Title>Sign in</Title>
-//             <InputField type="email" placeholder="Email address" />
-//             <InputField type="password" placeholder="Password" />
-//             <SignInButton>Sign in</SignInButton>
-//         </SignInContainer>
-//     );
-// };
-
-const ResetLink = styled.a`
+const ResetLink = styled(Link)`
   margin-top: 20px;
   color: #007BFF;
   text-decoration: none;
@@ -88,20 +77,33 @@ const ResetLink = styled.a`
 `;
 
 const SignIn = () => {
-    return (
-      <PageContainer>
-        <SignInContainer>
-          <Logo />
-          <Title>Sign in</Title>
-          <form action="http://localhost:8001/check-user" method="get">
-            <InputField type="text" id="username" name="username" placeholder="Username" required />
-            <InputField type="password" id="password" name="password" placeholder="Password" required />
-            <SignInButton type="submit">Sign in</SignInButton>
-          </form>
-          <ResetLink href="RestartPassword.html">Reset Password</ResetLink>
-        </SignInContainer>
-      </PageContainer>
-    );
-  };
+  return (
+    <PageContainer>
+      <SignInContainer>
+        <Logo />
+        <Title>Sign in</Title>
+        <form action="http://localhost:8001/check-user" method="get">
+          <InputField
+            type="text"
+            id="username"
+            name="username"
+            placeholder="Username"
+            required
+          />
+          <InputField
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Password"
+            required
+          />
+          <SignInButton type="submit">Sign in</SignInButton>
+        </form>
+        {/* Correctly link to the Reset Password page */}
+        <ResetLink to="/ResetPassword ">Reset Password</ResetLink>
+      </SignInContainer>
+    </PageContainer>
+  );
+};
 
 export default SignIn;

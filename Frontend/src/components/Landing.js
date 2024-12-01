@@ -4,8 +4,8 @@ import CloudIcon1 from '../images/Cloud1.svg';
 import CloudIcon2 from '../images/Cloud2.svg';
 
 const Landing = styled.div`
-    width: 100%;
-    height: 60rem;
+    width: 100vw;
+    height: 100vh;
     background: #F5FAFF;
     display: flex;
     flex-direction: column;
@@ -32,6 +32,24 @@ const Container = styled.div`
     margin-top: -10rem;
     z-index: 1;
 `;
+
+// const Container_Subtitle = styled.div`
+//     display: flex;
+//     width: 735px;
+//     height: 405px;
+//     flex-direction: column;
+//     justify-content: center;
+//     color: #72B6ED;
+//     text-align: center;
+//     font-family: "Hammersmith One";
+//     font-size: 75px;
+//     font-style: normal;
+//     font-weight: 400;
+//     line-height: normal;
+//     align-self: center;
+//     margin-top: -10rem
+//     z-index: 1;
+// `;
 
 const Cloud1 = styled.div`
     position: absolute;
@@ -224,6 +242,9 @@ const LandingPage = () => {
                 <SearchButton href={`homepage.html?tags=${tagsQuery}`}>Search</SearchButton>
             </SearchContainer>
             <Cloud2 />
+            {/* <Container_Subtitle>
+               Available Listings
+            </Container_Subtitle> */}
         </Landing>
     );
 };
