@@ -14,7 +14,6 @@ const Landing = styled.div`
     margin: 0;
     overflow: hidden;
     flex-direction: column;
-    z-index: -1;
 `;
 
 const Cloud = styled.div`
@@ -24,7 +23,6 @@ const Cloud = styled.div`
     height: 30rem;
     background-repeat: no-repeat;
     background-size: contain;
-    pointer-events: none;
     ${({ position }) => position === 'bottom-left' && `
         left: -15rem;
         bottom: -5rem;

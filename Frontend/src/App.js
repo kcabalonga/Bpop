@@ -1,7 +1,8 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
+import SignUp from "./pages/SignUpPage";
+import SignIn from './pages/SigninPage';
 /*import LandingPage from './pages/LandingPage';
-import SigninPage from './pages/SigninPage';
 import ResetPassword from './pages/ResetPassword';
 import CreateUser from './pages/CreateUser';
 
@@ -20,12 +21,11 @@ function App() {
 
 export default App;*/
 
-import SignUp from "./pages/SignUpPage";
-
 function App() {
   return (
     <Routes>
       <Route path="/signup" element={<SignUp />} />
+      <Route path="/signin" element={<SignIn />} />
     </Routes>
   );
 }

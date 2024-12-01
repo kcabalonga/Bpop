@@ -8,7 +8,6 @@ const Container = styled.div`
     background: #D7E9F7;
     border-radius: 32px;
     position: relative;
-    overflow: hidden;
     flex-direction: column;
     align-items: center;
     display: flex;
@@ -32,7 +31,8 @@ const StyledForm = styled.form`
     width: 21rem;
     align-items: center;
     gap: .75rem;
-    height: 10rem;
+    pointer-events: auto;
+    z-index: 2;
 `;
 
 const Heading = styled.h1`
@@ -50,17 +50,19 @@ const Heading = styled.h1`
 
 const Input = styled.input`
     display: inline-flex;
-    height: 1.5rem;
     width: 100%;
     flex-direction: column;
     align-items: flex-start;
+    height: 3.5rem;
     gap: 6px;
     flex-shrink: 0;
     border-radius: 10px;
     border: 1px solid #D8DADC;
     background: #FFF;
-    padding: 1rem;
+    padding: .75rem;
     font-family: "Inter";
+    pointer-events: auto;
+    box-sizing: border-box;
     
 
     &:focus {
@@ -94,10 +96,7 @@ const SubmitButton = styled.button`
     font-family: "Inter";
     text-align: center;
     font-size: 16px;
-
-    &:hover {
-        background: #0056b3;
-    }
+    cursor: pointer
 `;
 
 const FormContainer = ({ children, onSubmit }) => {

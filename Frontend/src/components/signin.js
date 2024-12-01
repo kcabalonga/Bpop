@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Star4 from '../images/Star4.svg';
+import Star4 from '../images/Star.svg';
 import { useNavigate } from 'react-router-dom';
 
 const PageContainer = styled.div`
