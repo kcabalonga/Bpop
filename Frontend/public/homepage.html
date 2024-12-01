@@ -1,5 +1,3 @@
-<!-- ../Frontend/public/homepage.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -92,10 +90,20 @@
   </div>
 
   <script>
+    // Function to extract query parameters from URL
+    function getQueryParams() {
+      const params = new URLSearchParams(window.location.search);
+      const tags = params.get('tags'); // Get 'tags' parameter from URL
+      return tags ? tags.split(',') : []; // Split tags into an array if present
+    }
+
     // Function to fetch listings from the backend
     async function fetchListings() {
       try {
-        const response = await fetch('http://localhost:8001/get-listings');
+        const tags = getQueryParams(); // Retrieve tags from URL
+        const tagsQuery = tags.length > 0 ? `?tags=${tags.join(',')}` : '';
+
+        const response = await fetch(`http://localhost:8001/get-listings${tagsQuery}`); // Include tags in API request
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -125,17 +133,16 @@
 
         // Listing Image
         if (listing.photo) {
-          const anchor = document.createElement('a'); // Create an anchor element
-          //anchor.href = 'CustomImage.html?title=listing.title'; 
+          const anchor = document.createElement('a');
           anchor.href = `CustomImage.html?title=${encodeURIComponent(listing.title)}`;
 
-          const img = document.createElement('img'); // Create an image element
-          img.src = listing.photo; // Assuming photo is a data URL
+          const img = document.createElement('img');
+          img.src = listing.photo;
           img.alt = listing.title;
 
-          anchor.appendChild(img); // Nest the image inside the anchor
-          listingDiv.appendChild(anchor); // Add the anchor (with image) to the listingDiv
-            }
+          anchor.appendChild(img);
+          listingDiv.appendChild(anchor);
+        }
 
         // Listing Title
         const title = document.createElement('h2');
@@ -158,10 +165,9 @@
         container.appendChild(listingDiv);
       });
     }
-    
+
+    // Call fetchListings when the page loads
     window.onload = fetchListings;
-  
-    
   </script>
 
 </body>

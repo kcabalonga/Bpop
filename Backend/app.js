@@ -386,7 +386,7 @@ app.get('/get-listings', async (req, res) => {
 
     const { tags } = req.query;
 
-    const filter = tags ? { tags: { $in: tags.split(',') } } : {};
+    const filter = tags ? { tags: { $all: tags.split(',') } } : {};
 
 
     const listings = await Listing.find(filter);
