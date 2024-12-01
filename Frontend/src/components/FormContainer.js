@@ -99,6 +99,14 @@ const SubmitButton = styled.button`
     cursor: pointer
 `;
 
+const Link = styled.a`
+    font-family: "Inter";
+    text-align: center;
+    font-size: 16px;
+    cursor: pointer;
+    color: rgba(0, 0, 0, 0.50);
+`
+
 const FormContainer = ({ children, onSubmit }) => {
     return (
         <Container>
@@ -110,5 +118,5 @@ const FormContainer = ({ children, onSubmit }) => {
     );
 };
 
-export { Input, SubmitButton, Heading };
+export { Input, SubmitButton, Heading, Link };
 export default FormContainer;
