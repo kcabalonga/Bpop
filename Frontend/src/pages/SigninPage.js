@@ -16,7 +16,7 @@ function SignIn() {
 
           <SubmitButton type="submit">Sign In</SubmitButton>
           <br />
-          <Link href="RestartPassword.html">Forgot Password?</Link>
+          <Link href="/resetpassword">Forgot Password?</Link>
           <Link href="/signup">Need to Create an Account?</Link>
         </FormContainer>
     </Background>

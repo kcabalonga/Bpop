@@ -21,6 +21,7 @@ const Cloud = styled.div`
     background-image: url(${CloudIcon});
     width: 35rem;
     height: 30rem;
+    z-index: 0;
     background-repeat: no-repeat;
     background-size: contain;
     ${({ position }) => position === 'bottom-left' && `
