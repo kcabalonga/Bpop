@@ -1,53 +1,27 @@
-import React from 'react';
-import styled from 'styled-components';
-import Header from '../components/Header';
-import { Cloud1, Cloud2 } from '../components/clouds';
-import SignIn from '../components/signin';
-import SignUp from '../components/signup';
+import React from "react";
+import Header from "../components/Header";
+import Background from "../components/Background";
+import FormContainer, { Input, SubmitButton, Heading, Link } from "../components/FormContainer";
 
-const PageContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  background-color: #F5FAFF;
-  position: relative;
-  overflow: hidden;
-`;
 
-const FormContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 50px; /* Adjust space between the components */
-  justify-content: center;
-  align-items: flex-start;
-  padding: 50px;
-  width: 100%;
-  max-width: 1200px;
-  z-index: 1;
-`;
+function SignIn() {
+  return (
+    <div>
+    <Header />
+    <Background>
+        <FormContainer action="http://localhost:8001/check-user" method="get">
+        <Heading>Sign In</Heading>
+          <Input type="text" id="username" name="username" placeholder="Username" required />
+          <Input type="text" id="password" name="password" placeholder="Password" required />
 
-// const CloudWrapper = styled.div`
-//   position: absolute;
-//   width: 100%;
-//   height: 100%;
-//   top: 0;
-//   left: 0;
-//   overflow: visible;
-//   z-index: -1;
-// `;
+          <SubmitButton type="submit">Sign In</SubmitButton>
+          <br />
+          <Link href="RestartPassword.html">Forgot Password?</Link>
+          <Link href="/signup">Need to Create an Account?</Link>
+        </FormContainer>
+    </Background>
+    </div>
+  );
+}
 
-export default function SigninPage() {
-    return (
-      <PageContainer>
-        <Header />
-        {/* <Cloud1 /> */}
-            <FormContainer>
-                <SignUp />
-                <SignIn />
-            </FormContainer>
-        {/* <Cloud2 /> */}
-      </PageContainer>
-    );
-  }
+export default SignIn;

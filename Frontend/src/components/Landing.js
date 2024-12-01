@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import CloudIcon1 from '../images/Cloud1.svg';
-import CloudIcon2 from '../images/Cloud2.svg';
 
 const Landing = styled.div`
     width: 100vw;
