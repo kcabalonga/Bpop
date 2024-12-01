@@ -1,19 +1,7 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-const Landing = styled.div`
-    width: 100vw;
-    height: 100vh;
-    background: #F5FAFF;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-    padding: 0;
-    margin: 0;
-`;
 
 const Container = styled.div`
     display: flex;
@@ -28,7 +16,9 @@ const Container = styled.div`
     font-weight: 400;
     align-self: center;
     margin-top: -10rem;
+    align-items: center;
     z-index: 1;
+    position: relative;
 `;
 
 // const Container_Subtitle = styled.div`
@@ -49,30 +39,6 @@ const Container = styled.div`
 //     z-index: 1;
 // `;
 
-const Cloud1 = styled.div`
-    position: absolute;
-    background-image: url(${CloudIcon1});
-    width: 35rem;
-    height: 30rem;
-    background-repeat: no-repeat;
-    background-size: contain;
-    pointer-events: none;
-    left: 0%;
-    top: 50%;
-`;
-
-const Cloud2 = styled.div`
-    position: absolute;
-    background-image: url(${CloudIcon2});
-    width: 35rem;
-    height: 30rem;
-    background-repeat: no-repeat;
-    background-size: contain;
-    pointer-events: none;
-    right: -17%;
-    bottom: 50%;
-`;
-
 const SearchContainer = styled.div`
     display: flex;
     flex-direction: column;
@@ -83,7 +49,8 @@ const SearchContainer = styled.div`
 
 const SearchBar = styled.div`
     position: relative;
-    width: 400px;
+    width: 100%;
+    align-self: center;
 `;
 
 const SearchInput = styled.input`
@@ -128,6 +95,9 @@ const TagsContainer = styled.div`
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
 `;
 
 const Tag = styled.div`
@@ -147,13 +117,14 @@ const RemoveTag = styled.span`
     font-weight: bold;
 `;
 
-const SearchButton = styled.a`
+const SearchButton = styled(Link)`
     margin-top: 20px;
     padding: 10px 20px;
     background: #72B6ED;
     color: white;
     font-size: 16px;
     font-family: 'Inter', sans-serif;
+    align-self: center;
     text-decoration: none;
     border-radius: 25px;
     text-align: center;
@@ -164,7 +135,7 @@ const SearchButton = styled.a`
     }
 `;
 
-const LandingPage = () => {
+const Landing = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [tags, setTags] = useState([]);
     const [suggestions, setSuggestions] = useState([
@@ -199,8 +170,7 @@ const LandingPage = () => {
     };
 
     return (
-        <Landing>
-            <Cloud1 />
+        <div>
             <Container>
                 UCLA's own buy and sell platform
             </Container>
@@ -237,14 +207,13 @@ const LandingPage = () => {
                         </Tag>
                     ))}
                 </TagsContainer>
-                <SearchButton href={`homepage.html?tags=${tags.join(',')}`}>Search</SearchButton>
+                <SearchButton to={`/listings?tags=${tags.join(',')}`}>Search</SearchButton>
             </SearchContainer>
-            <Cloud2 />
             {/* <Container_Subtitle>
                Available Listings
             </Container_Subtitle> */}
-        </Landing>
+        </div>
     );
 };
 
-export default LandingPage;
+export default Landing;
