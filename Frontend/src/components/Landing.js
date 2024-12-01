@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import CloudIcon1 from '../images/Cloud1.svg';
-import CloudIcon2 from '../images/Cloud2.svg';
 
 const Landing = styled.div`
     width: 100vw;
@@ -239,7 +237,7 @@ const LandingPage = () => {
                         </Tag>
                     ))}
                 </TagsContainer>
-                <SearchButton href={`homepage.html?tags=${tagsQuery}`}>Search</SearchButton>
+                <SearchButton href={`homepage.html?tags=${tags.join(",")}`}>Search</SearchButton>
             </SearchContainer>
             <Cloud2 />
             {/* <Container_Subtitle>
