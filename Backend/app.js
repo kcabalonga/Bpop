@@ -69,87 +69,143 @@ app.get('/', (req, res) => {
 
 
 
-// Route to handle form submissions
+// // Route to handle form submissions
+// app.post('/add-user', async (req, res) => {
+//   try {
+//     const { name, username, email, password } = req.body; // Extract user input from the form
+//     const user = await User.findOne({username});
+
+//     if (user) {
+//       res.send(`
+//         <script>
+//           alert("User already exist.");
+//           window.location.href = "/index.html";
+//         </script>
+//       `);
+
+//     } 
+//     else {
+//     const newUser = new User({ name, username, email, password });
+//     await newUser.save();
+//     // res.send('User added successfully!');
+//     req.session.username = username;
+//     req.session.name = name; 
+//    // res.redirect('/profile.html');
+//     res.json({ newUser });
+//     }
+
+//   } 
+//     catch (error) {
+//     console.error('Error adding user:', error);
+//     res.status(500).send('Error adding user');
+//   }
+
+// });
+
+
 app.post('/add-user', async (req, res) => {
-
   try {
-    const { name, username, email, password } = req.body; // Extract user input from the form
-    const user = await User.findOne({username});
+    const { name, username, email, password } = req.body;
 
+    const user = await User.findOne({ username });
     if (user) {
-      res.send(`
-        <script>
-          alert("User already exist.");
-          window.location.href = "/index.html";
-        </script>
-      `);
-
-    } 
-    
-    else {
-    const newUser = new User({ name, username, email, password });
-    await newUser.save();
-    // res.send('User added successfully!');
-    req.session.username = username;
-    req.session.name = name; 
-    res.redirect('/profile.html');
- 
+      return res.status(400).json({ error: "User already exists" });
     }
 
-  } 
-  
-    catch (error) {
-    console.error('Error adding user:', error);
-    res.status(500).send('Error adding user');
-  }
+    // Hash the password before saving
 
+    const newUser = new User({ name, username, email, password });
+
+    await newUser.save();
+
+    // Save session details
+    req.session.username = username;
+    req.session.name = name;
+
+    // Send success response
+    res.status(201).json({ message: "User added successfully", user: newUser });
+  } catch (error) {
+    console.error('Error adding user:', error);
+    res.status(500).json({ error: 'An error occurred while adding the user' });
+  }
 });
 
 
 
 
-// Route to check if username and password are correct
+
+
+
+
+// // Route to check if username and password are correct
+// app.get('/check-user', async (req, res) => {
+//   try {
+//     const { username, password } = req.query; // Extract username and password from query parameters
+
+//     // Find user with matching username and password
+//     const user = await User.findOne({ username});
+//     const userfind = await User.findOne({ username, password});
+
+//     if (user) {
+//       if(userfind){
+    
+//         req.session.username = username;
+//         req.session.name = user.name; 
+//         res.redirect('/profile.html');
+//       }
+//         else {
+//           res.send(`
+//             <script>
+//               alert("Password Invalid");
+//               window.location.href = "/Login.html";
+//             </script>
+//           `);
+//         }
+//     } 
+
+//     else {
+
+//       res.send(`
+//         <script>
+//           alert("Invalid Username");
+//           window.location.href = "/Login.html";
+//         </script>
+//       `);
+
+      
+//     }
+//   } catch (error) {
+//     console.error('Error checking user:', error);
+//     res.status(500).send('Error checking user');
+//   }
+// });
+
+
 app.get('/check-user', async (req, res) => {
   try {
     const { username, password } = req.query; // Extract username and password from query parameters
 
-    // Find user with matching username and password
-    const user = await User.findOne({ username});
-    const userfind = await User.findOne({ username, password});
-
+    // Find user with matching username
+    const user = await User.findOne({ username });
     if (user) {
-      if(userfind){
-    
+      const userfind = await User.findOne({ username, password }); 
+
+      if (userfind) {
         req.session.username = username;
-        req.session.name = user.name; 
-        res.redirect('/profile.html');
+        req.session.name = user.name;
+        return res.status(200).json({ message: "User found successfully", user });
+      } else {
+        return res.status(400).json({ error: "Password Invalid" });
       }
-        else {
-          res.send(`
-            <script>
-              alert("Password Invalid");
-              window.location.href = "/Login.html";
-            </script>
-          `);
-        }
-    } 
-
-    else {
-
-      res.send(`
-        <script>
-          alert("Invalid Username");
-          window.location.href = "/Login.html";
-        </script>
-      `);
-
-      
+    } else {
+      return res.status(400).json({ error: "Invalid Username" });
     }
   } catch (error) {
     console.error('Error checking user:', error);
-    res.status(500).send('Error checking user');
+    res.status(500).json({ error: 'Error checking user' });
   }
 });
+
 
 
 app.post('/reset-password', async (req, res) => {
@@ -511,13 +567,14 @@ app.get('/fetch-user-attributes', async (req, res) => {
       password: userInfo.password,
       email: userInfo.email,
       bio: userInfo.bio,
-      photo: userInfo.photo
+      photo: userInfo.photo && userInfo.photo.data
         ? {
             data: `data:${userInfo.photo.contentType};base64,${userInfo.photo.data.toString('base64')}`,
             contentType: userInfo.photo.contentType,
           }
         : null, // Handle missing photo gracefully
     };
+    
     
     
     res.json(transformedListing);
