@@ -11,7 +11,7 @@ const PageContainer = styled.div`
     background-color: #F5FAFF;
 `;
 
-const SignUpContainer = styled.div`
+const ResetContainer = styled.div`
     width: 467px;
     height: 663px;
     background-color: #D7E9F7;
@@ -50,12 +50,11 @@ const Message = styled.p`
   font-weight: bold;
 `;
 
-const SignUp = () => {
+const Reset = () => {
   const [formData, setFormData] = useState({
-    name: '',
     username: '',
-    email: '',
     password: '',
+    password2: '',
   });
   const [message, setMessage] = useState('');
   const [isError, setIsError] = useState(false);
@@ -81,7 +80,7 @@ const SignUp = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:8001/add-user', {
+      const response = await fetch('http://localhost:8001/reset-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -90,13 +89,12 @@ const SignUp = () => {
       });
 
       if (response.ok) {
-        setMessage('User registered successfully!');
+        setMessage('Password reset successfully!');
         setIsError(false);
         setFormData({
-          name: '',
           username: '',
-          email: '',
           password: '',
+          password2: '',
         });
       } else {
         const errorText = await response.text();
@@ -110,50 +108,66 @@ const SignUp = () => {
     }
   };
 
-  return (
+//   return (
+//     <PageContainer>
+//       <ResetContainer>
+//         <Logo/>
+//             <h2>Reset Password</h2>
+//             <form onSubmit={handleSubmit}>
+//             <InputField
+//                 type="text" id="username" name="username" placeholder="Username" required
+//             />
+//             <InputField
+//                 type="text" id="password" name="password" placeholder="Password" required
+//             />
+//             <InputField
+//                 type="text" id="password" name="password2" placeholder="Retype Password" required
+//             />
+//             <SubmitButton href="ResetPassword.js">Reset Password</SubmitButton>
+//             </form>
+//             {message && <Message error={isError}>{message}</Message>}
+//       </ResetContainer>
+//     </PageContainer>
+//   );
+return (
     <PageContainer>
-      <SignUpContainer>
-        <Logo/>
-            <h2>Create an Account</h2>
-            <form onSubmit={handleSubmit}>
-            <InputField
-                type="text"
-                name="name"
-                placeholder="Name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-            />
-            <InputField
-                type="text"
-                name="username"
-                placeholder="Username"
-                value={formData.username}
-                onChange={handleChange}
-                required
-            />
-            <InputField
-                type="email"
-                name="email"
-                placeholder="Email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-            />
-            <InputField
-                type="password"
-                name="password"
-                placeholder="Password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-            />
-            <SubmitButton type="submit">Sign Up</SubmitButton>
-            </form>
-            {message && <Message error={isError}>{message}</Message>}
-      </SignUpContainer>
+      <ResetContainer>
+        <Logo />
+        <h2>Reset Password</h2>
+        <form onSubmit={handleSubmit}>
+          <InputField
+            type="text"
+            id="username"
+            name="username"
+            placeholder="Username"
+            value={formData.username}
+            onChange={handleChange}
+            required
+          />
+          <InputField
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+          <InputField
+            type="password"
+            id="password2"
+            name="password2"
+            placeholder="Retype Password"
+            value={formData.password2}
+            onChange={handleChange}
+            required
+          />
+          <SubmitButton type="submit">Reset Password</SubmitButton>
+        </form>
+        {message && <Message error={isError}>{message}</Message>}
+      </ResetContainer>
     </PageContainer>
   );
 };
 
-export default SignUp;
+export default Reset;
