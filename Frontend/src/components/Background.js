@@ -2,7 +2,7 @@ import styled from "styled-components";
 import CloudIcon from '../images/Cloud.svg';
 import React from "react";
 
-export const Landing = styled.div`
+const Landing = styled.div`
     width: 100%;
     height: 60rem;
     background: #F5FAFF;
@@ -17,7 +17,7 @@ export const Landing = styled.div`
     z-index: -1;
 `;
 
-export const Cloud = styled.div`
+const Cloud = styled.div`
     position: absolute;
     background-image: url(${CloudIcon});
     width: 35rem;
@@ -35,11 +35,12 @@ export const Cloud = styled.div`
     `}
 `;
 
-const Background = () => {
+const Background = ({ children }) => {
     return (
       <Landing>
         <Cloud position="bottom-left" />
         <Cloud position="top-right" />
+        {children}
       </Landing>
     );
   };

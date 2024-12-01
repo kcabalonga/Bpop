@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Header from "../components/Header";
 import Background from "../components/Background";
+import FormContainer, { Input, SubmitButton, Heading } from "../components/FormContainer";
 
 function SignUp() {
   // State for form inputs
@@ -44,59 +45,48 @@ function SignUp() {
   return (
     <div>
     <Header />
-    <Background />
-      <h1>Sign Up!</h1>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="name">Name:</label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          required
-        />
-        <br />
-        <br />
-
-        <label htmlFor="username">Username:</label>
-        <input
-          type="text"
-          id="username"
-          name="username"
-          value={formData.username}
-          onChange={handleChange}
-          required
-        />
-        <br />
-        <br />
-
-        <label htmlFor="email">Email:</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-        />
-        <br />
-        <br />
-
-        <label htmlFor="password">Password:</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-          required
-        />
-        <br />
-        <br />
-
-        <button type="submit">Sign Up</button>
-      </form>
+    <Background>
+        <FormContainer onSubmit={handleSubmit}>
+        <Heading>Create Account</Heading>
+                <Input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Name"
+                required
+                />
+                <Input
+                type="text"
+                id="username"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+                placeholder="Username"
+                required
+                />
+                <Input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Email Address"
+                required
+                />
+                <Input
+                type="password"
+                id="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Password"
+                required
+                />
+                <SubmitButton type="submit">Sign Up</SubmitButton>
+        </FormContainer>
+    </Background>
     </div>
   );
 }
