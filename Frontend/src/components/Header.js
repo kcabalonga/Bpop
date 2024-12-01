@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import CartIcon from '../images/Cart.svg';
 import AccountIcon from '../images/Account.svg';
 
 
@@ -33,15 +32,6 @@ const IconContainer = styled.div`
   gap: 0.75em;
 `;
 
-const Cart = styled.div`
-  background-image: url(${CartIcon});
-  z-index: 2;
-  width: 1em;
-  height: 1em;
-  background-repeat: no-repeat;
-  background-size: contain;
-`;
-
 const Account = styled(Link)`
   background-image: url(${AccountIcon});
   z-index: 2;
@@ -56,8 +46,7 @@ const Header = () => {
     <BpopHeader>
       BPOP
       <IconContainer>
-        {/* <Cart /> */}
-        <Account to="/SigninPage" />
+        <Account to="/signin" />
       </IconContainer>
     </BpopHeader>
   );

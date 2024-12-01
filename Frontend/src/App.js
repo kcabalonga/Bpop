@@ -2,8 +2,8 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import SignUp from "./pages/SignUpPage";
 import SignIn from './pages/SigninPage';
-/*import LandingPage from './pages/LandingPage';
 import ResetPassword from './pages/ResetPassword';
+/*import LandingPage from './pages/LandingPage';
 import CreateUser from './pages/CreateUser';
 
 function App() {
@@ -26,6 +26,7 @@ function App() {
     <Routes>
       <Route path="/signup" element={<SignUp />} />
       <Route path="/signin" element={<SignIn />} />
+      <Route path="/resetpassword" element={<ResetPassword />} />
     </Routes>
   );
 }
