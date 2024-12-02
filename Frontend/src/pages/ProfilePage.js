@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
 import Background from "../components/Background";
-import FormContainer, { Input, SubmitButton, Heading } from "../components/FormContainer";
+import FormContainer, { Input, SubmitButton, Heading, ProfilePic, BioInput, BioForm } from "../components/FormContainer";
+import { Tag, TagsContainer } from "../components/Landing";
 
 function Profile() {
   const [bio, setBio] = useState("");
@@ -84,29 +85,30 @@ function Profile() {
         <FormContainer>
           <Heading>{name ? `${name}'s Profile` : "Profile"}</Heading>
           <div>
-            <img
+            <ProfilePic
               src={profilePic}
               alt="Profile"
-              style={{ maxWidth: "200px", maxHeight: "200px" }}
             />
           </div>
-          <form
+          <BioForm
             id="bioForm"
             onSubmit={handleBioEdit}
             style={{ marginTop: "20px" }}
           >
-            <label htmlFor="bio">Bio</label>
-            <textarea
+            <label 
+              htmlFor="bio"
+              style={{ fontWeight: "bold", textTransform: "uppercase" }}
+              >Bio</label>
+            <BioInput
               id="bio"
               value={bio}
               onChange={(e) => setBio(e.target.value)}
               placeholder="Add your bio here"
               required
               rows="4"
-              style={{ width: "100%" }}
-            ></textarea>
+            ></BioInput>
             <SubmitButton type="submit">Update Bio</SubmitButton>
-          </form>
+          </BioForm>
           <div>
             <Heading>Add Tags</Heading>
             <Input
@@ -153,23 +155,22 @@ function Profile() {
                 ))}
               </ul>
             )}
-            <div id="selectedTagsDisplay" style={{ marginTop: "10px" }}>
+            <TagsContainer id="selectedTagsDisplay" style={{ marginTop: "10px" }}>
               {selectedTags.map((tag) => (
-                <span
+                <Tag
                   key={tag}
                   style={{
-                    margin: "0 5px",
+                    margin: "2px 5px",
                     padding: "5px",
-                    backgroundColor: "#ddd",
                     borderRadius: "5px",
                     cursor: "pointer",
                   }}
                   onClick={() => removeTag(tag)}
                 >
                   {tag}
-                </span>
+                </Tag>
               ))}
-            </div>
+            </TagsContainer>
           </div>
         </FormContainer>
       </Background>

@@ -216,4 +216,5 @@ const Landing = () => {
     );
 };
 
+export { TagsContainer, Tag };
 export default Landing;

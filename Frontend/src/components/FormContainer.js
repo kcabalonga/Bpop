@@ -105,6 +105,39 @@ const Link = styled.a`
     font-size: 16px;
     cursor: pointer;
     color: rgba(0, 0, 0, 0.50);
+`;
+
+const ProfilePic = styled.img`
+    border-radius: 50%;
+    max-width: 200px;
+    max-height: 200px;
+
+`;
+
+const BioInput = styled.textarea`
+    border-radius: 10px;
+    margin-bottom: 6px;
+    width: 100%;
+
+    &::placeholder {
+        color: rgba(0, 0, 0, 0.50);
+        font-family: "Inter";
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 125%; /* 20px */
+        padding: 3px;
+    }
+`;
+
+const BioForm = styled.form`
+    display: flex;
+    flex-direction: column;
+    width: 21rem;
+    align-items: center;
+    gap: .75rem;
+    pointer-events: auto;
+    z-index: 2;
 `
 
 const FormContainer = ({ children, onSubmit }) => {
@@ -118,5 +151,5 @@ const FormContainer = ({ children, onSubmit }) => {
     );
 };
 
-export { Input, SubmitButton, Heading, Link };
+export { Input, SubmitButton, Heading, Link, ProfilePic, BioInput, BioForm };
 export default FormContainer;
