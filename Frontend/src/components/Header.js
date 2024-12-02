@@ -32,6 +32,11 @@ const IconContainer = styled.div`
   gap: 0.75em;
 `;
 
+const TitleLink = styled(Link)`
+  color: white;
+  text-decoration: none;
+`
+
 const Account = styled(Link)`
   background-image: url(${AccountIcon});
   z-index: 2;
@@ -44,7 +49,7 @@ const Account = styled(Link)`
 const Header = () => {
   return (
     <BpopHeader>
-      BPOP
+      <TitleLink to="/">BPOP</TitleLink>
       <IconContainer>
         <Account to="/signin" />
       </IconContainer>
