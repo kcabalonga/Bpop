@@ -1,5 +1,7 @@
 // Import required modules
 const mongoose = require('mongoose'); // Import mongoose to interact with MongoDB
+const fs = require('fs'); // Import fs to handle file operations
+const path = require('path'); // Import path for file paths
 const { User } = require('../models/Users'); // Import your createUser function from the Users model
 
 // Connect to MongoDB
@@ -16,86 +18,125 @@ const users = [
     username: 'austinsaccount',
     email: 'austin@example.com',
     password: 'Austin123',
+    photoPath:'./images/default.jpg'
+
   },
   {
     name: 'Brio',
     username: 'briosaccount',
     email: 'Brio@example.com',
     password: 'Brio123',
+    photoPath:'./images/default.jpg'
   },
   {
     name: 'Kaylee',
     username: 'kayleesaccount',
     email: 'Kaylee@example.com',
-    password: 'Kaylee123'
+    password: 'Kaylee123',
+    photoPath:'./images/default.jpg'
   },
   {
     name: 'Kirsten',
     username: 'kirstensaccount',
     email: 'Kirsten@example.com',
-    password: 'Kirsten123'
+    password: 'Kirsten123',
+    photoPath:'./images/default.jpg'
   },
   {
     name: 'Celine',
     username: 'celinesaccount',
     email: 'Celine@example.com',
-    password: 'Celine123'
+    password: 'Celine123',
+    photoPath:'./images/default.jpg'
+
   },
   {
     name: 'Hank',
     username: 'hanksaccount',
     email: 'Hank@example.com',
-    password: 'Hank123'
+    password: 'Hank123',
+    photoPath:'./images/hank.jpg'
   },
   {
     name: 'John',
     username: 'johnsaccount',
     email: 'John@example.com',
-    password: 'John123'
+    password: 'John123',
+    photoPath:'./images/john.jpg'
   },
   {
     name: 'Jane',
     username: 'janesaccount',
     email: 'Jane@example.com',
-    password: 'Jane123'
+    password: 'Jane123',
+    photoPath:'./images/jane.jpg'
   },
   {
     name: 'Dave',
     username: 'davesaccount',
     email: 'Dave@example.com',
-    password: 'Dave123'
+    password: 'Dave123',
+    photoPath:'./images/pinkFlower.jpg'
   },
   {
     name: 'Sam',
     username: 'samsaccount',
     email: 'Sam@example.com',
-    password: 'Sam123'
+    password: 'Sam123',
+    photoPath:'./images/piano.jpg'
   },
 ];
 
-// Seed function to add users to the database
-const seedDatabase = async () => {
+const getImageBuffer = (imagePath) => {
   try {
-    // Loop through each user in the users array
-    for (const userData of users) {
-      // Check if the user already exists to prevent duplicates
+    const fullPath = path.join(__dirname, imagePath);
+    const imageData = fs.readFileSync(fullPath);
+    const contentType = `image/${path.extname(fullPath).substring(1)}`; // e.g., image/jpeg
+    return { data: imageData, contentType };
+  } catch (error) {
+    console.error(`Error reading image at ${imagePath}:`, error);
+    return { data: null, contentType: null };
+  }
+};
+
+const seedDatabase= async () => {
+  try {
+    // Clear existing users if necessary
+    // await User.deleteMany({});
+    console.log('🗑️ Existing users cleared.');
+
+    // Prepare users with photo data
+    const usersWithPhotos = users.map((user) => {
+      const { data, contentType } = getImageBuffer(user.photoPath);
+      if (!data || !contentType) {
+        console.warn(`No photo found for user: ${user.username}.`);
+      }
+      return {
+        name: user.name,
+        username: user.username,
+        email: user.email,
+        password: user.password,
+        photo: data ? { data, contentType } : null,
+      };
+    });
+
+    // Insert users into the database
+    for (const userData of usersWithPhotos) {
       const existingUser = await User.findOne({ username: userData.username });
       if (!existingUser) {
-        // Create a new user if it does not exist
         const createdUser = new User(userData);
         await createdUser.save();
-        console.log('User created successfully:', createdUser);
+        console.log('✅ User created successfully:', createdUser.username);
       } else {
-        // Log a message if the user already exists
-        console.log('User with this username already exists:', existingUser);
+        console.log('⚠️ User already exists:', existingUser.username);
       }
     }
+
   } catch (error) {
-    // Log any errors that occur during seeding
-    console.error('Error seeding database:', error);
+    console.error('❌ Error seeding users:', error);
   } finally {
-    // Close the database connection
     mongoose.connection.close();
+    console.log('🔌 MongoDB connection closed.');
   }
 };
 
