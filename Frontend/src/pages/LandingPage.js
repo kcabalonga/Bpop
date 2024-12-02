@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Background from '../components/Background';
 import Landing from '../components/Landing';
+import Listings from '../components/Listings';
+
 
 function LandingPage() {
 
@@ -13,6 +15,7 @@ function LandingPage() {
     <Background>
       <Landing />
     </Background>
+    <Listings />
     </div>
   );
 }
