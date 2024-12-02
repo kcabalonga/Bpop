@@ -6,6 +6,7 @@ import ResetPassword from './pages/ResetPassword';
 import LandingPage from './pages/LandingPage';
 import ListingsPage from './pages/ListingsPage';
 import Profile from './pages/ProfilePage';
+import Product from './pages/ProductPage';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Route path="/resetpassword" element={<ResetPassword />} />
       <Route path="/listings" element={<ListingsPage />} />
       <Route path="/profile" element={<Profile />} />
+      <Route path="/product" element={<Product />} />
     </Routes>
   );
 }
