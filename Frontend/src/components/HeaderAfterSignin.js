@@ -41,6 +41,11 @@ const Account = styled(Link)`
   background-size: contain;
   display: block; /* Ensure it's clickable */
 `
+const TitleLink = styled(Link)`
+  color: white;
+  text-decoration: none;
+`
+
 const HeaderAfterSignin = () => {
   return (
     <BpopHeader>
