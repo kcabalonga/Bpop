@@ -36,7 +36,15 @@ function SignIn() {
 
   
       if (response.ok) {
-        window.location.href = "/profile"; // Redirect to profile page
+        const data = await response.json();
+        if (data.token){
+          localStorage.setItem('token', data.token); 
+          window.location.href = "/profile"; // Redirect to profile page
+        }
+        else {
+          alert ("Error, try again");
+        }
+        
        
       } else {
         const errorData = await response.json();
