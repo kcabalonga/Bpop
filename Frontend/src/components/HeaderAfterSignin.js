@@ -44,7 +44,7 @@ const Account = styled(Link)`
 const HeaderAfterSignin = () => {
   return (
     <BpopHeader>
-      BPOP
+      <TitleLink to="/">BPOP</TitleLink>
       <IconContainer>
         <Account to="/Profile" />
       </IconContainer>

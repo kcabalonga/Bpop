@@ -4,6 +4,8 @@ import Header from '../components/Header';
 import Background from '../components/Background';
 import Landing from '../components/Landing';
 import Headertwo from '../components/HeaderAfterSignin';
+import Listings from '../components/Listings';
+
 
 function LandingPage() {
 
@@ -40,6 +42,7 @@ function LandingPage() {
       <Background>
         <Landing />
       </Background>
+    <Listings />
     </div>
   );
 
