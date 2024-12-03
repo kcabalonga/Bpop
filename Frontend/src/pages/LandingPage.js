@@ -17,7 +17,7 @@ function LandingPage() {
       const token = localStorage.getItem('token');
 
       if(!token){
-       alert("No Token");
+       return;
         
       }
       else{
