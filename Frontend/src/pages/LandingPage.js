@@ -10,25 +10,48 @@ function LandingPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const checkLoggedIn = async () => {
-    
     try {
+      // Retrieve the token from localStorage
+      const token = localStorage.getItem('token');
 
-      const response = await fetch('/api/username');
+      if(!token){
+       alert("No Token");
+        
+      }
+      else{
 
-      if (response.ok) {
-        setIsLoggedIn(true);
        
-      } 
-      else {
-        setIsLoggedIn(false);
+      
+      const response = await fetch('http://localhost:8001/api/username', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+        },
+      });
+
+      if (response.ok){
+        const data = await response.json();
+        if (data.username){
+          setIsLoggedIn(true);
+        }
+        else {
+          setIsLoggedIn(false);
+        }
+       
       }
 
+      else {
+        alert ("Error fetching data");
+      }
+
+    }
 
     } catch (error) {
-      console.error("Error checking username", error);
-      alert("An error occurred. Please try again.");
+      console.error('Error checking login status:', error);
+      alert("An error occurred while checking login status");
     }
   };
+  
   
   useEffect(() => {
     checkLoggedIn();
@@ -51,32 +74,18 @@ export default LandingPage;
 
 
 
-
-
-//   checkLoggedIn();
-
-
-// if (isLoggedIn === false){
-//   return (
-//     <div className="homepage">
-//     <Header />
-//     <Background>
-//       <Landing />
-//     </Background>
-//     </div>
-//   );
-// }
-
-// else {
-
-//   return (
-//     <div className="homepage">
-//     <Headertwo />
-//     <Background>
-//       <Landing />
-//     </Background>
-//     </div>
-//   );
-
-// }
-// }
+      // // Make the fetch call with the Authorization header
+      // const response = await fetch('http://localhost:8001/api/username', {
+      //   method: 'GET',
+      //   headers: {
+      //     Authorization: `Bearer ${token}`,
+      //   },
+      // });
+  
+      // const data = await response.json(); // Parse the response as JSON
+  
+      // if (data.isLoggedIn) {
+      //   alert("User is logged in: " + data.name); // Replace with your logic
+      // } else {
+      //   alert("User is not logged in: " + data.error); // Replace with your logic
+      // }
