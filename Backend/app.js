@@ -2,6 +2,8 @@
 
 // Import required modules
 const express = require('express');
+// npm install jsonwebtoken
+const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const { User, createUser } = require('./models/Users'); // Import the createUser function from users.js
@@ -19,7 +21,7 @@ app.use(session({
     saveUninitialized: true,        // Forces uninitialized sessions to be saved
     cookie: { secure: false }       // Set to true in production if using HTTPS
 }));
-
+const SECRET_KEY = 'your-secret-key';
 
 // Middleware
 
@@ -28,6 +30,7 @@ app.use(express.json()); // For parsing application/json
 app.use(express.urlencoded({ extended: true })); // Enables parsing of URL-encoded form data
 app.use(cors({
   origin: 'http://localhost:3000', // Frontend URL
+  credentials: true
 }));
 app.use(express.static(path.join(__dirname, '../Frontend/build')));
 //added
@@ -59,6 +62,24 @@ db.on('error', console.error.bind(console, '❌ Connection error:'));
 db.once('open', () => {
   console.log('✅ Connected to MongoDB');
 });
+
+//generate token
+function createToken(user) {
+  const payload = {
+      id: user.id, // Unique user ID from the database
+      username: user.username, // Username or email of the user
+      role: user.role, // Role (e.g., 'admin', 'user')
+  };
+
+  const options = {
+      expiresIn: '1h', // Token expiration time
+  };
+
+  return jwt.sign(payload, SECRET_KEY, options);
+}
+
+
+
 
 
 // Define routes (if any)
@@ -130,35 +151,67 @@ app.post('/add-user', async (req, res) => {
   }
 });
 
-
-
-
-
-
 app.get('/check-user', async (req, res) => {
   try {
-    const { username, password } = req.query; // Extract username and password from query parameters
+    const { username, password } = req.query;
 
-    // Find user with matching username
-    const user = await User.findOne({ username });
-    if (user) {
-      const userfind = await User.findOne({ username, password }); 
-
-      if (userfind) {
-        req.session.username = username;
-        req.session.name = user.name;
-        return res.status(200).json({ message: "User found successfully", user });
-      } else {
-        return res.status(400).json({ error: "Password Invalid" });
-      }
-    } else {
-      return res.status(400).json({ error: "Invalid Username" });
+    // Find user in the database
+    const user = await User.findOne({ username, password });
+    if (!user) {
+      return res.status(400).json({ error: "Invalid username or password" });
     }
+
+    // Generate JWT with additional user information
+    const token = createToken(user);
+    console.log('Generated Token:', token);
+
+
+    // Respond with the token
+    res.json({ message: "User authenticated successfully", token });
   } catch (error) {
     console.error('Error checking user:', error);
     res.status(500).json({ error: 'Error checking user' });
   }
 });
+
+
+
+app.get('/api/username', (req, res) => {
+  const authHeader = req.headers.authorization;
+
+  // Check for Authorization header
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    console.log("No or invalid authHeader");
+    return res.status(401).json({
+      error: 'No token provided or invalid format',
+    });
+  }
+
+  const token = authHeader.split(' ')[1]; // Extract token from "Bearer <token>"
+
+  try {
+    console.log("/api/username token received: ", token);
+
+    // Verify the token
+    const decoded = jwt.verify(token, SECRET_KEY);
+
+    console.log("Decoded token:", decoded);
+
+    // Respond with user info
+    res.status(200).json({
+      username: decoded.username,
+
+    });
+  } catch (error) {
+    // Handle invalid or expired token
+    console.error('Token verification error:', error.message);
+    res.status(401).json({
+      isLoggedIn: false,
+      error: 'Invalid or expired token',
+    });
+  }
+});
+
 
 
 
@@ -197,15 +250,6 @@ app.post('/reset-password', async (req, res) => {
 
 
 
-
-// Create a route to get the username from the session
-app.get('/api/username', (req, res) => {
-  if (req.session.name) {
-      res.json({ name: req.session.name });
-  } else {
-      res.status(401).json({ error: 'User not logged in' });
-  }
-});
 
 
 
