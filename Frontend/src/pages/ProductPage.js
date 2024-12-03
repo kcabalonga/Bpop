@@ -147,5 +147,5 @@ function CustomImage() {
   );
 }
   
-  export default CustomImage;
+export default CustomImage;
   
