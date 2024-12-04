@@ -1,12 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Header from "../components/Header";
 import Background from "../components/Background";
+import SellerProfile from "../components/SellerProfile";
 
+const Seller = () => {
+  return (
+    <>
+      <Header />
+      <Background />
+      <SellerProfile />
+    </>
+  );
+};
 
-// return{
-//     // <Header />
-//     // <Background />
-
-
-// }
-// export default Seller;
+export default Seller;

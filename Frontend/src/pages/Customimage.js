@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from "react";
+// import Listings from "./Listings";;
 
 function Customimage() {
   const [imageData, setImageData] = useState(null);
