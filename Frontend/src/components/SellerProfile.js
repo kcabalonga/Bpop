@@ -123,16 +123,6 @@ const SellerProfile = () => {
     );
   };
 
-// const SellerProfile = () => {
-//     return (
-//         <Container>
-//             <ProfilePicture />
-//             <Title> Celine's Personal Page</Title>
-//             <Subtitle> @Celinechu</Subtitle>
-//             <Content> This is bio</Content>
-//             <Title2> All Listings </Title2>
-//         </Container>
-//     );
-// };
+
 
 export default SellerProfile;
