@@ -406,31 +406,6 @@ function Profile() {
     getUserAttributes();
   }, []);
 
-  // return (
-  //   <div>
-  //     <h1>{name}'s Personal Page</h1>
-
-  //     <div id="profilePicContainer">
-  //       <img
-  //         src={profilePic}
-  //         alt="Profile"
-  //         style={{ width: "150px", height: "150px", borderRadius: "50%" }}
-  //       />
-  //     </div>
-
-  //     <div id="bioDiv">
-  //       <h3>{name}'s Bio</h3>
-  //       <p>{bio}</p>
-  //       <button onClick={editBio}>Edit Bio</button>
-  //     </div>
-
-  //     <form encType="multipart/form-data" onSubmit={handleUploadPhoto}>
-  //       <label htmlFor="photo">Upload Profile Picture:</label>
-  //       <input type="file" name="photo" accept="image/*" required />
-  //       <button type="submit">Upload</button>
-  //     </form>
-  //   </div>
-  // );
 
 
 
@@ -440,17 +415,7 @@ function Profile() {
   <h1 id= "mainHeaderMain">Personal Profile Page!</h1>
   <p id="name" />
   <div id="uploadpho">
-    {/* <form
-      id="uploadForm"
-      action="/upload-photo"
-      method="post"
-      encType="multipart/form-data"
-      onsubmit="checkProfilePic()"
-    >
-      <label htmlFor="photo">Upload Profile Picture:</label>
-      <input type="file" name="photo" accept="image/*" required="" />
-      <button type="submit">Upload</button>
-    </form> */}
+
 
 
   <form
