@@ -72,7 +72,7 @@ function createToken(user) {
   };
 
   const options = {
-      expiresIn: '1h', // Token expiration time
+      expiresIn: '100h', // Token expiration time
   };
 
   return jwt.sign(payload, SECRET_KEY, options);
@@ -163,7 +163,7 @@ app.get('/check-user', async (req, res) => {
 
     // Generate JWT with additional user information
     const token = createToken(user);
-    console.log('Generated Token:', token);
+   
 
 
     // Respond with the token
@@ -190,12 +190,12 @@ app.get('/api/username', (req, res) => {
   const token = authHeader.split(' ')[1]; // Extract token from "Bearer <token>"
 
   try {
-    console.log("/api/username token received: ", token);
+   
 
     // Verify the token
     const decoded = jwt.verify(token, SECRET_KEY);
 
-    console.log("Decoded token:", decoded);
+    
 
     // Respond with user info
     res.status(200).json({
@@ -254,33 +254,46 @@ app.post('/reset-password', async (req, res) => {
 
 
 
-// Route to handle photo upload
 app.post('/upload-photo', upload.single('photo'), async (req, res) => {
   try {
-    const username = req.session.username; // Assume the user is logged in and has a username
-    if (!username) return res.status(401).send('User not logged in');
+    const { userName } = req.body; // Extract username from form data
+    
+    console.log("User found:", user);
 
-    const photoBuffer = req.file.buffer; // Get the photo buffer from multer
-    const photoContentType = req.file.mimetype; // Get the MIME type (e.g., image/jpeg)
+    console.log("1", userName);
 
-    // Find the user and update with the photo
-    await User.updateOne({ username }, {
-      $set: { photo: { data: photoBuffer, contentType: photoContentType } }
-    });
 
-    res.send(`
-      <script>
-      //changes done here
-        alert("Photo uploaded successfully!");
+    if (!userName) return res.status(401).send('User not logged in');
 
-        window.location.href = "/profile.html";
-      </script>
-    `);
+    const photoBuffer = req.file?.buffer; // Ensure `req.file` exists
+    const photoContentType = req.file?.mimetype;
+    console.log("2", userName);
+
+
+    if (!photoBuffer || !photoContentType) {
+      return res.status(400).send('Invalid photo upload');
+    }
+    console.log("3", userName);
+    // Find the user and update the photo in the database
+    const updateResult = await User.updateOne(
+      { username: userName },
+      { $set: { photo: { data: photoBuffer, contentType: photoContentType } } }
+    );
+
+    console.log("4", userName);
+  
+    if (updateResult.modifiedCount === 0) {
+      return res.status(404).send('User not found');
+    }
+
+    res.status(200).json({ message: 'Photo uploaded successfully' });
   } catch (error) {
     console.error('Error uploading photo:', error);
     res.status(500).send('Error uploading photo');
   }
 });
+
+
 
 // Route to handle photo upload
 app.get('/check-photo', async (req, res) => {
@@ -304,22 +317,57 @@ app.get('/check-photo', async (req, res) => {
   }
 });
 
-//Edits the Bio 
+// //Edits the Bio 
+// app.post('/editBio', async (req, res) => {
+//   try {
+//     const {bio} = req.body; // Extract user input from the form
+//     const username = req.session.username;
+//     req.session.bio = bio;
+//     await User.updateOne({ username }, { $set: { bio } });
+//     // Redirect to profile page after successful password reset
+//     return res.redirect('/profile.html');
+
+//   } catch (error) {
+//     console.error('Error updating Bio:', error);
+//     res.status(500).send('Error updating Bio');
+//   }
+
+// });
+
+
 app.post('/editBio', async (req, res) => {
   try {
-    const {bio} = req.body; // Extract user input from the form
-    const username = req.session.username;
-    req.session.bio = bio;
-    await User.updateOne({ username }, { $set: { bio } });
-    // Redirect to profile page after successful password reset
-    return res.redirect('/profile.html');
+    const { username, bio } = req.body;
 
+    if (!username || !bio) {
+      return res.status(400).send("Username and bio are required");
+    }
+
+    const updateResult = await User.updateOne(
+      { username },
+      { $set: { bio } }
+    );
+
+    if (updateResult.modifiedCount === 0) {
+      return res.status(404).send("User not found");
+    }
+
+    res.status(200).send("Bio updated successfully");
   } catch (error) {
-    console.error('Error updating Bio:', error);
-    res.status(500).send('Error updating Bio');
+    console.error("Error updating bio:", error);
+    res.status(500).send("Error updating bio");
   }
-
 });
+
+
+
+
+
+
+
+
+
+
 
 //Returns the Bio that is in the user's document
 app.get('/returnBio', async (req, res) => {
