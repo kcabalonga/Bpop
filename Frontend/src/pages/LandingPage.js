@@ -5,6 +5,7 @@ import Background from '../components/Background';
 import Landing from '../components/Landing';
 import Headertwo from '../components/HeaderAfterSignin';
 import Listings from '../components/Listings';
+
 // import Seller from './SellerPage';
 // import SellerProfile from '../components/SellerProfile';
 

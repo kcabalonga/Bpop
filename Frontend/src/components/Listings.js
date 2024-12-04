@@ -77,7 +77,7 @@ function Listings({ tags = [] }) {
       {listings.map((listing) => (
         <div key={listing.id} style={styles.listing}>
           {listing.photo && (
-            <a href={`CustomImage.html?title=${encodeURIComponent(listing.title)}`}>
+            <a href={`/Customimage?title=${encodeURIComponent(listing.title)}`}>
               <img src={listing.photo} alt={listing.title} style={styles.image} />
             </a>
           )}

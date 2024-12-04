@@ -412,7 +412,7 @@ function Profile() {
 
   return (
 <>
-  <h1 id= "mainHeaderMain">Personal Profile Page!</h1>
+  <h1 id= "mainHeaderMain">{name}'s Profile Page!</h1>
   <p id="name" />
   <div id="uploadpho">
 
@@ -435,7 +435,7 @@ function Profile() {
   <div id="profilepicphoto"> <img id ="ProfilePicImg"></img> </div>
   
   <div id="bioDiv">
-      <h3 id="BioHeader">{userName}'s Bio</h3>
+      <h3 id="BioHeader">{name}'s Bio</h3>
       <p id="BioPara">{bio}</p>
       <button onClick={editBio}>Edit Bio</button>
     </div>
