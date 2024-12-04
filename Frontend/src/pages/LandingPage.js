@@ -13,7 +13,11 @@ import Listings from '../components/Listings';
 function LandingPage() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [selectedTags, setSelectedTags] = useState([]);
 
+  const handleSearch = (tags) => {
+    setSelectedTags(tags);
+  }
   const checkLoggedIn = async () => {
     try {
       // Retrieve the token from localStorage
@@ -66,9 +70,9 @@ function LandingPage() {
     <div className="homepage">
       {isLoggedIn ? <Headertwo /> : <Header />}
       <Background>
-        <Landing />
+        <Landing onSearch={handleSearch}/>
       </Background>
-      <Listings />
+      <Listings tags={selectedTags}/>
     </div>
   );
 

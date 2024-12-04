@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-function Listings({ tags = [] }) {
+function Listings({ tags }) {
   const [listings, setListings] = useState([]);
   const [error, setError] = useState(null);
 
@@ -45,7 +45,7 @@ function Listings({ tags = [] }) {
   };
 
   useEffect(() => {
-    async function fetchListings() {
+    const fetchListings = async() => {
       try {
         const tagsQuery = tags.length > 0 ? `?tags=${tags.join(',')}` : '';
         const response = await fetch(`http://localhost:8001/get-listings${tagsQuery}`);
@@ -53,7 +53,6 @@ function Listings({ tags = [] }) {
         if (!response.ok) {
           throw new Error('Failed to fetch listings');
         }
-
         const data = await response.json();
         setListings(data);
       } catch (err) {
