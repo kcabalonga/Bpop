@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom'; 
 
 function Listings({ tags }) {
   const [listings, setListings] = useState([]);
@@ -77,15 +78,18 @@ function Listings({ tags }) {
         <div key={listing.id} style={styles.listing}>
 
             {listing.photo && (
-              <a
-                href={
-                  localStorage.getItem('token')
-                    ? `/customimage?title=${encodeURIComponent(listing.title)}`
-                    : "/Signin"
-                }
-              >
-                <img src={listing.photo} alt={listing.title} style={styles.image} />
-              </a>
+
+          <Link
+          to={
+            localStorage.getItem('token')
+              ? `/customimage?title=${encodeURIComponent(listing.title)}`
+              : "/Signin"
+          }
+        >
+          <img src={listing.photo} alt={listing.title} style={styles.image} />
+        </Link>
+
+
             )}
 
 
