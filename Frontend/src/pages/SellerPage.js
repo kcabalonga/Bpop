@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { Link } from 'react-router-dom';
 import Header from "../components/Header";
 import Background from "../components/Background";
 
@@ -154,9 +155,11 @@ const Seller = () => {
         <ListingsContainer>
             {userListings.map((listing) => (
             <ListingCard key={listing.id}>
-                {listing.photo && (
-                <ListingImage src={listing.photo} alt={listing.title} />
-                )}
+            {listing.photo && (
+              <Link to={`/customimage?title=${encodeURIComponent(listing.title)}`}>
+              <ListingImage src={listing.photo} alt={listing.title} />
+              </Link>
+            )}
                 <h2 className="listing-title">{listing.title}</h2>
                 <p className="listing-price">${listing.price}</p>
                 <p className="listing-description">{listing.description}</p>
@@ -166,6 +169,7 @@ const Seller = () => {
         </Container>
     </Background>
         </>
+
   );
 };
 

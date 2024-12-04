@@ -250,6 +250,40 @@ function Profile() {
     }
   };
 
+  // Edit Bio Handler
+  const logoutUser = async () => {
+
+    try {
+
+      const token = localStorage.getItem("token");
+
+      if (token){
+        localStorage.removeItem('token');
+        const token = localStorage.getItem("token");
+            if (token){
+              alert("Error Logging Out")
+            }
+            else {
+              alert ("Logged Out!");
+              window.location.href = "/signin";
+            }
+
+      }
+
+      else {
+        alert("Error Logging Out");
+      }
+
+
+    } catch (error) {
+      console.error("Error ", error);
+      alert("An error occurred while Logging Out.");
+    }
+  };
+
+
+
+
   // Fetch user attributes on component mount
   useEffect(() => {
     getUserAttributes();
@@ -433,6 +467,10 @@ function Profile() {
           <button type="submit">Add Listing</button>
         </form>
       </div>
+
+      <button onClick={logoutUser}>Log Out</button>
+
+
     </>
   );
 }
