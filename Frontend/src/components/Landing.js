@@ -153,7 +153,7 @@ const Subtitle = styled.h2`
     z-index: 1;
 `;
 
-const Landing = () => {
+const Landing = ({ onSearch }) => {
     const [searchTerm, setSearchTerm] = useState("");
     const [tags, setTags] = useState([]);
     const [suggestions, setSuggestions] = useState([
@@ -186,6 +186,10 @@ const Landing = () => {
     const handleRemoveTag = (tag) => {
         setTags(tags.filter((t) => t !== tag));
     };
+
+    const handleSearch = () => {
+        onSearch(tags); // Pass selected tags to the parent component
+      };
 
     return (
         <div>
@@ -225,7 +229,7 @@ const Landing = () => {
                         </Tag>
                     ))}
                 </TagsContainer>
-                <SearchButton to={`/listings?tags=${tags.join(',')}`}>Search</SearchButton>
+                <SearchButton as="button" onClick={handleSearch}>Search</SearchButton>
             </SearchContainer>
             <Subtitle>
                Scroll Down for Available Listings!
