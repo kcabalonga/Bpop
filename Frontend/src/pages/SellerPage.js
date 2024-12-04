@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { Link } from 'react-router-dom';
 
 const Container = styled.div`
   width: 80rem;
@@ -152,7 +153,9 @@ const Seller = () => {
         {userListings.map((listing) => (
           <ListingCard key={listing.id}>
             {listing.photo && (
+              <Link to={`/customimage?title=${encodeURIComponent(listing.title)}`}>
               <ListingImage src={listing.photo} alt={listing.title} />
+              </Link>
             )}
             <h2 className="listing-title">{listing.title}</h2>
             <p className="listing-price">${listing.price}</p>

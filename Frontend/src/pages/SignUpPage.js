@@ -31,8 +31,15 @@ function SignUp() {
       });
 
       if (response.ok) {
+
         const data = await response.json();
-        window.location.href = "/profile";
+
+        if (data.token){
+          localStorage.setItem('token', data.token); 
+          window.location.href = "/profile"; // Redirect to profile page
+        }
+
+       // window.location.href = "/profile";
        // alert(`User added successfully: ${JSON.stringify(data)}`);
 
       } else {

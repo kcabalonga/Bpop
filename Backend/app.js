@@ -139,12 +139,12 @@ app.post('/add-user', async (req, res) => {
 
     await newUser.save();
 
-    // Save session details
-    req.session.username = username;
-    req.session.name = name;
-
+    const token = createToken(newUser);
+  
+    // Respond with the token
+    res.json({ message: "User created successfully", token });
     // Send success response
-    res.status(201).json({ message: "User added successfully", user: newUser });
+   // res.status(201).json({ message: "User added successfully", user: newUser });
   } catch (error) {
     console.error('Error adding user:', error);
     res.status(500).json({ error: 'An error occurred while adding the user' });
