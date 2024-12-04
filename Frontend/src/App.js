@@ -8,6 +8,7 @@ import ListingsPage from './pages/ListingsPage';
 import Profile from './pages/ProfilePage';
 import Product from './pages/ProductPage';
 import Customimage from './pages/Customimage';
+import Seller from './pages/SellerPage';
 
 // import Seller from './pages/SellerPage';
 
@@ -22,6 +23,7 @@ function App() {
       <Route path="/profile" element={<Profile />} />
       <Route path="/product" element={<Product />} />
       <Route path="/customimage" element={<Customimage />} />
+      <Route path="/seller" element={<Seller />} />
 
       {/* <Route path="/Seller" element={<Seller />} /> */}
     </Routes>
