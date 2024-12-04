@@ -7,6 +7,8 @@ import LandingPage from './pages/LandingPage';
 import ListingsPage from './pages/ListingsPage';
 import Profile from './pages/ProfilePage';
 import Product from './pages/ProductPage';
+import Customimage from './pages/Customimage';
+
 // import Seller from './pages/SellerPage';
 
 function App() {
@@ -19,6 +21,8 @@ function App() {
       <Route path="/listings" element={<ListingsPage />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/product" element={<Product />} />
+      <Route path="/customimage" element={<Customimage />} />
+
       {/* <Route path="/Seller" element={<Seller />} /> */}
     </Routes>
   );

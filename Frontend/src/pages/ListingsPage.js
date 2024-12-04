@@ -30,6 +30,7 @@ function Homepage() {
       console.error('Error fetching listings:', error);
       // Optionally, you can set an error state here
     }
+
   };
 
   useEffect(() => {
@@ -46,7 +47,7 @@ function Homepage() {
       <div className="listing" key={listing.id}>
         {/* Listing Image */}
         {listing.photo && (
-          <Link to={`/custom-image?title=${encodeURIComponent(listing.title)}`}>
+          <Link to={`/customimage?title=${encodeURIComponent(listing.title)}`}>
             <img src={listing.photo} alt={listing.title} />
           </Link>
         )}
