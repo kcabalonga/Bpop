@@ -83,19 +83,3 @@ function LandingPage() {
 export default LandingPage;
 
 
-
-      // // Make the fetch call with the Authorization header
-      // const response = await fetch('http://localhost:8001/api/username', {
-      //   method: 'GET',
-      //   headers: {
-      //     Authorization: `Bearer ${token}`,
-      //   },
-      // });
-  
-      // const data = await response.json(); // Parse the response as JSON
-  
-      // if (data.isLoggedIn) {
-      //   alert("User is logged in: " + data.name); // Replace with your logic
-      // } else {
-      //   alert("User is not logged in: " + data.error); // Replace with your logic
-      // }

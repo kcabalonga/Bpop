@@ -75,11 +75,20 @@ function Listings({ tags }) {
     <div style={styles.container}>
       {listings.map((listing) => (
         <div key={listing.id} style={styles.listing}>
-          {listing.photo && (
-            <a href={`/Customimage?title=${encodeURIComponent(listing.title)}`}>
-              <img src={listing.photo} alt={listing.title} style={styles.image} />
-            </a>
-          )}
+
+            {listing.photo && (
+              <a
+                href={
+                  localStorage.getItem('token')
+                    ? `/customimage?title=${encodeURIComponent(listing.title)}`
+                    : "/Signin"
+                }
+              >
+                <img src={listing.photo} alt={listing.title} style={styles.image} />
+              </a>
+            )}
+
+
           <h2 style={styles.title}>{listing.title}</h2>
           <p style={styles.price}>${listing.price}</p>
           <p style={styles.description}>{listing.description}</p>
