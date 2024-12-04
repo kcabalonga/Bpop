@@ -1,7 +1,7 @@
-
-
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import Header from "../components/Header";
+import Background from "../components/Background";
 
 const Container = styled.div`
   width: 80rem;
@@ -131,36 +131,41 @@ const Seller = () => {
   }
 
   return (
-    <Container>
-      {userData && (
-        <ProfileSection>
-          <ProfilePicture
-            src={
-              userData.photo?.data || "https://via.placeholder.com/200"
-            }
-            alt={`${userData.name}'s profile`}
-          />
-          <ProfileDetails>
-            <Title>{`${userData.name}'s Personal Page`}</Title>
-            <Subtitle>@{userData.username}</Subtitle>
-            <Content>{userData.bio || "No bio available"}</Content>
-          </ProfileDetails>
-        </ProfileSection>
-      )}
+    <>
+    <Header />
+    <Background>
+        <Container>
+        {userData && (
+            <ProfileSection>
+            <ProfilePicture
+                src={
+                userData.photo?.data || "https://via.placeholder.com/200"
+                }
+                alt={`${userData.name}'s profile`}
+            />
+            <ProfileDetails>
+                <Title>{`${userData.name}'s Personal Page`}</Title>
+                <Subtitle>@{userData.username}</Subtitle>
+                <Content>{userData.bio || "No bio available"}</Content>
+            </ProfileDetails>
+            </ProfileSection>
+        )}
 
-      <ListingsContainer>
-        {userListings.map((listing) => (
-          <ListingCard key={listing.id}>
-            {listing.photo && (
-              <ListingImage src={listing.photo} alt={listing.title} />
-            )}
-            <h2 className="listing-title">{listing.title}</h2>
-            <p className="listing-price">${listing.price}</p>
-            <p className="listing-description">{listing.description}</p>
-          </ListingCard>
-        ))}
-      </ListingsContainer>
-    </Container>
+        <ListingsContainer>
+            {userListings.map((listing) => (
+            <ListingCard key={listing.id}>
+                {listing.photo && (
+                <ListingImage src={listing.photo} alt={listing.title} />
+                )}
+                <h2 className="listing-title">{listing.title}</h2>
+                <p className="listing-price">${listing.price}</p>
+                <p className="listing-description">{listing.description}</p>
+            </ListingCard>
+            ))}
+        </ListingsContainer>
+        </Container>
+    </Background>
+        </>
   );
 };
 
