@@ -254,44 +254,41 @@ app.post('/reset-password', async (req, res) => {
 
 
 
+
 app.post('/upload-photo', upload.single('photo'), async (req, res) => {
   try {
-    const { userName } = req.body; // Extract username from form data
-    
-    console.log("User found:", user);
+    const { username } = req.body; // Use 'username' consistently
 
-    console.log("1", userName);
-
-
-    if (!userName) return res.status(401).send('User not logged in');
-
-    const photoBuffer = req.file?.buffer; // Ensure `req.file` exists
-    const photoContentType = req.file?.mimetype;
-    console.log("2", userName);
-
-
-    if (!photoBuffer || !photoContentType) {
-      return res.status(400).send('Invalid photo upload');
+    // Validate input
+    if (!username) {
+      return res.status(400).send('Username is required');
     }
-    console.log("3", userName);
-    // Find the user and update the photo in the database
+
+    if (!req.file) {
+      return res.status(400).send('Photo file is required');
+    }
+
+    const photoBuffer = req.file.buffer;
+    const photoContentType = req.file.mimetype;
+
+    // Update the user's photo in the database
     const updateResult = await User.updateOne(
-      { username: userName },
+      { username }, // Correct field name
       { $set: { photo: { data: photoBuffer, contentType: photoContentType } } }
     );
 
-    console.log("4", userName);
-  
     if (updateResult.modifiedCount === 0) {
       return res.status(404).send('User not found');
     }
 
-    res.status(200).json({ message: 'Photo uploaded successfully' });
+    res.status(200).send('Photo uploaded successfully');
   } catch (error) {
     console.error('Error uploading photo:', error);
     res.status(500).send('Error uploading photo');
   }
 });
+
+
 
 
 
@@ -394,26 +391,34 @@ app.get('/returnBio', async (req, res) => {
 
 app.post('/add-listing', upload.single('photo'), async (req, res) => {
   try {
+    // Extract token from Authorization header
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1]; // Assumes 'Bearer TOKEN'
+    if (!token) {
+      return res.status(401).send('No token provided');
+    }
+
+    // Verify token and extract username
+    const decoded = jwt.verify(token, SECRET_KEY); 
+    const username = decoded.username;
+    if (!username) {
+      return res.status(401).send('Invalid token: username not found');
+    }
+
+    // Proceed with the rest of the code
     const { title, description, price, tags } = req.body; // Listing information
-    const photoData = req.file;  // This will contain the uploaded image file
-    //change
+    const photoData = req.file;  
 
     if (!photoData) {
       return res.status(400).send('No photo uploaded');
     }
 
-    //using current logged in username from session to link user
-    const username = req.session.username;
-    if (!username) {
-      return res.status(401).send('User not logged in');
-    }
-
-    //verify user exists in database
+    // Verify user exists in database
     const user = await User.findOne({ username });
     if (!user) {
       return res.status(404).send('User not found');
     }
-    
+
     const tagArray = tags ? tags.split(',').map(tag => tag.trim()).filter(tag => tag !== '') : [];
 
     const newListing = new Listing({
@@ -426,24 +431,17 @@ app.post('/add-listing', upload.single('photo'), async (req, res) => {
       },
       user: username,
       date: addDate(),
-      tags: tagArray,                 
+      tags: tagArray,
     });
 
     await newListing.save();
 
-    //res.status(201).send('Listing created successfully');
-    res.send(`
-      <script>
-        window.location.href = "/homepage.html";
-      </script>
-    `);
-
+    res.status(201).send('Listing created successfully');
   } catch (error) {
     console.error('Error creating listing:', error);
     res.status(500).send('Error creating listing');
   }
 });
-
 
 
 
