@@ -66,14 +66,29 @@ function Customimage() {
 
   return (
     <div>
-      <h1>Custom Image</h1>
+
+<div id="ListingHeader">
+  {imageData && (
+    <>
+      <h1>{imageData.title}</h1>
+    </>
+  )}
+</div>
+
+
+
+
+
+
+
 
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
       <div id="user-container">
         {userData && (
           <div>
-            <a href={`userprofile.html?title=${encodeURIComponent(userData.username)}`}>
+           <a href={`/seller?title=${encodeURIComponent(userData.username)}`}>
+              
               {userData.username}
             </a>
             <p>Posted on: {userData.date}</p>
@@ -122,3 +137,5 @@ function Customimage() {
 }
 
 export default Customimage;
+
+//<a href={`userprofile.html?title=${encodeURIComponent(userData.username)}`}>
