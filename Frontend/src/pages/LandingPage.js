@@ -67,7 +67,7 @@ function LandingPage() {
       <Background>
         <Landing />
       </Background>
-    <Listings />
+      <Listings />
     </div>
   );
 

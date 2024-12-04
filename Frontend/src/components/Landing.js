@@ -135,6 +135,24 @@ const SearchButton = styled(Link)`
     }
 `;
 
+const Subtitle = styled.h2`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #72B6ED;
+    text-align: center;
+    font-family: "Hammersmith One";
+    font-size: 25px;
+    font-weight: 400;
+    line-height: 25px;
+    width: 100%;
+    // margin: 0;
+    margin-top: 2rem;
+    padding: 0;
+    z-index: 1;
+`;
+
 const Landing = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [tags, setTags] = useState([]);
@@ -209,9 +227,9 @@ const Landing = () => {
                 </TagsContainer>
                 <SearchButton to={`/listings?tags=${tags.join(',')}`}>Search</SearchButton>
             </SearchContainer>
-            {/* <Container_Subtitle>
-               Available Listings
-            </Container_Subtitle> */}
+            <Subtitle>
+               Scroll Down for Available Listings!
+            </Subtitle>
         </div>
     );
 };
