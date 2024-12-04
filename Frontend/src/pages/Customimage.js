@@ -1,5 +1,77 @@
 import React, { useState, useEffect } from "react";
-// import Listings from "./Listings";;
+// import Listings from "./Listings";
+import styled from "styled-components";
+import { SubmitButton } from "../components/FormContainer";
+import HeaderAfterSignin from "../components/Header";
+import Background from "../components/Background";
+
+
+const Container = styled.div`
+  width: 80rem;
+  height: auto;
+  background: #D7E9F7;
+  border-radius: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  margin: 0 auto;
+`;
+
+const Layout = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  margin-top: 2rem;
+`;
+
+const LeftSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding-right: 2rem;
+`;
+
+const RightSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+`;
+
+const Title = styled.h2`
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+`;
+
+const Subtitle = styled.a`
+  color: #007BFF;
+  text-decoration: none;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+
+  &:hover {
+    text-decoration: underline;
+    color: #0056b3;
+  }
+`;
+
+const Content = styled.p`
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 1rem;
+`;
+
+const StyledImage = styled.img`
+  width: 400px;
+  height: 300px;
+  object-fit: contain;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+`;
 
 function Customimage() {
   const [imageData, setImageData] = useState(null);
@@ -66,32 +138,26 @@ function Customimage() {
 
   return (
     <div>
-
+      <HeaderAfterSignin />
+      <Background> 
+<Container>
 <div id="ListingHeader">
   {imageData && (
     <>
-      <h1>{imageData.title}</h1>
+      <Title>{imageData.title}</Title>
     </>
   )}
 </div>
-
-
-
-
-
-
-
-
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
       <div id="user-container">
         {userData && (
           <div>
-           <a href={`/seller?title=${encodeURIComponent(userData.username)}`}>
+           <Subtitle href={`/seller?title=${encodeURIComponent(userData.username)}`}>
               
               {userData.username}
-            </a>
-            <p>Posted on: {userData.date}</p>
+            </Subtitle>
+            <Content>Posted on: {userData.date}</Content>
           </div>
         )}
       </div>
@@ -99,12 +165,11 @@ function Customimage() {
       <div id="image-container">
         {imageData && (
           <>
-            <img src={imageData.photo.data} alt={imageData.title} />
+            <StyledImage src={imageData.photo.data} alt={imageData.title} />
             <div>
-              <h2>{imageData.title}</h2>
-              <p>Description: {imageData.description}</p>
-              <p>Price: ${imageData.price}</p>
-              <p>User: {imageData.user}</p>
+              <Content>Description: {imageData.description}</Content>
+              <Content>Price: ${imageData.price}</Content>
+              <Content>User: {imageData.user}</Content>
             </div>
           </>
         )}
@@ -130,8 +195,10 @@ function Customimage() {
           value={imageData?.price || ''}
         />
         <input type="hidden" name="currency_code" value="USD" />
-        <button type="submit">Buy Now</button>
+        <SubmitButton type="submit">Buy Now</SubmitButton>
       </form>
+      </Container>
+      </Background>
     </div>
   );
 }
