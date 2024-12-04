@@ -399,7 +399,7 @@ app.post('/add-listing', upload.single('photo'), async (req, res) => {
     }
 
     // Verify token and extract username
-    const decoded = jwt.verify(token, SECRET_KEY); 
+    const decoded = jwt.verify(token, SECRET_KEY); // Replace 'your_jwt_secret' with your actual secret
     const username = decoded.username;
     if (!username) {
       return res.status(401).send('Invalid token: username not found');
@@ -407,7 +407,7 @@ app.post('/add-listing', upload.single('photo'), async (req, res) => {
 
     // Proceed with the rest of the code
     const { title, description, price, tags } = req.body; // Listing information
-    const photoData = req.file;  
+    const photoData = req.file;  // This will contain the uploaded image file
 
     if (!photoData) {
       return res.status(400).send('No photo uploaded');
@@ -442,6 +442,7 @@ app.post('/add-listing', upload.single('photo'), async (req, res) => {
     res.status(500).send('Error creating listing');
   }
 });
+
 
 
 

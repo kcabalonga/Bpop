@@ -1,307 +1,46 @@
-// import React, { useState, useEffect } from "react";
-// import Header from "../components/Header";
-// import Background from "../components/Background";
-// import FormContainer, { Input, SubmitButton, Heading, ProfilePic, BioInput, BioForm } from "../components/FormContainer";
-// import { Tag, TagsContainer } from "../components/Landing";
-
-// function Profile() {
-//   const [bio, setBio] = useState("");
-//   const [profilePic, setProfilePic] = useState("");
-//   const [userName, setUserName] = useState("");
-//   const [name, setName] = useState("");
-//   const [selectedTags, setSelectedTags] = useState([]);
-//   const [dropdownVisible, setDropdownVisible] = useState(false);
-
-//   const getUserAttributes = async () => {
-//     try {
-//       const token = localStorage.getItem("token");
-
-//       if (!token) {
-//         alert("Not Logged In");
-//         window.location.href = "/Signin";
-//       } else {
-//         const response = await fetch("http://localhost:8001/api/username", {
-//           method: "GET",
-//           headers: {
-//             Authorization: `Bearer ${token}`, // Include the token in the Authorization header
-//           },
-//         });
-
-//         if (response.ok) {
-//           const data = await response.json();
-//           if (data.username) {
-//             const userResponse = await fetch(
-//               `http://localhost:8001/fetch-user-attributes?title=${encodeURIComponent(data.username)}`
-//             );
-
-//             if (userResponse.ok) {
-//               const userdata = await userResponse.json();
-//               setName(userdata.name);
-//               setUserName(userdata.username);
-//               setBio(userdata.bio || "No bio available");
-              
-//               if (userdata.photo?.data && userdata.photo?.contentType) {
-//                 setProfilePic(`data:${userdata.photo.contentType};base64,${userdata.photo.data}`);
-//               } else {
-//                 setProfilePic(""); // Set to an empty string or a default image URL
-//               }
-//             }
-//           }
-//         } else {
-//           alert("Token not valid");
-//         }
-//       }
-//     } catch (error) {
-//       console.error("Error checking login status:", error);
-//       alert("An error occurred while checking login status");
-//     }
-//   };
-
-//   useEffect(() => {
-//     getUserAttributes();
-//   }, []); // Run once when the component mounts
-
-//   // Update the DOM when state changes
-//   useEffect(() => {
-//     const nameElement = document.getElementById("name");
-//     const bioHeaderElement = document.getElementById("BioHeader");
-//     const bioParaElement = document.getElementById("BioPara");
-//     const mainHeaderElement = document.getElementById("mainHeaderMain");
-//     const profilePicElement = document.getElementById("profilepicphoto");
-
-   
-
-//     if (nameElement) nameElement.textContent = name;
-//     if (bioHeaderElement) bioHeaderElement.textContent = `${name}'s Bio`;
-//     if (mainHeaderElement) mainHeaderElement.textContent = `${name}'s Personal Page`;
-//     if (bioParaElement) bioParaElement.textContent = `${bio}`;
-//     if (profilePicElement) profilePicElement.textContent = `${profilePic}`;
-  
-
-
-
-//   }, [name, bio, profilePic]); // Depend on `name` and `bio`
-
-
-
-
-
-//   const editBio = async () => {
-//     const newBio = prompt("Edit your bio:", bio);
-
-//     if (newBio === null || newBio.trim() === "") {
-//       alert("Bio cannot be empty");
-//       return;
-//     }
-
-//     try {
-//       const response = await fetch("http://localhost:8001/editBio", {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({ username: userName, bio: newBio }),
-//       });
-
-//       if (response.ok) {
-//         alert("Bio updated successfully!");
-//         setBio(newBio); 
-//       } else {
-//         const errorText = await response.text();
-//         alert(`Failed to update bio: ${errorText}`);
-//       }
-//     } catch (error) {
-//       console.error("Error updating bio:", error);
-//       alert("An error occurred while updating the bio.");
-//     }
-//   };
-
-
-
-
-//   const handleUploadPhoto = async (event) => {
-//     event.preventDefault(); // Prevent default form submission
-    
-//     const formData = new FormData(event.target); // Gather form data (file input)
-    
-//     // Append the username to the FormData
-//     formData.append("userName", userName);
-   
-//     try {
-//       const response = await fetch("http://localhost:8001/upload-photo", {
-//         method: "POST",
-//         body: formData, // Send the form data with username
-//       });
-  
-//       if (response.ok) {
-
-
-//         const data = await response.json();
-//         console.log("Photo uploaded successfully:", data);
-        
-        
-
-
-
-        
-//         window.location.reload(); // Optionally reload the page
-//       } else {
-//         const errorData = await response.text();
-//         console.error("Photo upload failed:", errorData);
-//         alert(`Failed to upload photo: ${errorData}`);
-//        }
-//     } catch (error) {
-//       console.error("Error during photo upload:", error);
-//       alert("An error occurred while uploading the photo.");
-//     }
-//   };
-  
-  
-
-
-
-
-
-
-
-
-
-//   return (
-// <>
-//   <h1 id= "mainHeaderMain">Personal Profile Page!</h1>
-//   <p id="name" />
-//   <div id="uploadpho">
-//     {/* <form
-//       id="uploadForm"
-//       action="/upload-photo"
-//       method="post"
-//       encType="multipart/form-data"
-//       onsubmit="checkProfilePic()"
-//     >
-//       <label htmlFor="photo">Upload Profile Picture:</label>
-//       <input type="file" name="photo" accept="image/*" required="" />
-//       <button type="submit">Upload</button>
-//     </form> */}
-
-
-//   <form
-//   id="uploadForm"
-//   encType="multipart/form-data"
-//   onSubmit={handleUploadPhoto} // Call your function
-// >
-//   <label htmlFor="photo">Upload Profile Picture:</label>
-//   <input type="file" name="photo" accept="image/*" required />
-//   <button type="submit">Upload</button>
-// </form>
-
-
-
-
-//   </div>
-//   <div id="profilepicphoto"> <img id ="ProfilePicImg"></img> </div>
-  
-//   <div id="bioDiv">
-//       <h3 id="BioHeader">{userName}'s Bio</h3>
-//       <p id="BioPara">{bio}</p>
-//       <button onClick={editBio}>Edit Bio</button>
-//     </div>
-
-
-
-
-//   <div id="addListingDiv">
-//     <h3>Add a New Listing</h3>
-//     <form
-//       id="addListingForm"
-//       action="/add-listing"
-//       method="post"
-//       encType="multipart/form-data"
-//     >
-//       <label htmlFor="title">Title:</label>
-//       <br />
-//       <input type="text" id="title" name="title" required="" />
-//       <br />
-//       <br />
-//       <label htmlFor="description">Description:</label>
-//       <br />
-//       <textarea
-//         id="description"
-//         name="description"
-//         rows={4}
-//         cols={50}
-//         required=""
-//         defaultValue={""}
-//       />
-//       <br />
-//       <br />
-//       <label htmlFor="price">Price:</label>
-//       <br />
-//       <input type="text" id="price" name="price" required="" />
-//       <br />
-//       <br />
-//       <label htmlFor="photo">Upload Listing Photo:</label>
-//       <br />
-//       <input type="file" name="photo" accept="image/*" required="" />
-//       <br />
-//       <br />
-//       {/*Tags Section*/}
-//       <label htmlFor="tags">Tags (click selected tag to remove):</label>
-//       <br />
-//       <div id="tagsContainer">
-//         <input
-//           type="text"
-//           id="selectedTags"
-//           name="tags"
-//           readOnly=""
-//           placeholder="Select tags"
-//           onclick="toggleDropdown()"
-//           style={{ cursor: "pointer" }}
-//         />
-//         <ul
-//           id="tagsDropdown"
-//           style={{
-//             display: "none",
-//             border: "1px solid #ccc",
-//             listStyle: "none",
-//             padding: 5
-//           }}
-//         >
-//           <li onclick="addTag('accessory')">accessory</li>
-//           <li onclick="addTag('athletic')">athletic</li>
-//           <li onclick="addTag('graphic')">graphic</li>
-//           <li onclick="addTag('hat')">hat</li>
-//           <li onclick="addTag('jacket')">jacket</li>
-//           <li onclick="addTag('long-sleeve')">long-sleve</li>
-//           <li onclick="addTag('shirt')">shirt</li>
-//           <li onclick="addTag('short-sleeve')">short-sleeve</li>
-//           <li onclick="addTag('shorts')">shorts</li>
-//           <li onclick="addTag('socks')">socks</li>
-//           <li onclick="addTag('vintage')">vintage</li>
-//           <li onclick="addTag('modern')">modern</li>
-//           <li onclick="addTag('object')">objects</li>
-//         </ul>
-//       </div>
-//       <div id="selectedTagsDisplay" style={{ marginTop: 10 }} />
-//       <br />
-//       <button type="submit">Add Listing</button>
-//     </form>
-//   </div>
-// </>
-
-//   );
-// }
-
-// export default Profile;
-
-
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 function Profile() {
+  // State for user attributes
   const [bio, setBio] = useState("");
   const [profilePic, setProfilePic] = useState("");
   const [userName, setUserName] = useState("");
   const [name, setName] = useState("");
+  const [showUploadForm, setShowUploadForm] = useState(true);
+  const [previewImage, setPreviewImage] = useState("");
 
+  // State for listing data
+  const [listingData, setListingData] = useState({
+    title: "",
+    description: "",
+    price: "",
+    tags: [],
+    photo: null,
+  });
+
+  // Reference to the profile photo input
+  const profilePhotoRef = useRef(null);
+  // Reference to the listing photo input
+  const listingPhotoRef = useRef(null);
+
+  // Predefined list of available tags
+  const availableTags = [
+    "accessory",
+    "athletic",
+    "graphic",
+    "hat",
+    "jacket",
+    "long-sleeve",
+    "shirt",
+    "short-sleeve",
+    "shorts",
+    "socks",
+    "vintage",
+    "modern",
+    "object",
+  ];
+
+  // Fetch user attributes using JWT
   const getUserAttributes = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -323,20 +62,26 @@ function Profile() {
         const data = await response.json();
         if (data.username) {
           const userResponse = await fetch(
-            `http://localhost:8001/fetch-user-attributes?title=${encodeURIComponent(data.username)}`
+            `http://localhost:8001/fetch-user-attributes?title=${encodeURIComponent(
+              data.username
+            )}`
           );
 
           if (userResponse.ok) {
             const userdata = await userResponse.json();
+            console.log("User data:", userdata); // Debugging log
             setName(userdata.name || "User");
             setUserName(userdata.username || "Username");
             setBio(userdata.bio || "No bio available");
 
-            if (userdata.photo?.data && userdata.photo?.contentType) {
-              setProfilePic(`data:${userdata.photo.contentType};base64,${userdata.photo.data}`);
+            if (userdata.photo && userdata.photo.data) {
+              setProfilePic(userdata.photo.data); // Use the complete Data URL directly
             } else {
-              setProfilePic(" "); // Placeholder image
+              setProfilePic(""); // Placeholder image or empty string
             }
+          } else {
+            const errorText = await userResponse.text();
+            alert(`Failed to fetch user attributes: ${errorText}`);
           }
         }
       } else {
@@ -348,6 +93,7 @@ function Profile() {
     }
   };
 
+  // Edit Bio Handler
   const editBio = async () => {
     const newBio = prompt("Edit your bio:", bio);
 
@@ -357,10 +103,12 @@ function Profile() {
     }
 
     try {
+      const token = localStorage.getItem("token");
       const response = await fetch("http://localhost:8001/editBio", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ username: userName, bio: newBio }),
       });
@@ -377,21 +125,36 @@ function Profile() {
     }
   };
 
-  const handleUploadPhoto = async (event) => {
+  // Edit Profile Picture Handler
+  const editPic = async (event) => {
     event.preventDefault();
 
-    const formData = new FormData(event.target);
-    formData.append("userName", userName);
+    const file = profilePhotoRef.current.files[0];
+
+    if (!file) {
+      alert("Please select a file.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("photo", file);
+    formData.append("username", userName);
 
     try {
+      const token = localStorage.getItem("token");
       const response = await fetch("http://localhost:8001/upload-photo", {
         method: "POST",
         body: formData,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       if (response.ok) {
         alert("Photo uploaded successfully!");
-        getUserAttributes(); // Refresh user data to update profile picture
+        setShowUploadForm(false); // Hide the upload form
+        setPreviewImage(""); // Clear the preview
+        await getUserAttributes(); // Wait for the updated attributes
       } else {
         const errorText = await response.text();
         alert(`Failed to upload photo: ${errorText}`);
@@ -402,127 +165,277 @@ function Profile() {
     }
   };
 
+  // Handle Add Listing Form Input Changes
+  const handleListingChange = (e) => {
+    const { name, value } = e.target;
+    setListingData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  // Handle Tags Selection
+  const handleAddTag = (tag) => {
+    if (!listingData.tags.includes(tag)) {
+      setListingData((prevData) => ({
+        ...prevData,
+        tags: [...prevData.tags, tag],
+      }));
+    }
+  };
+
+  const handleRemoveTag = (tagToRemove) => {
+    setListingData((prevData) => ({
+      ...prevData,
+      tags: prevData.tags.filter((tag) => tag !== tagToRemove),
+    }));
+  };
+
+  // Handle Listing Photo Change
+  const handleListingPhotoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setListingData((prevData) => ({
+        ...prevData,
+        photo: file,
+      }));
+    }
+  };
+
+  // Handle Add Listing Form Submission
+  const uploadListing = async (e) => {
+    e.preventDefault();
+
+    const { title, description, price, tags, photo } = listingData;
+
+    if (!title || !description || !price || !photo) {
+      alert("Please fill in all required fields and upload a photo.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("price", price);
+    formData.append("tags", tags.join(","));
+    formData.append("photo", photo);
+
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch("http://localhost:8001/add-listing", {
+        method: "POST",
+        body: formData,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        alert("Listing added successfully!");
+        // Reset the form
+        setListingData({
+          title: "",
+          description: "",
+          price: "",
+          tags: [],
+          photo: null,
+        });
+      } else {
+        const errorText = await response.text();
+        alert(`Failed to add listing: ${errorText}`);
+      }
+    } catch (error) {
+      console.error("Error adding listing:", error);
+      alert("An error occurred while adding the listing.");
+    }
+  };
+
+  // Fetch user attributes on component mount
   useEffect(() => {
     getUserAttributes();
   }, []);
 
-
-
-
-
   return (
-<>
-  <h1 id= "mainHeaderMain">{name}'s Profile Page!</h1>
-  <p id="name" />
-  <div id="uploadpho">
+    <>
+      <h1 id="mainHeaderMain">{name}'s Personal Profile Page!</h1>
+      <p id="name">{name}</p>
 
-
-
-  <form
-  id="uploadForm"
-  encType="multipart/form-data"
-  onSubmit={handleUploadPhoto} // Call your function
->
-  <label htmlFor="photo">Upload Profile Picture:</label>
-  <input type="file" name="photo" accept="image/*" required />
-  <button type="submit">Upload</button>
-</form>
-
-
-
-
-  </div>
-  <div id="profilepicphoto"> <img id ="ProfilePicImg"></img> </div>
-  
-  <div id="bioDiv">
-      <h3 id="BioHeader">{name}'s Bio</h3>
-      <p id="BioPara">{bio}</p>
-      <button onClick={editBio}>Edit Bio</button>
-    </div>
-
-
-
-
-  <div id="addListingDiv">
-    <h3>Add a New Listing</h3>
-    <form
-      id="addListingForm"
-      action="/add-listing"
-      method="post"
-      encType="multipart/form-data"
-    >
-      <label htmlFor="title">Title:</label>
-      <br />
-      <input type="text" id="title" name="title" required="" />
-      <br />
-      <br />
-      <label htmlFor="description">Description:</label>
-      <br />
-      <textarea
-        id="description"
-        name="description"
-        rows={4}
-        cols={50}
-        required=""
-        defaultValue={""}
-      />
-      <br />
-      <br />
-      <label htmlFor="price">Price:</label>
-      <br />
-      <input type="text" id="price" name="price" required="" />
-      <br />
-      <br />
-      <label htmlFor="photo">Upload Listing Photo:</label>
-      <br />
-      <input type="file" name="photo" accept="image/*" required="" />
-      <br />
-      <br />
-      {/*Tags Section*/}
-      <label htmlFor="tags">Tags (click selected tag to remove):</label>
-      <br />
-      <div id="tagsContainer">
-        <input
-          type="text"
-          id="selectedTags"
-          name="tags"
-          readOnly=""
-          placeholder="Select tags"
-          onclick="toggleDropdown()"
-          style={{ cursor: "pointer" }}
-        />
-        <ul
-          id="tagsDropdown"
-          style={{
-            display: "none",
-            border: "1px solid #ccc",
-            listStyle: "none",
-            padding: 5
-          }}
-        >
-          <li onclick="addTag('accessory')">accessory</li>
-          <li onclick="addTag('athletic')">athletic</li>
-          <li onclick="addTag('graphic')">graphic</li>
-          <li onclick="addTag('hat')">hat</li>
-          <li onclick="addTag('jacket')">jacket</li>
-          <li onclick="addTag('long-sleeve')">long-sleve</li>
-          <li onclick="addTag('shirt')">shirt</li>
-          <li onclick="addTag('short-sleeve')">short-sleeve</li>
-          <li onclick="addTag('shorts')">shorts</li>
-          <li onclick="addTag('socks')">socks</li>
-          <li onclick="addTag('vintage')">vintage</li>
-          <li onclick="addTag('modern')">modern</li>
-          <li onclick="addTag('object')">objects</li>
-        </ul>
+      {/* Profile Picture Upload Section */}
+      <div id="uploadpho">
+        {showUploadForm ? (
+          <form id="uploadForm" encType="multipart/form-data" onSubmit={editPic}>
+            <label htmlFor="photo">Upload Profile Picture:</label>
+            <input
+              type="file"
+              name="photo"
+              accept="image/*"
+              required
+              ref={profilePhotoRef}
+              onChange={(e) => {
+                const file = e.target.files[0];
+                if (file) {
+                  setPreviewImage(URL.createObjectURL(file));
+                } else {
+                  setPreviewImage("");
+                }
+              }}
+            />
+            <button type="submit">Upload</button>
+          </form>
+        ) : null}
       </div>
-      <div id="selectedTagsDisplay" style={{ marginTop: 10 }} />
-      <br />
-      <button type="submit">Add Listing</button>
-    </form>
-  </div>
-</>
 
+      {/* Preview of Profile Picture */}
+      {previewImage && (
+        <div>
+          <h3>Preview:</h3>
+          <img
+            src={previewImage}
+            alt="Preview"
+            style={{ width: "200px", height: "200px" }}
+          />
+        </div>
+      )}
+
+      {/* Display Current Profile Picture */}
+      {profilePic && (
+        <div id="profilepicphoto">
+          <img
+            id="ProfilePicImg"
+            src={profilePic}
+            alt="Profile Picture"
+            style={{ width: "200px", height: "200px" }}
+          />
+        </div>
+      )}
+
+      {/* Bio Section */}
+      <div id="bioDiv">
+        <h3 id="BioHeader">{userName}'s Bio</h3>
+        <p id="BioPara">{bio}</p>
+        <button onClick={editBio}>Edit Bio</button>
+      </div>
+
+      {/* Add Listing Section */}
+      <div id="addListingDiv">
+        <h3>Add a New Listing</h3>
+        <form id="addListingForm" onSubmit={uploadListing}>
+          {/* Title Input */}
+          <label htmlFor="title">Title:</label>
+          <br />
+          <input
+            type="text"
+            id="title"
+            name="title"
+            value={listingData.title}
+            onChange={handleListingChange}
+            required
+          />
+          <br />
+          <br />
+
+          {/* Description Input */}
+          <label htmlFor="description">Description:</label>
+          <br />
+          <textarea
+            id="description"
+            name="description"
+            rows={4}
+            cols={50}
+            required
+            value={listingData.description}
+            onChange={handleListingChange}
+          />
+          <br />
+          <br />
+
+          {/* Price Input */}
+          <label htmlFor="price">Price:</label>
+          <br />
+          <input
+            type="text"
+            id="price"
+            name="price"
+            value={listingData.price}
+            onChange={handleListingChange}
+            required
+          />
+          <br />
+          <br />
+
+          {/* Listing Photo Upload */}
+          <label htmlFor="photo">Upload Listing Photo:</label>
+          <br />
+          <input
+            type="file"
+            name="photo"
+            accept="image/*"
+            required
+            ref={listingPhotoRef}
+            onChange={handleListingPhotoChange}
+          />
+          <br />
+          <br />
+
+          {/* Tags Section */}
+          <label htmlFor="tags">Tags:</label>
+          <br />
+          <div id="tagsContainer">
+            {availableTags.map((tag) => (
+              <button
+                type="button"
+                key={tag}
+                onClick={() => {
+                  if (listingData.tags.includes(tag)) {
+                    handleRemoveTag(tag);
+                  } else {
+                    handleAddTag(tag);
+                  }
+                }}
+                style={{
+                  margin: "5px",
+                  padding: "5px 10px",
+                  backgroundColor: listingData.tags.includes(tag) ? "#007BFF" : "#e0e0e0",
+                  color: listingData.tags.includes(tag) ? "#fff" : "#000",
+                  border: "none",
+                  borderRadius: "15px",
+                  cursor: "pointer",
+                }}
+              >
+                {tag}
+              </button>
+            ))}
+          </div>
+
+          {/* Display Selected Tags */}
+          <div id="selectedTagsDisplay" style={{ marginTop: 10 }}>
+            {listingData.tags.map((tag, index) => (
+              <span
+                key={index}
+                style={{
+                  display: "inline-block",
+                  backgroundColor: "#e0e0e0",
+                  padding: "5px 10px",
+                  borderRadius: "15px",
+                  margin: "5px",
+                  cursor: "pointer",
+                }}
+                onClick={() => handleRemoveTag(tag)}
+                title="Click to remove"
+              >
+                {tag} &times;
+              </span>
+            ))}
+          </div>
+          <br />
+
+          {/* Submit Button */}
+          <button type="submit">Add Listing</button>
+        </form>
+      </div>
+    </>
   );
 }
 
 export default Profile;
+
