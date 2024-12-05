@@ -80,8 +80,8 @@ function LandingPage() {
       {isLoggedIn ? <Headertwo /> : <Header />}
       <Background>
         <Landing onSearch={handleSearch}/>
+        <Listings tags={selectedTags}/>
       </Background>
-      <Listings tags={selectedTags}/>
     </div>
   );
 

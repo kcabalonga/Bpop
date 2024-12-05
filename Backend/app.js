@@ -86,7 +86,7 @@ function createToken(user) {
 
 // Define routes (if any)
 // Example: Simple route to test the server
-app.get('/', (req, res) => {
+app.get('/test', (req, res) => {
    res.send('Hello, the server is running!');
 });
 
@@ -594,3 +594,6 @@ const PORT = process.env.PORT || 8001; // Use environment variable or default to
 app.listen(PORT, () => {
   console.log(`🚀 Backend server is running on http://localhost:${PORT}`);
 });
+
+
+module.exports = app;

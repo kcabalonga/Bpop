@@ -4,16 +4,14 @@ import React from "react";
 
 const Landing = styled.div`
     width: 100%;
-    height: 60rem;
     background: #F5FAFF;
     align-items: center;
-    justify-content: center;
     display: flex;
     position: relative;
-    padding: 0;
-    margin: 0;
-    overflow: hidden;
+    padding: 10rem 0;
     flex-direction: column;
+    min-height: 100%;
+    overflow: hidden;
 `;
 
 const Cloud = styled.div`

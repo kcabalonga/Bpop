@@ -33,7 +33,5 @@ const userSchema = new mongoose.Schema({
 const User = mongoose.model('User', userSchema);
 
 
-
-
 // Export the functions
 module.exports = { User };

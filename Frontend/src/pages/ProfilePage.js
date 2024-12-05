@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Background from "../components/Background";
 import HeaderAfterSignin from "../components/HeaderAfterSignin";
 import styled from "styled-components";
-import { SubmitButton } from "../components/FormContainer";
+import { SubmitButton, Input } from "../components/FormContainer";
 
 const Container = styled.div`
   width: 80rem;
@@ -33,12 +33,21 @@ const ProfilePicture = styled.img`
 const Title = styled.h2`
   font-size: 2.5rem;
   font-weight: bold;
+  color: #000;
+  font-family: "Poppins";    
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 130%;
+  letter-spacing: -0.3px;
+  text-align: center;
 `;
 
 const Subtitle = styled.h3`
   font-size: 1.7rem;
-  font-weight: bold;
+  font-weight: normal;
   color: #555;
+  font-family: "Poppins";
 `;
 
 const Button = styled.button`
@@ -48,7 +57,6 @@ const Button = styled.button`
     padding: 17px 20px;
     justify-content: center;
     align-items: center;
-    flex-shrink: 0;
     border-radius: 10px;
     background: #72B6ED;
     color: #fff;
@@ -210,7 +218,7 @@ function Profile() {
 
       if (response.ok) {
         alert("Photo uploaded successfully!");
-       //setShowUploadForm(false); // Hide the upload form
+      // setShowUploadForm(false); // Hide the upload form
         setPreviewImage(""); // Clear the preview
         await getUserAttributes(); // Wait for the updated attributes
       } else {
@@ -362,7 +370,20 @@ function Profile() {
       {/* Profile Picture Upload Section */}
       <div id="uploadpho">
         {showUploadForm ? (
-          <form id="uploadForm" encType="multipart/form-data" onSubmit={editPic}>
+          <form id="uploadForm" encType="multipart/form-data" onSubmit={editPic}
+          style={{
+        display: "flex",
+        flexDirection: "column", // Stack children vertically
+        alignItems: "center",   // Center items horizontally
+        justifyContent: "center", // Center items vertically
+        gap: "1rem", // Add spacing between input and button
+        margin: "0 auto", // Center the form horizontally in its container
+        width: "100%", // Optional: Adjust width
+        border: "1px solid black",
+        borderRadius: "15px", 
+        padding: "0 10px 20px",
+        marginBottom: "5rem"
+        }}>
             <Subtitle htmlFor="photo">Upload Profile Picture:</Subtitle>
             <input
               type="file"
@@ -407,16 +428,49 @@ function Profile() {
       )}
 
       {/* Bio Section */}
-      <div id="bioDiv">
+      <div id="bioDiv" style={{
+        display: "flex",
+        flexDirection: "column", // Stack children vertically
+        alignItems: "center",   // Center items horizontally
+        justifyContent: "center", // Center items vertically
+        gap: "1rem", // Add spacing between input and button
+        margin: "0 auto", // Center the form horizontally in its container
+        width: "100%", // Optional: Adjust width
+        maxWidth: "400px", // Optional: Restrict max width
+        border: "1px solid black",
+        borderRadius: "15px", 
+        padding: "0 10px 20px",
+        marginBottom: "5rem"
+      }}>
         <Subtitle id="BioHeader">{userName}'s Bio</Subtitle>
-        <p id="BioPara">{bio}</p>
+        <p id="BioPara" style={{fontFamily: "Hammersmith One"}}>{bio}</p>
         <Button onClick={editBio}>Edit Bio</Button>
       </div>
 
       {/* Add Listing Section */}
-      <div id="addListingDiv">
+      <div id="addListingDiv"
+      style={{
+        display: "flex",
+        flexDirection: "column", // Stack children vertically
+        alignItems: "center",   // Center items horizontally
+        justifyContent: "center", // Center items vertically
+        gap: "1rem", // Add spacing between input and button
+        margin: "0 auto", // Center the form horizontally in its container
+        width: "50%", // Optional: Adjust width
+        border: "1px solid black",
+        borderRadius: "15px", 
+        padding: "0 10px 20px",
+        marginBottom: "5rem"
+      }}>
         <Subtitle>Add a New Listing</Subtitle>
-        <form id="addListingForm" onSubmit={uploadListing}>
+        <form id="addListingForm" onSubmit={uploadListing}
+        style={{
+        display: "flex",
+        flexDirection: "column", // Stack children vertically
+        alignItems: "center",   // Center items horizontally
+        justifyContent: "center", // Center items vertically
+        width: "100%", // Optional: Adjust width
+        }}>
           {/* Title Input */}
           <label htmlFor="title">Title:</label>
           <br />
