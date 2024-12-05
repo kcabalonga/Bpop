@@ -155,7 +155,7 @@ function Customimage() {
           <div>
            <Subtitle href={`/seller?title=${encodeURIComponent(userData.username)}`}>
               
-              {userData.username}
+              @{userData.username}
             </Subtitle>
             <Content>Posted on: {userData.date}</Content>
           </div>

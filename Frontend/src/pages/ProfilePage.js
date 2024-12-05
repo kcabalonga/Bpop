@@ -1,5 +1,62 @@
 import React, { useState, useEffect, useRef } from "react";
 import Background from "../components/Background";
+import HeaderAfterSignin from "../components/HeaderAfterSignin";
+import styled from "styled-components";
+import { SubmitButton } from "../components/FormContainer";
+
+const Container = styled.div`
+  width: 80rem;
+  height: 100%;
+  max-height: 100vh;
+  background: #D7E9F7;
+  border-radius: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  overflow-y: auto;
+  z-index: 3;
+  margin-top: 1rem;
+`;
+
+const ProfilePicture = styled.img`
+  position: absolute;
+  top: 80px;
+  left: 220px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  object-fit: cover;
+`;
+
+const Title = styled.h2`
+  font-size: 2.5rem;
+  font-weight: bold;
+`;
+
+const Subtitle = styled.h3`
+  font-size: 1.7rem;
+  font-weight: bold;
+  color: #555;
+`;
+
+const Button = styled.button`
+    display: flex;
+    width: 10rem;
+    height: 29px;
+    padding: 17px 20px;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: #72B6ED;
+    color: #fff;
+    font-family: "Inter";
+    text-align: center;
+    font-size: 16px;
+    cursor: pointer
+`;
 
 function Profile() {
   // State for user attributes
@@ -292,14 +349,16 @@ function Profile() {
 
   return (
     <>
-      <h1 id="mainHeaderMain">{name}'s Personal Profile Page!</h1>
-      <p id="name">{name}</p>
+    <HeaderAfterSignin />
+    <Background>
+    <Container>
+      <Title>{name}'s Personal Profile Page</Title>
 
       {/* Profile Picture Upload Section */}
       <div id="uploadpho">
         {showUploadForm ? (
           <form id="uploadForm" encType="multipart/form-data" onSubmit={editPic}>
-            <label htmlFor="photo">Upload Profile Picture:</label>
+            <Subtitle htmlFor="photo">Upload Profile Picture:</Subtitle>
             <input
               type="file"
               name="photo"
@@ -315,7 +374,7 @@ function Profile() {
                 }
               }}
             />
-            <button type="submit">Upload</button>
+            <Button type="submit">Upload</Button>
           </form>
         ) : null}
       </div>
@@ -324,7 +383,7 @@ function Profile() {
       {previewImage && (
         <div>
           <h3>Preview:</h3>
-          <img
+          <ProfilePicture
             src={previewImage}
             alt="Preview"
             style={{ width: "200px", height: "200px" }}
@@ -335,25 +394,23 @@ function Profile() {
       {/* Display Current Profile Picture */}
       {profilePic && (
         <div id="profilepicphoto">
-          <img
+          <ProfilePicture
             id="ProfilePicImg"
             src={profilePic}
-            alt="Profile Picture"
-            style={{ width: "200px", height: "200px" }}
           />
         </div>
       )}
 
       {/* Bio Section */}
       <div id="bioDiv">
-        <h3 id="BioHeader">{userName}'s Bio</h3>
+        <Subtitle id="BioHeader">{userName}'s Bio</Subtitle>
         <p id="BioPara">{bio}</p>
-        <button onClick={editBio}>Edit Bio</button>
+        <Button onClick={editBio}>Edit Bio</Button>
       </div>
 
       {/* Add Listing Section */}
       <div id="addListingDiv">
-        <h3>Add a New Listing</h3>
+        <Subtitle>Add a New Listing</Subtitle>
         <form id="addListingForm" onSubmit={uploadListing}>
           {/* Title Input */}
           <label htmlFor="title">Title:</label>
@@ -465,16 +522,15 @@ function Profile() {
           <br />
 
           {/* Submit Button */}
-          <button type="submit">Add Listing</button>
+          <Button type="submit">Add Listing</Button>
         </form>
       </div>
 
-      <button onClick={logoutUser}>Log Out</button>
-
-
+      <SubmitButton onClick={logoutUser}>Log Out</SubmitButton>
+      </Container>
+      </Background>
     </>
   );
 }
 
 export default Profile;
-
