@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from 'react-router-dom';
-import HeaderAfterSignin from "../components/Header";
+import HeaderTwo from "../components/HeaderAfterSignin";
 import Background from "../components/Background";
 
 const Container = styled.div`
@@ -136,7 +136,7 @@ const Seller = () => {
 
   return (
     <>
-    <HeaderAfterSignin />
+    <HeaderTwo />
     <Background>
         <Container>
         {userData && (
