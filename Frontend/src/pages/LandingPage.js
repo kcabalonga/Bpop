@@ -50,7 +50,16 @@ function LandingPage() {
       }
 
       else {
-        alert ("Error fetching data");
+        // alert(token);
+        // alert(response);
+       // alert ("Error fetching data");
+      setIsLoggedIn(false);
+        if (token){
+          localStorage.removeItem('token');
+        }
+
+
+     // alert(data.username)
       }
 
     }
