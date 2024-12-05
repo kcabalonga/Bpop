@@ -12,7 +12,7 @@ mongoose.connect('mongodb://localhost:27017/user_profiles', {
   useUnifiedTopology: true, // Use the new topology engine
 });
 
-saltRounds = 4;  //higher the number, better the security but worse the speed
+saltRounds = 8;  //higher the number, better the security but worse the speed
 
 // Define a user data array to seed the database
 //if you want to add more seeding data, use the format seen below 
