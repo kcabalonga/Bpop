@@ -15,6 +15,8 @@ const Container = styled.div`
   align-items: center;
   padding: 1rem;
   overflow-y: auto;
+  z-index: 3;
+  margin-top: 1rem;
 `;
 
 const ProfileSection = styled.div`
@@ -125,7 +127,8 @@ const Seller = () => {
     };
 
     fetchUserData();
-  }, []);
+  }, []); 
+  
 
   if (error) {
     return <Container>{error}</Container>;
