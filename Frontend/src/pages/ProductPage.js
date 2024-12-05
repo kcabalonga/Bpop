@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
-import Header from '../components/Header';
+import HeaderAfterSignin from "../components/Header";
 import Background from '../components/Background';
 import { ErrorContainer } from '../components/Error';
+import Header from '../components/Header';
 
 function CustomImage() {
     // State variables
@@ -89,7 +90,7 @@ function CustomImage() {
   
  return (
     <div>
-      <Header />
+      <HeaderAfterSignin />
       <Background>
         {error ? (
           // Show error message
