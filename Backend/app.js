@@ -9,6 +9,7 @@ const mongoose = require('mongoose');
 const { User, createUser } = require('./models/Users'); // Import the createUser function from users.js
 const { Listing, createListing, addDate} = require('./models/Listings');
 console.log('Listing Model:', Listing); // This should log the Listing model object
+const bcrypt = require('bcrypt');   //encryption thing
 
 const multer = require('multer');
 const path = require('path');
@@ -22,6 +23,7 @@ app.use(session({
     cookie: { secure: false }       // Set to true in production if using HTTPS
 }));
 const SECRET_KEY = 'your-secret-key';
+const saltRounds = 8;   //the higher this is, the more secure encryption of pw are but the slower process is
 
 // Middleware
 
@@ -88,55 +90,20 @@ app.get('/', (req, res) => {
    res.send('Hello, the server is running!');
 });
 
-
-
-// // Route to handle form submissions
-// app.post('/add-user', async (req, res) => {
-//   try {
-//     const { name, username, email, password } = req.body; // Extract user input from the form
-//     const user = await User.findOne({username});
-
-//     if (user) {
-//       res.send(`
-//         <script>
-//           alert("User already exist.");
-//           window.location.href = "/index.html";
-//         </script>
-//       `);
-
-//     } 
-//     else {
-//     const newUser = new User({ name, username, email, password });
-//     await newUser.save();
-//     // res.send('User added successfully!');
-//     req.session.username = username;
-//     req.session.name = name; 
-//    // res.redirect('/profile.html');
-//     res.json({ newUser });
-//     }
-
-//   } 
-//     catch (error) {
-//     console.error('Error adding user:', error);
-//     res.status(500).send('Error adding user');
-//   }
-
-// });
-
-
 app.post('/add-user', async (req, res) => {
   try {
     const { name, username, email, password } = req.body;
+
 
     const user = await User.findOne({ username });
     if (user) {
       return res.status(400).json({ error: "User already exists" });
     }
 
-    // Hash the password before saving
+    const hashedPassword = await bcrypt.hash(password, saltRounds);   // Hash the password before saving
 
-    const newUser = new User({ name, username, email, password });
-
+    //Create user
+    const newUser = new User({ name, username, email, password: hashedPassword });
     await newUser.save();
 
     const token = createToken(newUser);
@@ -144,9 +111,9 @@ app.post('/add-user', async (req, res) => {
     // Respond with the token
     res.json({ message: "User created successfully", token });
     // Send success response
-   // res.status(201).json({ message: "User added successfully", user: newUser });
   } catch (error) {
     console.error('Error adding user:', error);
+    console.error('Stack Trace:', error.stack);
     res.status(500).json({ error: 'An error occurred while adding the user' });
   }
 });
@@ -155,16 +122,20 @@ app.get('/check-user', async (req, res) => {
   try {
     const { username, password } = req.query;
 
-    // Find user in the database
-    const user = await User.findOne({ username, password });
+    // Find user in the database by username
+    const user = await User.findOne({ username });
     if (!user) {
+      return res.status(400).json({ error: "Invalid username or password" });
+    }
+
+    // Compare the submitted password with the hashed password in the database
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
       return res.status(400).json({ error: "Invalid username or password" });
     }
 
     // Generate JWT with additional user information
     const token = createToken(user);
-   
-
 
     // Respond with the token
     res.json({ message: "User authenticated successfully", token });
@@ -215,10 +186,6 @@ app.get('/api/username', (req, res) => {
 
 
 
-
-
-
-
 app.post('/reset-password', async (req, res) => {
   try {
     const { username, password, password2 } = req.body; // Extract user input from the form
@@ -227,19 +194,23 @@ app.post('/reset-password', async (req, res) => {
     if (!user) {
       return res.status(400).json({ error: "User does not exists" });
     } 
+
     // Check if the new passwords match
     if (password !== password2) {
       return res.status(400).json({ error: "Passwords do not match" });
     }
     // Check if the new password is the same as the current password
-    const userWithSamePassword = await User.findOne({ username, password });
-    if (userWithSamePassword) {
-      return res.status(400).json({ error: "Can not use the same password. Please Log" });
+    const isPasswordSame = await bcrypt.compare(password, user.password);
+    if (isPasswordSame) {
+      return res.status(400).json({ error: "Can not use the same password. Please Log In" });
     }
+
+    const hashedPassword = await bcrypt.hash(password, saltRounds);   // Hash the password before proceeding
+
     // Update the password in the database
-    await User.updateOne({ username }, { $set: { password } });
+    await User.updateOne({ username }, { $set: { password: hashedPassword } });
     // Redirect to profile page after successful password reset
-    res.status(200).json({ message: "User added successfully", user });
+    res.status(200).json({ message: "password reset succesfuly", user });
   } catch (error) {
     console.error('Error resetting password:', error);
     res.status(500).json({ error: 'Error' });

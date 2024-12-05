@@ -3,12 +3,16 @@ const mongoose = require('mongoose'); // Import mongoose to interact with MongoD
 const fs = require('fs'); // Import fs to handle file operations
 const path = require('path'); // Import path for file paths
 const { User } = require('../models/Users'); // Import your createUser function from the Users model
+const bcrypt = require('bcrypt'); // Import bcrypt for password hashing
+
 
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/user_profiles', {
   useNewUrlParser: true, // Use the new URL string parser
   useUnifiedTopology: true, // Use the new topology engine
 });
+
+saltRounds = 4;  //higher the number, better the security but worse the speed
 
 // Define a user data array to seed the database
 //if you want to add more seeding data, use the format seen below 
@@ -99,39 +103,27 @@ const getImageBuffer = (imagePath) => {
   }
 };
 
-const seedDatabase= async () => {
+const seedDatabase = async () => {
   try {
-    // Clear existing users if necessary
-    // await User.deleteMany({});
+    await User.deleteMany({});
     console.log('🗑️ Existing users cleared.');
 
-    // Prepare users with photo data
-    const usersWithPhotos = users.map((user) => {
+    for (const user of users) {
       const { data, contentType } = getImageBuffer(user.photoPath);
-      if (!data || !contentType) {
-        console.warn(`No photo found for user: ${user.username}.`);
-      }
-      return {
+      const hashedPassword = await bcrypt.hash(user.password, saltRounds);
+
+      const userData = {
         name: user.name,
         username: user.username,
         email: user.email,
-        password: user.password,
+        password: hashedPassword,
         photo: data ? { data, contentType } : null,
       };
-    });
 
-    // Insert users into the database
-    for (const userData of usersWithPhotos) {
-      const existingUser = await User.findOne({ username: userData.username });
-      if (!existingUser) {
-        const createdUser = new User(userData);
-        await createdUser.save();
-        console.log('✅ User created successfully:', createdUser.username);
-      } else {
-        console.log('⚠️ User already exists:', existingUser.username);
-      }
+      const createdUser = new User(userData);
+      await createdUser.save();
+      console.log('✅ User created successfully:', createdUser.username);
     }
-
   } catch (error) {
     console.error('❌ Error seeding users:', error);
   } finally {

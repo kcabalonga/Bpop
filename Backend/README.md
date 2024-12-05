@@ -46,3 +46,8 @@ Will fill your local mongoDB database listings collection with profiles specifie
 
 Will completely clear all users and listings from the mongoDB collection. This cannot be undone, so use with caution. Primarily useful for when seeding information substantially updated, and want to clear current database before re-seeding it. Will ask for confirmation before running to ensure no accidental usage
 
+# `Dependencies you need to install`
+
+Dependencies you will need to install are below. Many you can get simply off npm install, but others require their own isntallation
+
+npm install bcrypt
