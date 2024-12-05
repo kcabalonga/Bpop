@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 // import Listings from "./Listings";
 import styled from "styled-components";
 import { SubmitButton } from "../components/FormContainer";
-import HeaderAfterSignin from "../components/Header";
+import HeaderTwo from "../components/HeaderAfterSignin";
 import Background from "../components/Background";
 
 
@@ -138,7 +138,7 @@ function Customimage() {
 
   return (
     <div>
-      <HeaderAfterSignin />
+      <HeaderTwo />
       <Background> 
 <Container>
 <div id="ListingHeader">
