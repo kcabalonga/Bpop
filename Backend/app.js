@@ -84,44 +84,10 @@ function createToken(user) {
 
 // Define routes (if any)
 // Example: Simple route to test the server
-app.get('/', (req, res) => {
+app.get('/test', (req, res) => {
    res.send('Hello, the server is running!');
 });
 
-
-
-// // Route to handle form submissions
-// app.post('/add-user', async (req, res) => {
-//   try {
-//     const { name, username, email, password } = req.body; // Extract user input from the form
-//     const user = await User.findOne({username});
-
-//     if (user) {
-//       res.send(`
-//         <script>
-//           alert("User already exist.");
-//           window.location.href = "/index.html";
-//         </script>
-//       `);
-
-//     } 
-//     else {
-//     const newUser = new User({ name, username, email, password });
-//     await newUser.save();
-//     // res.send('User added successfully!');
-//     req.session.username = username;
-//     req.session.name = name; 
-//    // res.redirect('/profile.html');
-//     res.json({ newUser });
-//     }
-
-//   } 
-//     catch (error) {
-//     console.error('Error adding user:', error);
-//     res.status(500).send('Error adding user');
-//   }
-
-// });
 
 
 app.post('/add-user', async (req, res) => {
@@ -623,3 +589,6 @@ const PORT = process.env.PORT || 8001; // Use environment variable or default to
 app.listen(PORT, () => {
   console.log(`🚀 Backend server is running on http://localhost:${PORT}`);
 });
+
+
+module.exports = app;
