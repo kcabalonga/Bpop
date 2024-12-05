@@ -8,14 +8,14 @@ const Container = styled.div`
     width: 735px;
     height: 405px;
     flex-direction: column;
-    justify-content: center;
+   justify-content: center;
     color: #72B6ED;
     text-align: center;
     font-family: "Hammersmith One";
     font-size: 75px;
     font-weight: 400;
     align-self: center;
-    margin-top: -10rem;
+    margin-top: 10rem;
     align-items: center;
     z-index: 1;
     position: relative;
