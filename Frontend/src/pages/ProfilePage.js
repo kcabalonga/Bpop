@@ -153,7 +153,7 @@ function Profile() {
 
       if (response.ok) {
         alert("Photo uploaded successfully!");
-        setShowUploadForm(false); // Hide the upload form
+       //setShowUploadForm(false); // Hide the upload form
         setPreviewImage(""); // Clear the preview
         await getUserAttributes(); // Wait for the updated attributes
       } else {
@@ -168,7 +168,12 @@ function Profile() {
 
   // Handle Add Listing Form Input Changes
   const handleListingChange = (e) => {
+    
     const { name, value } = e.target;
+
+    if (name === "price" && (!Number.isInteger(Number(value)) || Number(value) < 0)) 
+      return; // Ignore invalid inputs
+
     setListingData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -388,12 +393,14 @@ function Profile() {
           <label htmlFor="price">Price:</label>
           <br />
           <input
-            type="text"
+            type="number"
             id="price"
             name="price"
             value={listingData.price}
             onChange={handleListingChange}
             required
+            step="1" // Enforces integer values
+            min="0"  // Optional: Prevents negative prices
           />
           <br />
           <br />
