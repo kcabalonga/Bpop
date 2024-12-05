@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import Background from "../components/Background";
 
 function Profile() {
   // State for user attributes
