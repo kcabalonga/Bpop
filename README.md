@@ -9,20 +9,48 @@ community and can garner a reputation.
 
 # Requirements
 
-Write required installations here, 
+- [Node.js](https://nodejs.org/en/) (Recommended: Latest LTS version)
+- [npm](https://www.npmjs.com/) (comes bundled with Node.js)
+- [MongoDB](https://www.mongodb.com/) (locally installed or a remote instance)
+- [Git](https://git-scm.com/) (to clone the repository)
 
-# How to run locally
 
-Steps to run locally here. Include terminal commands to run. Just assume the the repo has been downloaded off git. Remember to specify npm install, and to specify  dependency installation.
+# How to Run Locally
 
-```
-Can use code blocks like this to show what commands must be done i.e.
+Open your terminal on your preferred IDE and run the following command:
 
-cd/path/to/your/folder
-```
-```
-npm install
-```
+1. **Clone the repository**:
+    ```bash
+    git clone https://github.com/kcabalonga/Bpop.git
+    cd Bpop
+    ```
+   
+2. **Install Backend Dependencies**:
+    ```bash
+    cd Backend
+    npm install
+    npm install bcrypt
+    npm install nodemailer crypto
+    npm install supertest mongoose jest
+    ```
+   
+3. **Seed the Database**:
+    ```bash
+    npm run seedUsers
+    npm run seedListings
+    npm start
+    ```
+
+4. **Install Frontend Dependencies**:
+    ```bash
+    cd Frontend
+    npm install
+    npm start
+    ```
+
+5. **Open the Application**
+   Go to `http://localhost:3000/` in your browser to view the application.
+
 
 # Available tags
 
@@ -83,7 +111,13 @@ Contains the HTML files for some of our pages. Note that many have become unused
 
 # Contributors
 
-- [BriboSD](https://github.com/BriboSD)
-- write your guys' account names here
+**Group Number:** 6
+
+**Members:**
+- Gabriel Schwinden - [BriboSD](https://github.com/BriboSD)
+- Kirsten Cabalonga - [kcabalonga](https://github.com/kcabalonga)
+- Kaylee Marquez - [kae2587](https://github.com/kae2587)
+- Yong-Ci Chu - [Celinechu0905](https://github.com/Celinechu0905)
+- Austin Magno - [Austin-Apple](https://github.com/Austin-Apple)
 
 
