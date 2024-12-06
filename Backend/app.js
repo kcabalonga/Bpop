@@ -249,14 +249,34 @@ app.post('/reset-password', async (req, res) => {
     user.resetTokenExpiry = Date.now() + 3600000; // Token valid for 1 hour
     await user.save();
 
-    // Configure nodemailer transporter
+    // // Configure nodemailer transporter
+    // const transporter = nodemailer.createTransport({
+    //   service: 'Gmail',
+    //   auth: {
+    //     user: 'bpop5273@gmail.com', // Replace with your actual email
+    //     pass: 'wmxn jetv yrzn tbij', // Replace with your app password
+    //   },
+    // });
+
+
     const transporter = nodemailer.createTransport({
-      service: 'Gmail',
+      host: 'smtp.gmail.com',
+      port: 587, // Change to 587
+      secure: false, // Set to false for STARTTLS
       auth: {
-        user: 'bpop5273@gmail.com', // Replace with your actual email
-        pass: 'wmxn jetv yrzn tbij', // Replace with your app password
+        user: 'bpop5273@gmail.com',
+        pass: 'irua uszy ajpq gkac',
+      },
+      tls: {
+        rejectUnauthorized: false, // Bypass SSL/TLS verification
       },
     });
+
+
+
+
+
+
 
     // Email options
     const mailOptions = {
