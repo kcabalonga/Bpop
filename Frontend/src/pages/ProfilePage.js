@@ -352,6 +352,10 @@ function Profile() {
     }
   };
 
+  const navigateToResetPassword = () => {
+    window.location.href = '/resetpasswrod2';
+  };
+
 
 
 
@@ -446,6 +450,12 @@ function Profile() {
         <p id="BioPara" style={{fontFamily: "Hammersmith One"}}>{bio}</p>
         <Button onClick={editBio}>Edit Bio</Button>
       </div>
+
+      <Button onClick={navigateToResetPassword}>Reset Password</Button>
+
+
+
+
 
       {/* Add Listing Section */}
       <div id="addListingDiv"

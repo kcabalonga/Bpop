@@ -3,7 +3,7 @@ import Header from "../components/Header";
 import Background from "../components/Background";
 import FormContainer, { Input, SubmitButton, Heading } from "../components/FormContainer";
 
-function ResetPassword() {
+function ResetPasswordtwo() {
   // State for form inputs
   const [formData, setFormData] = useState({
     username: '',
@@ -19,6 +19,41 @@ function ResetPassword() {
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent default form submission
+
+    const token = localStorage.getItem('token');
+
+    if(!token){
+     alert ("Not Signed in")
+
+      
+    }
+    else{
+
+     
+      const response = await fetch('http://localhost:8001/api/username', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+        },
+      });
+
+      if (response.ok){
+        const data = await response.json();
+        if (data.username){
+         if (data.username != formData.username ){
+          alert("Username inputed does not match current user. Try again")
+         }
+
+        }
+
+      }
+      else{
+        alert("Something went wrong try again");
+      }
+   
+
+    }
+
   
     // Check if passwords match
     if (formData.password !== formData.password2) {
@@ -27,15 +62,15 @@ function ResetPassword() {
     }
   
     try {
-      const response = await fetch('http://localhost:8001/reset-password', {
+      const response = await fetch('http://localhost:8001/reset-passwordProfile', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          email: formData.email,
-          // password: formData.password,
-          // password2: formData.password2, // Include password2 in the request body
+            username: formData.username,
+            password: formData.password,
+            password2: formData.password2, // Include password2 in the request body
         }),
       });
   
@@ -59,19 +94,8 @@ function ResetPassword() {
     <Background>
       <FormContainer onSubmit={handleSubmit}>
       <Heading>Reset Password</Heading>
-      <Input
-          type="text"
-          id="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          placeholder="Email"
-          required
-        />
 
-
-
-        {/* <Input
+        <Input
           type="text"
           id="username"
           name="username"
@@ -97,7 +121,7 @@ function ResetPassword() {
           onChange={handleChange}
           placeholder="Retype Password"
           required
-        /> */}
+        />
         <SubmitButton type="submit">Reset Password</SubmitButton>
       </FormContainer>
     </Background>
@@ -105,8 +129,5 @@ function ResetPassword() {
   );
 }
 
-export default ResetPassword;
-
-
-
+export default ResetPasswordtwo;
 

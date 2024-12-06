@@ -10,6 +10,10 @@ const { User, createUser } = require('./models/Users'); // Import the createUser
 const { Listing, createListing, addDate} = require('./models/Listings');
 console.log('Listing Model:', Listing); // This should log the Listing model object
 const bcrypt = require('bcrypt');   //encryption thing
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
+
+
 
 const multer = require('multer');
 const path = require('path');
@@ -186,7 +190,7 @@ app.get('/api/username', (req, res) => {
 
 
 
-app.post('/reset-password', async (req, res) => {
+app.post('/reset-passwordProfile', async (req, res) => {
   try {
     const { username, password, password2 } = req.body; // Extract user input from the form
     // Check if the user exists
@@ -220,6 +224,57 @@ app.post('/reset-password', async (req, res) => {
 
 
 
+
+
+app.post('/reset-password', async (req, res) => {
+  try {
+    const { email } = req.body; // Extract email from the form input
+
+    console.log(email);
+
+    // Check if the user exists
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ error: "User does not exist" });
+    }
+
+    // Generate a reset token
+    const resetToken = crypto.randomBytes(20).toString('hex');
+
+    // Hash the reset token to store it securely
+    const hashedToken = await bcrypt.hash(resetToken, saltRounds);
+
+    // Save the hashed token as the user's new password
+    user.password = hashedToken;
+    user.resetTokenExpiry = Date.now() + 3600000; // Token valid for 1 hour
+    await user.save();
+
+    // Configure nodemailer transporter
+    const transporter = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+        user: 'bpop5273@gmail.com', // Replace with your actual email
+        pass: 'wmxn jetv yrzn tbij', // Replace with your app password
+      },
+    });
+
+    // Email options
+    const mailOptions = {
+      from: 'bpop5273@gmail.com', // Use the sender's email
+      to: user.email,             // The recipient's email
+      subject: 'Password Reset Request',
+      text: `Log in to your account and reset your password from your profile. Your temporary password is: ${resetToken}\n\nThis temporary password will expire in 1 hour. Please log in and update your password immediately.`,
+    };
+
+    // Send the email
+    await transporter.sendMail(mailOptions);
+
+    res.status(200).json({ message: 'Temporary password sent successfully. Please check your email.' });
+  } catch (error) {
+    console.error('Error resetting password:', error);
+    res.status(500).json({ error: 'An error occurred' });
+  }
+});
 
 
 
