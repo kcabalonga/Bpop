@@ -9,6 +9,7 @@ import Profile from './pages/ProfilePage';
 import Product from './pages/ProductPage';
 import Customimage from './pages/Customimage';
 import Seller from './pages/SellerPage';
+import ResetPasswordtwo from './pages/ResetPasswordFromProfile'
 
 // import Seller from './pages/SellerPage';
 
@@ -24,6 +25,9 @@ function App() {
       <Route path="/product" element={<Product />} />
       <Route path="/customimage" element={<Customimage />} />
       <Route path="/seller" element={<Seller />} />
+      <Route path="/resetpasswrod2" element={<ResetPasswordtwo />} />
+
+
 
       {/* <Route path="/Seller" element={<Seller />} /> */}
     </Routes>

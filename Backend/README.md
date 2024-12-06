@@ -29,10 +29,7 @@ You may also see any lint errors in the console.
 
 ## `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-NOTE: npm test info may be wrong, copy pasted it from the front end readme 
+launch npm test and test th3 /test, /add-user, /check-user, and /editbio. Will earase the mongo db listinsg and users, so after every test need to re-seed. 
 
 ## `npm run seedUsers`
 
@@ -51,3 +48,5 @@ Will completely clear all users and listings from the mongoDB collection. This c
 Dependencies you will need to install are below. Many you can get simply off npm install, but others require their own isntallation
 
 npm install bcrypt
+npm install nodemailer crypto
+npm install supertest mongoose jest
