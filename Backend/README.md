@@ -47,6 +47,11 @@ Will completely clear all users and listings from the mongoDB collection. This c
 
 Dependencies you will need to install are below. Many you can get simply off npm install, but others require their own isntallation
 
+
+
+# ' forgot password '
+If you forgot your password and want to log in by inputting your email you need to be connected to a wifi not related to UCLA, examlpe do not use UCLA web or UCLA wifi.
+
 npm install bcrypt
 npm install nodemailer crypto
 npm install supertest mongoose jest

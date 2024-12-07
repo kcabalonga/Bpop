@@ -397,14 +397,6 @@ app.post('/editBio', async (req, res) => {
 
 
 
-
-
-
-
-
-
-
-
 //Returns the Bio that is in the user's document
 app.get('/returnBio', async (req, res) => {
 
