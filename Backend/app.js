@@ -226,68 +226,68 @@ app.post('/reset-passwordProfile', async (req, res) => {
 
 
 
-// app.post('/reset-password', async (req, res) => {
-//   try {
-//     const { email } = req.body; // Extract email from the form input
+app.post('/reset-password', async (req, res) => {
+  try {
+    const { email } = req.body; // Extract email from the form input
 
-//     console.log(email);
+    console.log(email);
 
-//     // Check if the user exists
-//     const user = await User.findOne({ email });
-//     if (!user) {
-//       return res.status(400).json({ error: "User does not exist" });
-//     }
+    // Check if the user exists
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ error: "User does not exist" });
+    }
 
-//     // Generate a reset token
-//     const resetToken = crypto.randomBytes(20).toString('hex');
+    // Generate a reset token
+    const resetToken = crypto.randomBytes(20).toString('hex');
 
-//     // Hash the reset token to store it securely
-//     const hashedToken = await bcrypt.hash(resetToken, saltRounds);
+    // Hash the reset token to store it securely
+    const hashedToken = await bcrypt.hash(resetToken, saltRounds);
 
-//     // Save the hashed token as the user's new password
-//     user.password = hashedToken;
-//     user.resetTokenExpiry = Date.now() + 3600000; // Token valid for 1 hour
-//     await user.save();
+    // Save the hashed token as the user's new password
+    user.password = hashedToken;
+    user.resetTokenExpiry = Date.now() + 3600000; // Token valid for 1 hour
+    await user.save();
 
-//     // // Configure nodemailer transporter
-//     // const transporter = nodemailer.createTransport({
-//     //   service: 'Gmail',
-//     //   auth: {
-//     //     user: 'bpop5273@gmail.com', // Replace with your actual email
-//     //     pass: 'wmxn jetv yrzn tbij', // Replace with your app password
-//     //   },
-//     // });
-//
-//     const transporter = nodemailer.createTransport({
-//       host: 'smtp.gmail.com',
-//       port: 587, // Change to 587
-//       secure: false, // Set to false for STARTTLS
-//       auth: {
-//         user: 'bpop5273@gmail.com',
-//         pass: 'irua uszy ajpq gkac',
-//       },
-//       tls: {
-//         rejectUnauthorized: false, // Bypass SSL/TLS verification
-//       },
-//     });
-//
-//     // Email options
-//     const mailOptions = {
-//       from: 'bpop5273@gmail.com', // Use the sender's email
-//       to: user.email,             // The recipient's email
-//       subject: 'Password Reset Request',
-//       text: `Log in to your account and reset your password from your profile. Your temporary password is: ${resetToken}\n\nThis temporary password will expire in 1 hour. Please log in and update your password immediately.`,
-//     };
+    // // Configure nodemailer transporter
+    // const transporter = nodemailer.createTransport({
+    //   service: 'Gmail',
+    //   auth: {
+    //     user: 'bpop5273@gmail.com', // Replace with your actual email
+    //     pass: 'wmxn jetv yrzn tbij', // Replace with your app password
+    //   },
+    // });
 
-//     // Send the email
-//     await transporter.sendMail(mailOptions);
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 587, // Change to 587
+      secure: false, // Set to false for STARTTLS
+      auth: {
+        user: 'bpop5273@gmail.com',
+        pass: 'irua uszy ajpq gkac',
+      },
+      tls: {
+        rejectUnauthorized: false, // Bypass SSL/TLS verification
+      },
+    });
 
-//     res.status(200).json({ message: 'Temporary password sent successfully. Please check your email.' });
-//   } catch (error) {
-//     console.error('Error resetting password:', error);
-//     res.status(500).json({ error: 'An error occurred' });
-//   }
-// });
+    // Email options
+    const mailOptions = {
+      from: 'bpop5273@gmail.com', // Use the sender's email
+      to: user.email,             // The recipient's email
+      subject: 'Password Reset Request',
+      text: `Log in to your account and reset your password from your profile. Your temporary password is: ${resetToken}\n\nThis temporary password will expire in 1 hour. Please log in and update your password immediately.`,
+    };
+
+    // Send the email
+    await transporter.sendMail(mailOptions);
+
+    res.status(200).json({ message: 'Temporary password sent successfully. Please check your email.' });
+  } catch (error) {
+    console.error('Error resetting password:', error);
+    res.status(500).json({ error: 'An error occurred' });
+  }
+});
 
 
 
